@@ -52,10 +52,10 @@ static int info(char *args){
 	return 0;
 }
 
-// static int x(char *args){
-// 	printf("%s", args);
-// 	return 0;
-// }
+static int x(char *args){
+	printf("%s", args);
+	return 0;
+}
 
 static int cmd_help(char *args);
 
@@ -69,6 +69,7 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "单步执行", cmd_si },
 	{ "info", "打印程序状态", info },
+	{ "x", "扫描内存", x },
 
 	/* TODO: Add more commands */
 
