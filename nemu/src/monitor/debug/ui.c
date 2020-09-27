@@ -44,7 +44,10 @@ static int cmd_si(char *args){
 
 static int info(char *args){
 	if(*args == 'r'){
-		printf("%d", cpu.eax);
+		int i;
+		for(i = 0; i < 8; i++){
+			printf("%s : %d\n", regsl[i], cpu.gpr[i]._32);
+		}
 	}
 	return 0;
 }
