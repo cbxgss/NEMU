@@ -46,7 +46,7 @@ static int info(char *args){
 	if(*args == 'r'){
 		int i;
 		for(i = 0; i < 8; i++){
-			printf("%s : %d\n", regsl[i], cpu.gpr[i]._32);
+			printf("%s : %X\n", regsl[i], cpu.gpr[i]._32);
 		}
 	}
 	return 0;
