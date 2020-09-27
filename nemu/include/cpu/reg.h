@@ -35,8 +35,11 @@ typedef struct {
 	union {//小端序
 		uint32_t _32;//32位==4bytes
 		struct {
-			uint16_t _16;//16位==2bytes
-			uint8_t _8[2];//2*8位==2*1byte
+			union {
+				uint16_t _16;//16位==2bytes
+				uint8_t _8[2];//2*8位==2*1byte
+			};
+			uint16_t _16_0;
 		};
 	} gpr[8];
 
