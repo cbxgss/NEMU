@@ -42,6 +42,13 @@ static int cmd_si(char *args){
 	return 0;
 }
 
+static int info(char *args){
+	if(*args == 'r'){
+		printf("%d", cpu.eax);
+	}
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -52,7 +59,8 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
-	{ "si", "dan bu zhi xing", cmd_si },
+	{ "si", "单步执行", cmd_si },
+	{ "info", "打印程序状态", info },
 
 	/* TODO: Add more commands */
 
