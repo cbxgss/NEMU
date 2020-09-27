@@ -32,32 +32,15 @@ typedef struct {
 	// 	};
 	// } gpr[8];
 
-	// union {//小端序
-	// 	uint32_t _32;//32位==4bytes
-	// 	struct {
-	// 		union {//后16位
-	// 			uint16_t _16;
-	// 			uint8_t _8[2];
-	// 		};
-	// 		uint16_t _16_0;//前16位
-	// 	};
-	// } gpr[8];
-
-	union {
-		uint64_t _64;
+	union {//小端序
+		uint32_t _32;//32位==4bytes
 		struct {
-			union {//小端序
-				uint32_t _32;//32位==4bytes
-				struct {
-					union {//后16位
-						uint16_t _16;
-						uint8_t _8[2];
-					};
-					uint16_t _16_0;//前16位
-				};
+			union {//后16位
+				uint16_t _16;
+				uint8_t _8[2];
 			};
+			uint16_t _16_0;//前16位
 		};
-		uint32_t _32_0;
 	} gpr[8];
 
 	/* Do NOT change the order of the GPRs' definitions. */
