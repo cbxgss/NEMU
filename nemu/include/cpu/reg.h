@@ -20,13 +20,25 @@ typedef struct {
 	// 	uint16_t _16;
 	// 	uint8_t _8[2];
 	// } gpr[8];
-	union {
-		uint32_t _32;//32位
+	
+	// union {
+	// 	uint32_t _32;//32位==4bytes
+	// 	struct {
+	// 		uint16_t _16_0;
+	// 		union {
+	// 			uint16_t _16;//16位==2bytes
+	// 			uint8_t _8[2];//[1]为后8位==1byte
+	// 		};
+	// 	};
+	// } gpr[8];
+
+	union {//小端序
+		uint32_t _32;//32位==4bytes
 		struct {
-			uint16_t _16_0;
+			uint16_t _16;//16位==2bytes
 			union {
-				uint16_t _16;//16位
-				uint8_t _8[2];//[1]为后8位
+				uint16_t _16_0;
+				uint8_t _8[2];//[1]为后8位==1byte
 			};
 		};
 	} gpr[8];
