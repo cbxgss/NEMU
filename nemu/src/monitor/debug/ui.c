@@ -53,7 +53,10 @@ static int info(char *args){
 }
 
 static int x(char *args){
-	printf("%s", args);
+	char s[2] = " ";
+	char *len = strtok(args, s);
+	char *x0 = strtok(args, s);
+	printf("%s %s ", len, x0);
 	return 0;
 }
 
