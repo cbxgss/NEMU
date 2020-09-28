@@ -62,6 +62,7 @@ static int x(char *args){
   	while( token != NULL ) {
     	printf( "%s\n", token );
     	token = strtok(NULL, s);
+		printf( "%s\n", token );
 	}
 	return 0;
 }
