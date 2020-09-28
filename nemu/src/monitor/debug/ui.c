@@ -54,14 +54,11 @@ static int info(char *args){
 
 static int x(char *args){
 	char s[2] = " ";
-	// char *len = strtok(args, s);
-	// char *x0 = strtok(args, s);
-	// printf("%s %s ", len, x0);
-	char *token;
-	token = strtok(args, s);
-    printf( "%s\n", token );
-    token = strtok(NULL, s);
-	printf( "%s\n", token );
+	char *len, *x0;
+	len = strtok(args, s);//第一个参数 长度
+    printf( "%s\n", len );
+    x0 = strtok(NULL, s);//第二个参数 初始位置
+	printf( "%s\n", x0 );
 	return 0;
 }
 
