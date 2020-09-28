@@ -59,7 +59,7 @@ static int x(char *args){
     int len_ = atoi(len);
     x0 = strtok(NULL, s);//第二个参数 初始位置
 	int x0_ = strtol(x0, NULL, 16);
-	printf("%d, %x", len_, x0_);
+	printf("%d, %d", len_, x0_);
 	return 0;
 }
 
