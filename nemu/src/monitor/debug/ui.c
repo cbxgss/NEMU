@@ -54,9 +54,15 @@ static int info(char *args){
 
 static int x(char *args){
 	char s[2] = " ";
-	char *len = strtok(args, s);
-	char *x0 = strtok(args, s);
-	printf("%s %s ", len, x0);
+	// char *len = strtok(args, s);
+	// char *x0 = strtok(args, s);
+	// printf("%s %s ", len, x0);
+	char *token;
+	token = strtok(args, s);
+  	while( token != NULL ) {
+    	printf( "%s\n", token );
+    	token = strtok(NULL, s);
+	}
 	return 0;
 }
 
