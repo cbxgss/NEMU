@@ -50,7 +50,8 @@ static int info(char *args){
 			regsl[i], cpu.gpr[i]._32, regsw[i], cpu.gpr[i]._16);
 		}
 		for(i = 0; i < 4; i++){
-			printf("%s: 0X%X\t%s: 0X%X\n", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
+			printf("%s : 0X%X\t%s : 0X%X\n", 
+			regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
 		}
 	}
 	return 0;
