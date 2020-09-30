@@ -65,7 +65,7 @@ static int x(char *args){
     x0 = strtok(NULL, s);//第二个参数 初始位置
 	int x0_ = strtol(x0, NULL, 16);
 	
-	printf("%d", swaddr_read(x0_, len_));
+	printf("0x%X", swaddr_read(x0_, len_));
 	return 0;
 }
 
