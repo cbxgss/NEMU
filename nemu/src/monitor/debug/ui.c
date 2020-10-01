@@ -66,8 +66,8 @@ static int x(char *args){
 	int x0_ = strtol(x0, NULL, 16);
 	int i;
 	for( i=0; i < len_; i++){
-		if(i % 8 == 0) printf("0X%X \t", x0_ + i);
-		printf("%X ", swaddr_read(x0_ + i, 1));
+		if(i % 8 == 0) printf("0X%06X \t", x0_ + i);
+		printf("%02X ", swaddr_read(x0_ + i, 1));
 		if((i+1) % 8 == 0) printf("\n");
 	}
 	if((i+1) % 8) printf("\n");
