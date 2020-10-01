@@ -70,6 +70,7 @@ static int x(char *args){
 		printf("0x%X ", swaddr_read(x0_ + i, 1));
 		if((i+1) % 8 == 0) printf("\n");
 	}
+	if((i+1) % 8) printf("\n");
 	return 0;
 }
 
