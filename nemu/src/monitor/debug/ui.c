@@ -36,6 +36,39 @@ static int cmd_q(char *args) {
 	return -1;
 }
 
+static int cmd_si(char *args){
+	if(args == NULL) cpu_exec(1);
+	else cpu_exec(atoi(args));
+	return 0;
+}
+
+static int info(char *args){
+	if(*args == 'r'){
+		int i;
+		for(i = 0; i < 8; i++){
+			printf("%s: 0X%X\t%s: 0X%X\n", 
+			regsl[i], cpu.gpr[i]._32, regsw[i], cpu.gpr[i]._16);
+		}
+		for(i = 0; i < 4; i++){
+			printf("%s : 0X%X\t%s: 0X%X\n", 
+			regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
+		}
+	}
+	return 0;
+}
+
+static int x(char *args){
+	char s[2] = " ";
+	char *len, *x0;
+	len = strtok(args, s);//第一个参数 长度
+    int len_ = atoi(len);
+    x0 = strtok(NULL, s);//第二个参数 初始位置
+	int x0_ = strtol(x0, NULL, 16);
+	
+	printf("0x%X", swaddr_read(x0_, len_));
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -46,6 +79,9 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
+	{ "si", "单步执行", cmd_si },
+	{ "info", "打印程序状态", info },
+	{ "x", "扫描内存", x },
 
 	/* TODO: Add more commands */
 
