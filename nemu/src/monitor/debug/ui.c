@@ -58,19 +58,19 @@ static int info(char *args){
 }
 
 static int x(char *args){
-	// char s[2] = " ";
-	// char *len, *x0;
-	// len = strtok(args, s);//第一个参数 长度
-    // int len_ = atoi(len);
-    // x0 = strtok(NULL, s);//第二个参数 初始位置
-	// int x0_ = strtol(x0, NULL, 16);
-	// int i;
-	// for( i=0; i < len_; i++){
-	// 	if(i % 8 == 0) printf("0X%X \t", x0_ + i);
-	// 	printf("0x%X ", swaddr_read(x0_ + i, 1));
-	// 	if((i+1) % 8 == 0) printf("\n");
-	// }
-	// if((i+1) % 8) printf("\n");
+	char s[2] = " ";
+	char *len, *x0;
+	len = strtok(args, s);//第一个参数 长度
+    int len_ = atoi(len);
+    x0 = strtok(NULL, s);//第二个参数 初始位置
+	int x0_ = strtol(x0, NULL, 16);
+	int i;
+	for( i=0; i < len_; i++){
+		if(i % 8 == 0) printf("0X%X \t", x0_ + i);
+		printf("%X ", swaddr_read(x0_ + i, 1));
+		if((i+1) % 8 == 0) printf("\n");
+	}
+	if((i+1) % 8) printf("\n");
 	return 0;
 }
 
