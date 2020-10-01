@@ -64,8 +64,10 @@ static int x(char *args){
     int len_ = atoi(len);
     x0 = strtok(NULL, s);//第二个参数 初始位置
 	int x0_ = strtol(x0, NULL, 16);
-	
-	printf("0x%X", swaddr_read(x0_, len_));
+	int i;
+	for( i=0; i < len_; i++){
+		printf("0x%X ", swaddr_read(x0_ + i, 1));
+	}
 	return 0;
 }
 
