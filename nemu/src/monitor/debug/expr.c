@@ -128,6 +128,7 @@ static bool make_token(char *e) {
 				index++;									//++
 				break;
 			}
+			printf("~ %d ~", tokens[index].type);
 		}
 
 		if(i == NR_REGEX) {printf("i = %d\n", i);
