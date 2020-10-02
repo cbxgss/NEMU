@@ -75,6 +75,7 @@ static bool make_token(char *e) {
 		/* Try all rules one by one. */
 		int index = 0;								//当前存到tockens[index]
 		for(i = 0; i < NR_REGEX; i ++) {
+			printf("%d\n", i);
 			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
@@ -93,7 +94,8 @@ static bool make_token(char *e) {
 						assert(substr_len <= 31);
 						strncpy(tokens[index].str, substr_start, substr_len);
 						break;
-					} case '+': {tokens[index].type = (int)'+'; break;}
+					}
+					case '+': {tokens[index].type = (int)'+'; break;}
 					case '-': {tokens[index].type = (int)'-'; break;}
 					case '*': {tokens[index].type = (int)'*'; break;}
 					case '/': {tokens[index].type = (int)'/'; break;}
@@ -103,7 +105,6 @@ static bool make_token(char *e) {
 					default: panic("please implement me");
 				}
 				index++;									//++
-				break;
 			}
 		}
 
