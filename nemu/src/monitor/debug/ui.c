@@ -42,7 +42,7 @@ static int cmd_si(char *args){
 	return 0;
 }
 
-static int info(char *args){
+static int cmd_info(char *args){
 	if(*args == 'r'){
 		int i;
 		for(i = 0; i < 8; i++){
@@ -57,7 +57,7 @@ static int info(char *args){
 	return 0;
 }
 
-static int x(char *args){
+static int cmd_x(char *args){
 	char s[2] = " ";
 	char *len, *x0;
 	len = strtok(args, s);//第一个参数 长度
@@ -74,6 +74,15 @@ static int x(char *args){
 	return 0;
 }
 
+static int cmd_p(char *args){
+	bool success;
+	int rax;
+	rax = expr(args, &success);
+	if(!success) printf("p Wrong\n");
+	printf("%d\n", rax);
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -85,9 +94,9 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "单步执行", cmd_si },
-	{ "info", "打印程序状态", info },
-	{ "x", "扫描内存", x },
-
+	{ "info", "打印程序状态", cmd_info },
+	{ "x", "扫描内存", cmd_x },
+	{ "p", "表达式求值", cmd_p }
 	/* TODO: Add more commands */
 
 };
