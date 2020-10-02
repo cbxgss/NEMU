@@ -120,7 +120,7 @@ static bool make_token(char *e) {
 
 int check_parentheses(int p, int q) {	//对为1，括号匹配但两边无括号为2，括号非法为0
 	int l = p; int num = 0;		//num = '('的个数 - ')'的个数
-	for(l = p; l < q; l++) {
+	for(l = p; l <= q; l++) {
 		if(tokens[l].type == (int)'(') num++;	//'('
 		else if(tokens[l].type == (int)')') {	//')'
 			if(!num) return 0;
@@ -135,14 +135,14 @@ int check_parentheses(int p, int q) {	//对为1，括号匹配但两边无括号
 int find_dp(int p, int q) {				//找到dominant operator
 	//在check_parentheses的if语句过滤后，p和q的地方应该都是数字(即使未来考虑了!，q也是数字)
 	int index = q;					//index为当前找到的dp
-	int i = p; bool flag = 0;		//当身处()时, flag == 1
+	int i = p; int flag = 0;		// flag = (的个数 - )的个数
 	int fff = 0;					//没有dp为0，dp为+-为1，dp为*/为2
 	for(i = p; i < q; i++){
 		printf("%c ", tokens[i].type);
 		if(flag && (tokens[i].type != '(') && (tokens[i].type != ')')) continue;	//身处括号【二】
 		switch (tokens[i].type) {
-			case '(': {flag = 1; break;}
-			case ')': {flag = 0; break;}
+			case '(': {flag++; break;}
+			case ')': {flag--; break;}
 			case '+': {index = i; fff = 1; break;}	//[优先级最低 + 最后]【三，四】
 			case '-': {index = i; fff = 1; break;}
 			case '*': {
