@@ -174,7 +174,7 @@ int eval(int p, int q) {
 		int dp = find_dp(p, q);
 		if(dp == q) {printf("p Wrong4\n"); return 0;}
 		int val1 = eval(p, dp - 1); int val2 = eval(dp + 1, q);
-		printf("val1 = %d    val2 = %d\n", val1, val2);
+		// printf("val1 = %d    val2 = %d\n", val1, val2);
 		switch (tokens[dp].type) {
 			case '+': return val1 + val2;
 			case '-': return val1 - val2;
