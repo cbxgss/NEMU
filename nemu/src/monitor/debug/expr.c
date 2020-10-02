@@ -24,7 +24,11 @@ static struct rule {
 
 	{" +",	NOTYPE},				// spaces
 	{"\\+", '+'},					// plus
+	{"\\-", '-'},					// 减
+	{"\\*", '*'},					// 乘
+	{"/", '/'},						// 除
 	{"==", EQ}						// equal
+	
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
