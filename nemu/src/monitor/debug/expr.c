@@ -94,8 +94,7 @@ static bool make_token(char *e) {
 				 * to record the token in the array `tokens'. For certain types
 				 * of tokens, some extra actions should be performed.
 				 */				
-				printf("%d", rules[i].token_type);
-printf("[ %d ]", tokens[index].type);
+
 				switch(rules[i].token_type) {
 					case NOTYPE:{index--; break;}
 					case Number: {
@@ -109,10 +108,9 @@ printf("[ %d ]", tokens[index].type);
 						break;
 					}
 					case Reg: {
-						printf("qwq");
 						tokens[index].type = Reg;
-						printf("[ %d ]", tokens[index].type);
 						strncpy(tokens[index].str, substr_start, substr_len);
+						break;
 					}
 					case '!': {tokens[index].type = (int)'!'; break;}
 					case '+': {tokens[index].type = (int)'+'; break;}
@@ -132,7 +130,7 @@ printf("[ %d ]", tokens[index].type);
 				break;
 			}
 		}
-printf("[ %d ]", tokens[index].type);
+
 		if(i == NR_REGEX) {printf("i = %d\n", i);
 			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 			return false;
@@ -217,7 +215,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 
 int eval(int p, int q) {
 	// printf("nr_tocken = %d\n", nr_token);
-	printf("eval : %d %d\n", p, q);
+	// printf("eval : %d %d\n", p, q);
 	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
 		printf("nuber's type : %d or %c\n", tokens[p].type, tokens[p].type);
@@ -252,7 +250,7 @@ int eval(int p, int q) {
 		}else{
 			val1 = eval(p, dp - 1); val2 = eval(dp + 1, q);
 		}
-		printf("val1 = %d    val2 = %d\n", val1, val2);
+		// printf("val1 = %d    val2 = %d\n", val1, val2);
 		switch (tokens[dp].type) {
 			case '+': return val1 + val2;
 			case '-': return val1 - val2;
