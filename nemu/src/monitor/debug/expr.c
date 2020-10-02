@@ -172,7 +172,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 
 int eval(int p, int q) {
 	// printf("nr_tocken = %d\n", nr_token);
-	printf("eval : %d %d\n", p, q);
+	// printf("eval : %d %d\n", p, q);
 	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
 		if(tokens[p].type != Number) {printf("p Wrong2\n"); return 0;}
