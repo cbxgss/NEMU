@@ -219,7 +219,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 
 int eval(int p, int q) {
 	// printf("nr_tocken = %d\n", nr_token);
-	printf("eval : %d %d\n", p, q);
+	// printf("eval : %d %d\n", p, q);
 	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
 		// printf("nuber's type : %d or %c\n", tokens[p].type, tokens[p].type);
@@ -281,6 +281,7 @@ bool is_Deref(int i){
 	if(tokens[i-1].type == NEQ) return 1;
 	if(tokens[i-1].type == LY) return 1;
 	if(tokens[i-1].type == LH) return 1;
+	if(tokens[i-1].type == Deref) return 1;
 	return 0;
 }
 
