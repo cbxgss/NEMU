@@ -161,7 +161,6 @@ int find_dp(int p, int q) {				//找到dominant operator
 }
 
 int eval(int p, int q) {
-	if(find_dp(p, q) == q) {printf("p Wrong0\n"); return 0;}
 
 	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
@@ -172,6 +171,7 @@ int eval(int p, int q) {
 		return eval(p+1, q-1);
 	}else {										//原式 = 左式 dp 右式
 		int dp = find_dp(p, q);
+		if(dp == q) {printf("p Wrong0\n"); return 0;}
 		int val1 = eval(p, dp - 1); int val2 = eval(dp + 1, q);
 		switch (tokens[dp].type) {
 			case '+': return val1 + val2;
