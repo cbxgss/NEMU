@@ -190,7 +190,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 			case '+': {}					//[优先级最低 + 最后]【三，四】
 			case '-': {
 				if(i == p) {//第一个符号是正负号
-					index = i; break;
+					flag = 1; index = i; break;
 				}
 				if((flag == 1) && (index + 1 == i)) break;	//正负号
 				if(fff <= 3) {index = i; fff = 3;}
