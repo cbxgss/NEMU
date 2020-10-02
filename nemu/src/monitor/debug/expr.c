@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 enum {
-	NOTYPE = 256, EQ, Number, Deref
+	NOTYPE = 256, EQ, Number, Hex, Reg, NEQ, Deref, LF, LY, LH
 
 	/* TODO: Add more token types */
 
@@ -25,13 +25,22 @@ static struct rule {
 
 	{" +",	NOTYPE},				// spaces
 	{"[0-9]{1,10}", Number},		//数字
+	{"0x[0-9]{1,8}", Hex},			//16进制
+	{"\\$([Ee]?(AX|DX|CX|BX|BP|SI|DI|SP|ax|dx|cx|bx|si|di|sp) | [A-Da-d][HhLl])", Reg},	//寄存器
+	
+	{"!", LF},						//逻辑非
+
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// 减
 	{"\\*", '*'},					// 乘
 	{"/", '/'},						// 除
 	{"\\(", '('},					//	( 
 	{"\\)", ')'},					//	)
-	{"==", EQ}						// equal
+
+	{"==", EQ},						// equal
+	{"!=", NEQ},					//不等
+	{"&&", LY},						//逻辑与
+	{"\\|\\|", LH}					//逻辑或
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
