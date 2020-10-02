@@ -181,9 +181,14 @@ int eval(int p, int q) {
 		return eval(p+1, q-1);
 	}else if (check_parentheses(p, q) == 0) {printf("p Wrong3\n"); return 0;}
 	else {										//原式 = 左式 dp 右式
-		int dp = find_dp(p, q);
+		int dp = find_dp(p, q); int val1 = 0, val2 = 0;
 		if(dp == q) {printf("p Wrong4\n"); return 0;}
-		int val1 = eval(p, dp - 1); int val2 = eval(dp + 1, q);
+		if(dp == p){
+			if(tokens[dp].type == '+') {val1 = 0; val2 = eval(p+1, q);}
+			else if(tokens[dp].type == '-') {val1 = 0; val2 = eval(p+1, q);}
+		}else{
+			val1 = eval(p, dp - 1); val2 = eval(dp + 1, q);
+		}
 		// printf("val1 = %d    val2 = %d\n", val1, val2);
 		switch (tokens[dp].type) {
 			case '+': return val1 + val2;
