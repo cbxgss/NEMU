@@ -165,28 +165,44 @@ int find_dp(int p, int q) {				//找到dominant operator
 	//在check_parentheses的if语句过滤后，p和q的地方应该都是数字(即使未来考虑了!，q也是数字)
 	int index = q;					//index为当前找到的dp
 	int i = p; int flag = 0;		// flag = (的个数 - )的个数
-	int fff = 0;					//没有dp为0，dp为+-为1，dp为*/为2
+	int fff = 0;					// 当前没有dp:0; !* :1;	*/ :2;	+- :3;
+	/// fff表示作为dp的优先级，越大越优先	==,!= :4,	&& :5;	|| :6
+
 	for(i = p; i < q; i++){
 		// printf("%c ", tokens[i].type);
 		if(flag && (tokens[i].type != '(') && (tokens[i].type != ')')) continue;	//身处括号【二】
 		switch (tokens[i].type) {
 			case '(': {flag++; break;}
 			case ')': {flag--; break;}
-			case '+': {								//[优先级最低 + 最后]【三，四】
-				if(index + 1 == i) break;
-				index = i; fff = 1; break;
+
+			case '!': {}
+			case Deref: {
+				if(fff <= 1) {index = i; fff = 1;}
+				break;
 			}
-			case '-': {
-				if(index + 1 == i) break;
-				index = i; fff = 1; break;
-			}
-			case '*': {
-				if(fff == 1) break;
-				index = i; fff = 2; break;
-			}
+			case '*': {}
 			case '/': {
-				if(fff == 1) break;
-				index = i; fff = 2; break;
+				if(fff <= 2) {index = i; fff = 2;}
+				break;
+			}
+			case '+': {}					//[优先级最低 + 最后]【三，四】
+			case '-': {
+				if(index + 1 == i) break;	//正负号
+				if(fff <= 3) {index = i; fff = 3;}
+				break;
+			}
+			case EQ : {}
+			case NEQ: {
+				if(fff <= 4) {index = i; fff = 4;}
+				break;
+			}
+			case LY : {
+				if(fff <= 5) {index = i; fff = 4;}
+				break;
+			}
+			case LH : {
+				if(fff <= 6) {index = i; fff = 4;}
+				break;
 			}
 			default: break;							//不是运算符【一】
 		}
