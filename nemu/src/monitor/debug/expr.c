@@ -169,14 +169,12 @@ int find_dp(int p, int q) {				//找到dominant operator
 				index = i; fff = 1; break;
 			}
 			case '*': {
-				if(fff == 0) index = i;
-				else if(fff == 2) index = i;
-				fff = 2; break;
+				if(fff == 1) break;
+				index = i; fff = 2; break;
 			}
 			case '/': {
-				if(fff == 0) index = i;
-				else if(fff == 2) index = i;
-				fff = 2; break;
+				if(fff == 1) break;
+				index = i; fff = 2; break;
 			}
 			default: break;							//不是运算符【一】
 		}
