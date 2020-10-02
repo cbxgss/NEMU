@@ -28,8 +28,6 @@ static struct rule {
 	{"[0-9]{1,10}", Number},		//数字
 	{"\\$([Ee]?(AX|DX|CX|BX|BP|SI|DI|SP|ax|dx|cx|bx|si|di|sp)|[A-Da-d][HhLl])", Reg},	//寄存器
 	
-	{"!", '!'},						//逻辑非
-
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// 减
 	{"\\*", '*'},					// 乘
@@ -40,7 +38,9 @@ static struct rule {
 	{"==", EQ},						// equal
 	{"!=", NEQ},					//不等
 	{"&&", LY},						//逻辑与
-	{"\\|\\|", LH}					//逻辑或
+	{"\\|\\|", LH},					//逻辑或
+
+	{"!", '!'}						//逻辑非
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
