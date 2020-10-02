@@ -161,13 +161,13 @@ int find_dp(int p, int q) {				//找到dominant operator
 }
 
 int eval(int p, int q) {
-	if(find_dp(p, q) == q) {printf("p Wrong\n"); return 0;}
+	if(find_dp(p, q) == q) {printf("p Wrong0\n"); return 0;}
 
-	if(p > q) {printf("p Wrong\n"); return 0;}
+	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
-		if(tokens[p].type != Number) {printf("p Wrong\n"); return 0;}
+		if(tokens[p].type != Number) {printf("p Wrong2\n"); return 0;}
 		return atoi(tokens[p].str);
-	}else if (check_parentheses(p, q) == 0) {printf("p Wrong\n"); return 0;}
+	}else if (check_parentheses(p, q) == 0) {printf("p Wrong3\n"); return 0;}
 	else if (check_parentheses(p, q) == 1)	{	//一个()
 		return eval(p+1, q-1);
 	}else {										//原式 = 左式 dp 右式
@@ -178,7 +178,7 @@ int eval(int p, int q) {
 			case '-': return val1 - val2;
 			case '*': return val1 * val2;
 			case '/': return val1 / val2;
-			default : {printf("p Wrong\n"); return 0;}
+			default : {printf("p Wrong4\n"); return 0;}
 		}
 	}
 }
