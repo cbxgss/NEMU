@@ -200,17 +200,33 @@ int eval(int p, int q) {
 	// printf("eval : %d %d\n", p, q);
 	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
-		if(tokens[p].type != Number) {printf("p Wrong2\n"); return 0;}
-		return atoi(tokens[p].str);
-	}else if (check_parentheses(p, q) == 1)	{	//一个()
+		if(tokens[p].type == Number) return atoi(tokens[p].str);
+		if(tokens[p].type == Hex) return strtol(tokens[p].str, NULL, 16);
+		if(tokens[p].type == Reg) {
+			int i;
+			for(i = 0; i < 8; i++){				//寄存器
+				if(strcmp(tokens[p].str + 1, regsl[i]) == 0) return cpu.gpr[i]._32;
+				if(strcmp(tokens[p].str + 1, regsw[i]) == 0) return cpu.gpr[i]._16;
+			}
+			for(i = 0; i < 4; i++){
+				if(strcmp(tokens[p].str + 1, regsb[i]) == 0) return cpu.gpr[i]._8[0];
+				if(strcmp(tokens[p].str + 1, regsb[i+4]) == 0) return cpu.gpr[i]._8[1];
+			}
+		}
+		{printf("p Wrong2\n"); return 0;}
+	}
+	else if (check_parentheses(p, q) == 1)	{	//一个()
 		return eval(p+1, q-1);
-	}else if (check_parentheses(p, q) == 0) {printf("p Wrong3\n"); return 0;}
+	}
+	else if (check_parentheses(p, q) == 0) {printf("p Wrong3\n"); return 0;}
 	else {										//原式 = 左式 dp 右式
 		int dp = find_dp(p, q); int val1 = 0, val2 = 0;
 		if(dp == q) {printf("p Wrong4\n"); return 0;}
 		if(dp == p){
 			if(tokens[dp].type == '+') return eval(p+1, q);
 			else if(tokens[dp].type == '-') return -eval(p+1, q);
+			else if(tokens[dp].type == '!') return !eval(p+1, q);
+			else if(tokens[dp].type == Deref)  return swaddr_read(eval(p+1, q), 4);
 		}else{
 			val1 = eval(p, dp - 1); val2 = eval(dp + 1, q);
 		}
@@ -220,6 +236,10 @@ int eval(int p, int q) {
 			case '-': return val1 - val2;
 			case '*': return val1 * val2;
 			case '/': return val1 / val2;
+			case EQ : return (val1 == val2);
+			case NEQ: return (val1 != val2);
+			case LY : return (val1 && val2);
+			case LH : return (val1 || val2);
 			default : {printf("p Wrong5\n"); return 0;}
 		}
 	}
