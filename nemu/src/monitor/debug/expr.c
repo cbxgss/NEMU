@@ -216,7 +216,7 @@ int eval(int p, int q) {
 	printf("eval : %d %d\n", p, q);
 	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
-		printf("nuber's type : %d\n", tokens[p].type);
+		printf("nuber's type : %d or %c\n", tokens[p].type, tokens[p].type);
 		if(tokens[p].type == Number) return atoi(tokens[p].str);
 		if(tokens[p].type == Hex) return strtol(tokens[p].str, NULL, 16);
 		if(tokens[p].type == Reg) {
