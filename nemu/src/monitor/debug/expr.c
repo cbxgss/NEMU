@@ -243,8 +243,8 @@ int eval(int p, int q) {
 		int dp = find_dp(p, q); int val1 = 0, val2 = 0;
 		if(dp == q) {printf("p Wrong4\n"); return 0;}
 		if(dp == p){
-			if(tokens[dp].type == '+') return eval(p+1, q);
-			else if(tokens[dp].type == '-') return -eval(p+1, q);
+			if(tokens[dp].type == '+') {val1 = 0; val2 = eval(p+1, q);}
+			else if(tokens[dp].type == '-') {val1 = 0; val2 = eval(p+1, q);}
 			else if(tokens[dp].type == '!') return !eval(p+1, q);
 			else if(tokens[dp].type == Deref)  return swaddr_read(eval(p+1, q), 4);
 		}else{
