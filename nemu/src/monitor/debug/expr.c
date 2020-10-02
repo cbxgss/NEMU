@@ -75,11 +75,10 @@ static bool make_token(char *e) {
 		/* Try all rules one by one. */
 		int index = 0;								//当前存到tockens[index]
 		for(i = 0; i < NR_REGEX; i ++) {
-			printf("i = %d\n", i);
 			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
 				char *substr_start = e + position;
 				int substr_len = pmatch.rm_eo;
-
+printf("i = %d\n", i);
 				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
 
@@ -109,7 +108,7 @@ static bool make_token(char *e) {
 			}
 		}
 
-		if(i == NR_REGEX) {
+		if(i == NR_REGEX) {printf("i = %d\n", i);
 			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 			return false;
 		}
