@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 enum {
-	NOTYPE = 256, EQ, Number, Hex, Reg, NEQ, Deref, LF, LY, LH
+	NOTYPE = 256, EQ, Number, Hex, Reg, NEQ, Deref, LY, LH
 
 	/* TODO: Add more token types */
 
@@ -28,7 +28,7 @@ static struct rule {
 	{"0x[0-9]{1,8}", Hex},			//16进制
 	{"\\$([Ee]?(AX|DX|CX|BX|BP|SI|DI|SP|ax|dx|cx|bx|si|di|sp) | [A-Da-d][HhLl])", Reg},	//寄存器
 	
-	{"!", LF},						//逻辑非
+	{"!", '!'},						//逻辑非
 
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// 减
@@ -98,10 +98,19 @@ static bool make_token(char *e) {
 					case NOTYPE:{index--; break;}
 					case Number: {
 						tokens[index].type = Number;
-						assert(substr_len <= 31);
 						strncpy(tokens[index].str, substr_start, substr_len);
 						break;
 					}
+					case Hex: {
+						tokens[index].type = Hex;
+						strncpy(tokens[index].str, substr_start, substr_len);
+						break;
+					}
+					case Reg: {
+						tokens[index].type = Reg;
+						strncpy(tokens[index].str, substr_start, substr_len);
+					}
+					case '!': {tokens[index].type = (int)'!'; break;}
 					case '+': {tokens[index].type = (int)'+'; break;}
 					case '-': {tokens[index].type = (int)'-'; break;}
 					case '*': {tokens[index].type = (int)'*'; break;}
@@ -109,6 +118,9 @@ static bool make_token(char *e) {
 					case '(': {tokens[index].type = (int)'('; break;}
 					case ')': {tokens[index].type = (int)')'; break;}
 					case EQ : {tokens[index].type = EQ; break;}
+					case NEQ: {tokens[index].type = NEQ; break;}
+					case LY : {tokens[index].type = LY; break;}
+					case LH : {tokens[index].type = LH; break;}
 					default: panic("please implement me");
 				}
 				// printf("index = %d\n", index);
@@ -213,6 +225,21 @@ int eval(int p, int q) {
 	}
 }
 
+bool is_Deref(int i){
+	if(i == 0) return 1;
+	if(tokens[i-1].type == '+') return 1;
+	if(tokens[i-1].type == '-') return 1;
+	if(tokens[i-1].type == '*') return 1;
+	if(tokens[i-1].type == '/') return 1;
+	if(tokens[i-1].type == '(') return 1;
+	if(tokens[i-1].type == '!') return 1;
+	if(tokens[i-1].type == EQ) return 1;
+	if(tokens[i-1].type == NEQ) return 1;
+	if(tokens[i-1].type == LY) return 1;
+	if(tokens[i-1].type == LH) return 1;
+	return 0;
+}
+
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
@@ -221,8 +248,8 @@ uint32_t expr(char *e, bool *success) {
 	/* TODO: Insert codes to evaluate the expression. */
 	int i=0;
 	for(i = 0; i < nr_token; i++){
-		if(tokens[i].type == '*' && (i == 0 || tokens[i-1].type != Number)){
-			tokens[i].type = Deref;
+		if(tokens[i].type == '*'){
+			if(is_Deref(i)) tokens[i].type = Deref;
 		}
 	}
 	*success = 1;
