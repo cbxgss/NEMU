@@ -88,7 +88,8 @@ static bool make_token(char *e) {
 				switch(rules[i].token_type) {
 					case NOTYPE:{index--; break;}
 					case Number: {
-						tokens[index].type = 258; 
+						tokens[index].type = 258;
+						assert(substr_len <= 31);
 						strncpy(tokens[index].str, substr_start, substr_len);
 						break;
 					} case '+': {tokens[index].type = (int)'+'; break;}
