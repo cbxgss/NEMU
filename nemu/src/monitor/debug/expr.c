@@ -226,7 +226,7 @@ int eval(int p, int q) {
 		if(tokens[p].type == Number) return atoi(tokens[p].str);
 		if(tokens[p].type == Hex) return strtol(tokens[p].str, NULL, 16);
 		if(tokens[p].type == Reg) {
-			printf("eax = 0x%X\n", cpu.gpr[0]._32);
+			// printf("eax = 0x%X\n", cpu.gpr[0]._32);
 			int i;
 			for(i = 0; i < 8; i++){				//寄存器
 				if(strcmp(tokens[p].str + 1, regsl[i]) == 0) return cpu.gpr[i]._32;
