@@ -151,8 +151,14 @@ int find_dp(int p, int q) {				//找到dominant operator
 		switch (tokens[i].type) {
 			case '(': {flag++; break;}
 			case ')': {flag--; break;}
-			case '+': {index = i; fff = 1; break;}	//[优先级最低 + 最后]【三，四】
-			case '-': {index = i; fff = 1; break;}
+			case '+': {								//[优先级最低 + 最后]【三，四】
+				if(index + 1 == i) break;
+				index = i; fff = 1; break;
+			}
+			case '-': {
+				if(index + 1 == i) break;
+				index = i; fff = 1; break;
+			}
 			case '*': {
 				if(fff == 0) index = i;
 				else if(fff == 2) index = i;
