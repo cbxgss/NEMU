@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ
+	NOTYPE = 256, EQ, Number
 
 	/* TODO: Add more token types */
 
@@ -23,12 +23,14 @@ static struct rule {
 	 */
 
 	{" +",	NOTYPE},				// spaces
+	{"[0-9]{1, 10}", Number},		//数字
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// 减
 	{"\\*", '*'},					// 乘
 	{"/", '/'},						// 除
+	{"\\（", '('},					//	( 
+	{"\\）", ')'},					//	)
 	{"==", EQ}						// equal
-	
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -82,10 +84,23 @@ static bool make_token(char *e) {
 				 * of tokens, some extra actions should be performed.
 				 */
 
+				int index = 0;								//当前存到tockens[index]				
 				switch(rules[i].token_type) {
+					case NOTYPE:{index--; break;}
+					case Number: {
+						tokens[index].type = 258; 
+						strncpy(tokens[index].str, substr_start, substr_len);
+						break;
+					} case '+': {tokens[index].type = (int)'+'; break;}
+					case '-': {tokens[index].type = (int)'-'; break;}
+					case '*': {tokens[index].type = (int)'*'; break;}
+					case '/': {tokens[index].type = (int)'/'; break;}
+					case '(': {tokens[index].type = (int)'('; break;}
+					case ')': {tokens[index].type = (int)')'; break;}
+					case EQ : {tokens[index].type = 257; break;}
 					default: panic("please implement me");
 				}
-
+				index++;									//++
 				break;
 			}
 		}
