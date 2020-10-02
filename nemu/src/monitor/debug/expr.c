@@ -171,14 +171,15 @@ int eval(int p, int q) {
 		return eval(p+1, q-1);
 	}else {										//原式 = 左式 dp 右式
 		int dp = find_dp(p, q);
-		if(dp == q) {printf("p Wrong0\n"); return 0;}
+		if(dp == q) {printf("p Wrong4\n"); return 0;}
 		int val1 = eval(p, dp - 1); int val2 = eval(dp + 1, q);
+		printf("val1 = %d    val2 = %d\n", val1, val2);
 		switch (tokens[dp].type) {
 			case '+': return val1 + val2;
 			case '-': return val1 - val2;
 			case '*': return val1 * val2;
 			case '/': return val1 / val2;
-			default : {printf("p Wrong4\n"); return 0;}
+			default : {printf("p Wrong5\n"); return 0;}
 		}
 	}
 }
