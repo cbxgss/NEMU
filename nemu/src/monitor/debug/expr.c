@@ -128,9 +128,8 @@ static bool make_token(char *e) {
 				index++;									//++
 				break;
 			}
-			printf("~ %d ~", tokens[index].type);
 		}
-
+printf("~ %d ~", tokens[index].type);
 		if(i == NR_REGEX) {printf("i = %d\n", i);
 			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 			return false;
