@@ -108,7 +108,7 @@ printf("[ %d ]~", tokens[index].type);
 						strncpy(tokens[index].str, substr_start, substr_len);
 						break;
 					}
-					case Reg: {
+					case Reg: {printf("qwq");
 						tokens[index].type = Reg;
 						strncpy(tokens[index].str, substr_start, substr_len);
 					}
