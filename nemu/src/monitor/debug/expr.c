@@ -102,6 +102,7 @@ static bool make_token(char *e) {
 					case EQ : {tokens[index].type = EQ; break;}
 					default: panic("please implement me");
 				}
+				printf("index = %d\n", index);
 				index++;									//++
 				break;
 			}
@@ -111,7 +112,7 @@ static bool make_token(char *e) {
 			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 			return false;
 		}
-		printf("index = %d\n", index);
+		printf("index_now = %d\n", index);
 		nr_token = index;				//个数
 	}
 
