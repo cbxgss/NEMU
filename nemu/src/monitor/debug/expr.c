@@ -128,7 +128,18 @@ int check_parentheses(int p, int q) {	//对为1，括号匹配但两边无括号
 		}
 	}
 	if(num) return 0;
-	if(tokens[p].type == (int)'(' && tokens[q].type == (int)')') return 1;
+	if(tokens[p].type == (int)'(' && tokens[q].type == (int)')') {		//两边有()
+		int l = p+1; int num = 0;		//num = '('的个数 - ')'的个数
+		for(l = p; l < q; l++) {
+			if(tokens[l].type == (int)'(') num++;	//'('
+			else if(tokens[l].type == (int)')') {	//')'
+				if(!num) return 0;
+				else num--;
+			}
+			if(num < 0) return 2;
+		}
+		return 1;
+	}
 	return 2;
 }
 
