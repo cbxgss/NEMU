@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 enum {
-	NOTYPE = 256, EQ, Number
+	NOTYPE = 256, EQ, Number, Deref
 
 	/* TODO: Add more token types */
 
@@ -212,6 +212,11 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	/* TODO: Insert codes to evaluate the expression. */
-	*success = true;
+	int i=0;
+	for(i = 0; i < nr_token; i++){
+		if(tokens[i].type == '*' && (i == 0 || tokens[i-1].type != Number)){
+			tokens[i].type = Deref;
+		}
+	}
 	return eval(0, nr_token - 1);
 }
