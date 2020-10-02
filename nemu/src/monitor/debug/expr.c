@@ -157,7 +157,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 			}
 			default: break;							//不是运算符【一】
 		}
-		printf("\tdp = %d\n", index);
+		// printf("\tdp = %d\n", index);
 	}
 	return index;
 }
