@@ -167,10 +167,10 @@ int eval(int p, int q) {
 	else if (p == q) {							//一个数字?
 		if(tokens[p].type != Number) {printf("p Wrong2\n"); return 0;}
 		return atoi(tokens[p].str);
-	}else if (check_parentheses(p, q) == 0) {printf("p Wrong3\n"); return 0;}
-	else if (check_parentheses(p, q) == 1)	{	//一个()
+	}else if (check_parentheses(p, q) == 1)	{	//一个()
 		return eval(p+1, q-1);
-	}else {										//原式 = 左式 dp 右式
+	}else if (check_parentheses(p, q) == 0) {printf("p Wrong3\n"); return 0;}
+	else {										//原式 = 左式 dp 右式
 		int dp = find_dp(p, q);
 		if(dp == q) {printf("p Wrong4\n"); return 0;}
 		int val1 = eval(p, dp - 1); int val2 = eval(dp + 1, q);
