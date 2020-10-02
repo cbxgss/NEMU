@@ -139,7 +139,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 	int fff = 0;					//没有dp为0，dp为+-为1，dp为*/为2
 	for(i = p; i < q; i++){
 		printf("%c ", tokens[i].type);
-		if(flag) continue;							//身处括号【二】
+		if(flag && (tokens[i].type != '(') && (tokens[i].type != ')')) continue;	//身处括号【二】
 		switch (tokens[i].type) {
 			case '(': {flag = 1; break;}
 			case ')': {flag = 0; break;}
