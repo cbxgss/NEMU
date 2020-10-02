@@ -69,10 +69,10 @@ static bool make_token(char *e) {
 	regmatch_t pmatch;
 	
 	nr_token = 0;
+	int index = 0;								//当前存到tockens[index]
 
 	while(e[position] != '\0') {
 		/* Try all rules one by one. */
-		int index = 0;								//当前存到tockens[index]
 		for(i = 0; i < NR_REGEX; i ++) {
 			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
 				char *substr_start = e + position;
@@ -102,7 +102,7 @@ static bool make_token(char *e) {
 					case EQ : {tokens[index].type = EQ; break;}
 					default: panic("please implement me");
 				}
-				printf("index = %d\n", index);
+				// printf("index = %d\n", index);
 				index++;									//++
 				break;
 			}
@@ -112,10 +112,9 @@ static bool make_token(char *e) {
 			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 			return false;
 		}
-		printf("index_now = %d\n", index);
-		nr_token = index;				//个数
+		// printf("index_now = %d\n", index);
 	}
-
+	nr_token = index;				//个数
 	return true; 
 }
 
