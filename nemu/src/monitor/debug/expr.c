@@ -71,6 +71,7 @@ static bool make_token(char *e) {
 	nr_token = 0;
 
 	while(e[position] != '\0') {
+		printf("qwq\n");
 		/* Try all rules one by one. */
 		int index = 0;								//当前存到tockens[index]
 		for(i = 0; i < NR_REGEX; i ++) {
