@@ -167,7 +167,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 	//在check_parentheses的if语句过滤后，p和q的地方应该都是数字(即使未来考虑了!，q也是数字)
 	int index = q;					//index为当前找到的dp
 	int i = p; int flag = 0;		// flag = (的个数 - )的个数
-	int fff = 0;					// 当前没有dp:0; !* :1;	*/ :2;	+- :3;
+	int fff = 0;					// 当前没有dp, 正负号:0; !* :1;	*/ :2;	+- :3;
 	/// fff表示作为dp的优先级，越大越优先	==,!= :4,	&& :5;	|| :6
 
 	for(i = p; i < q; i++){
@@ -189,6 +189,9 @@ int find_dp(int p, int q) {				//找到dominant operator
 			}
 			case '+': {}					//[优先级最低 + 最后]【三，四】
 			case '-': {
+				if(i == p) {//第一个符号是正负号
+					index = i; break;
+				}
 				if((flag == 1) && (index + 1 == i)) break;	//正负号
 				if(fff <= 3) {index = i; fff = 3;}
 				break;
