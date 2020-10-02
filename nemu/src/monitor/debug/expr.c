@@ -138,7 +138,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 	int i = p; int flag = 0;		// flag = (的个数 - )的个数
 	int fff = 0;					//没有dp为0，dp为+-为1，dp为*/为2
 	for(i = p; i < q; i++){
-		printf("%c ", tokens[i].type);
+		// printf("%c ", tokens[i].type);
 		if(flag && (tokens[i].type != '(') && (tokens[i].type != ')')) continue;	//身处括号【二】
 		switch (tokens[i].type) {
 			case '(': {flag++; break;}
@@ -164,7 +164,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 
 int eval(int p, int q) {
 	// printf("nr_tocken = %d\n", nr_token);
-	printf("eval : %d %d\n", p, q);
+	// printf("eval : %d %d\n", p, q);
 	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
 		if(tokens[p].type != Number) {printf("p Wrong2\n"); return 0;}
