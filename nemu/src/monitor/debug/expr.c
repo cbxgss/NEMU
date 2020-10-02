@@ -25,7 +25,7 @@ static struct rule {
 
 	{" +",	NOTYPE},				// spaces
 	{"[0-9]{1,10}", Number},		//数字
-	{"0x[0-9]{1,8}", Hex},			//16进制
+	{"0[xX][A-Fa-f0-9]{1,8}", Hex},	//16进制
 	{"\\$([Ee]?(AX|DX|CX|BX|BP|SI|DI|SP|ax|dx|cx|bx|si|di|sp) | [A-Da-d][HhLl])", Reg},	//寄存器
 	
 	{"!", '!'},						//逻辑非
