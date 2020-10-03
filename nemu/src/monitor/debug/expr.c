@@ -179,7 +179,12 @@ int find_dp(int p, int q) {				//找到dominant operator
 
 			case '!': {}
 			case Deref: {
-				if((index + 1 == i) && (fff == 1)) break;//上一个是!或*
+				bool is = 1;							//前面连续是!或*
+				int k = 0;
+				for(k = index; k < i; k++){
+					if(tokens[k].type != '!') {is = 0; break;}
+				}
+				if(is) break;							//连续的!*
 				if(fff <= 1) {index = i; fff = 1;}
 				break;
 			}
