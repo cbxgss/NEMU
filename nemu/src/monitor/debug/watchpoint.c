@@ -1,7 +1,7 @@
 #include "monitor/watchpoint.h"
 #include "monitor/expr.h"
 
-#define NR_WP 32
+#define NR_WP 4
 
 static WP wp_pool[NR_WP];
 static WP *head, *free_;
@@ -55,7 +55,6 @@ void free_wp(WP* wp){
 		else {
 			WP* qwq = free_;
 			while (qwq->next) qwq = qwq->next;		//qwq是当前最后一个free_的wp
-			wp->next = qwq->next;
 			qwq->next = wp;
 		}
 	}
