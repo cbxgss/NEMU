@@ -52,6 +52,9 @@ static int cmd_info(char *args){
 			printf("%s : 0X%X\t%s: 0X%X\n", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
 		}
 	}
+	else if(*args == 'w'){
+		info_w();
+	}
 	return 0;
 }
 
@@ -91,12 +94,11 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
+	/* TODO: Add more commands */
 	{ "si", "单步执行", cmd_si },
 	{ "info", "打印程序状态", cmd_info },
 	{ "x", "扫描内存", cmd_x },
 	{ "p", "表达式求值", cmd_p }
-	/* TODO: Add more commands */
-
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
