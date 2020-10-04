@@ -81,15 +81,15 @@ int change(){				//判断value是否变化
 }
 
 void info_w(){
-	printf("Num\tType\tDisp\tEnb\tValue\tWhat\n");
+	printf("Num\tType\tEnb\tValue\tWhat\n");
 	int i;
 	for(i=0; i < NR_WP; i++){
-		printf("% 2d\t%c\t%d\t0x%x\t%s\n", wp_pool[i].NO, wp_pool[i].type, wp_pool[i].using, wp_pool[i].value, wp_pool[i].str);
+		printf("%2d\t%c\t%d\t0x%x\t%s\n", wp_pool[i].NO, wp_pool[i].type, wp_pool[i].using, wp_pool[i].value, wp_pool[i].str);
 	}
 }
 
 WP* find_n(int n){
 	if((n < 0) || (NR_WP <= n)) {printf("this wp was not existed\n"); return 0;}
-	if(wp_pool[n].using == 0) {printf("this wp was not used\n"); return 0;}
+	if(wp_pool[n].using == 0) {printf("this wp was not used"); return 0;}
 	return &wp_pool[n];
 }
