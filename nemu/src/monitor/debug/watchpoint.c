@@ -94,6 +94,6 @@ void info_w(){
 
 WP* find_n(int n){
 	if((n < 0) || (NR_WP <= n)) {printf("this wp was not existed\n"); return 0;}
-	if(wp_pool[n].using == 0) {printf("this wp was not used"); return 0;}
+	if(wp_pool[n].using == 0) {printf("this wp was not used\n"); return 0;}
 	return &wp_pool[n];
 }
