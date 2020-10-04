@@ -36,7 +36,7 @@ WP* new_wp(char *str_){
 	}
 	else {
 		WP *qwq = head;
-		while (head->next) {	//qwq是上一个监视点
+		while (qwq->next) {	//qwq是上一个监视点
 			qwq = qwq->next;
 		}
 		qwq->next = now_wp;
