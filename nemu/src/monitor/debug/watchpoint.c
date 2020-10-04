@@ -50,9 +50,14 @@ void free_wp(WP* wp){
 	wp->using = 0;
 	if(head == wp){			//wp 是 第一个监视点
 		head = wp->next; wp->next = 0;
-		WP *qwq = free_;
-		while (qwq->next) qwq = qwq->next; 	//qwq是当前最后一个free_的wp，free_不可能为空
-		qwq->next = wp;
+
+		if(!free_) free_ = wp;
+		else {
+			WP* qwq = free_;
+			while (qwq->next) qwq = qwq->next;		//qwq是当前最后一个free_的wp
+			wp->next = qwq->next;
+			qwq->next = wp;
+		}
 	}
 	else {
 		WP *qwq = head;
