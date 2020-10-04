@@ -84,6 +84,16 @@ static int cmd_p(char *args){
 	return 0;
 }
 
+static int cmd_w(char *args){
+	new_wp(args);
+	return 0;
+}
+
+static int cmd_d(char *args){
+	free_wp(find_n(atoi(args)));
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -97,8 +107,10 @@ static struct {
 	/* TODO: Add more commands */
 	{ "si", "单步执行", cmd_si },
 	{ "info", "打印程序状态", cmd_info },
+	{ "p", "表达式求值", cmd_p },
 	{ "x", "扫描内存", cmd_x },
-	{ "p", "表达式求值", cmd_p }
+	{ "w", "设置监视点", cmd_w },
+	{ "d", "删除监视点", cmd_d }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))

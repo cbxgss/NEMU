@@ -46,6 +46,7 @@ WP* new_wp(char *str_){
 }
 
 void free_wp(WP* wp){
+	if(wp == 0) return ;
 	wp->using = 0;
 	if(head == wp){			//wp 是 第一个监视点
 		head = wp->next; wp->next = 0;
@@ -85,4 +86,16 @@ void info_w(){
 	for(i=0; i < NR_WP; i++){
 		printf("% 2d\t%c\t%d\t0x%x\t%s\n", wp_pool[i].NO, wp_pool[i].type, wp_pool[i].using, wp_pool[i].value, wp_pool[i].str);
 	}
+}
+
+WP* find_n(int n){
+	int i;
+	for(i = 0; i < NR_WP; i++){
+		if(wp_pool[i].NO == i){				//find了
+			if(wp_pool[i].using == 0) printf("this wp was not existed or freed ago");
+			return &wp_pool[i];
+		}
+	}
+	printf("this wp was not existed or freed ago");
+	return 0;
 }
