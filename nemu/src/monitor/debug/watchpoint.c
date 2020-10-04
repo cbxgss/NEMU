@@ -32,14 +32,14 @@ WP* new_wp(char *str_){
 	now_wp->next = NULL;
 
 	if(!head){				//head为空
-		head = now_wp; now_wp->NO = 1;
+		head = now_wp;
 	}
 	else {
 		WP *qwq = head;
 		while (head->next) {	//qwq是上一个监视点
 			qwq = head->next;
 		}
-		now_wp->NO = qwq->NO + 1; qwq->next = now_wp;
+		qwq->next = now_wp;
 	}
 	printf("Number of watch is : %d\n", now_wp->NO);
 	return now_wp;
@@ -89,13 +89,7 @@ void info_w(){
 }
 
 WP* find_n(int n){
-	int i;
-	for(i = 0; i < NR_WP; i++){
-		if(wp_pool[i].NO == i){				//find了
-			if(wp_pool[i].using == 0) printf("this wp was not existed or freed ago");
-			return &wp_pool[i];
-		}
-	}
-	printf("this wp was not existed or freed ago");
-	return 0;
+	if((n < 0) || (NR_WP <= n)) {printf("this wp was not existed\n"); return 0;}
+	if(wp_pool[n].using == 0) {printf("this wp was not used\n"); return 0;}
+	return &wp_pool[n];
 }
