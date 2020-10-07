@@ -85,10 +85,10 @@ int change(){				//判断value是否变化
 }
 
 void info_w(){
-	printf("Num\tType\tEnb\tValue\tWhat\n");
+	printf("Num\tType\tValue\tWhat\n");
 	int i;
 	for(i=0; i < NR_WP; i++){
-		printf("%2d\t%c\t%d\t0x%x\t%s\n", wp_pool[i].NO, wp_pool[i].type, wp_pool[i].using, wp_pool[i].value, wp_pool[i].str);
+		if(wp_pool[i].using) printf("%2d\t%c\t0x%x\t%s\n", wp_pool[i].NO, wp_pool[i].type, wp_pool[i].value, wp_pool[i].str);
 	}
 }
 
