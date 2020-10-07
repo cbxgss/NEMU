@@ -82,7 +82,7 @@ static bool make_token(char *e) {
 
 	for(i=0; i < 32; i++){
 		tokens[i].type = 666;
-		memset(tokens[i].str, 0, 32);
+		memset(tokens[i].str, 0, sizeof(tokens[i].str));
 	}
 
 	while(e[position] != '\0') {
