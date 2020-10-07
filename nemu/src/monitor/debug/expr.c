@@ -80,6 +80,11 @@ static bool make_token(char *e) {
 	nr_token = 0;
 	int index = 0;								//当前存到tockens[index]
 
+	for(i=0; i < 32; i++){
+		tokens[i].type = 666;
+		memset(tokens[i].str, 0, 32);
+	}
+
 	while(e[position] != '\0') {
 		/* Try all rules one by one. */
 		for(i = 0; i < NR_REGEX; i ++) {
