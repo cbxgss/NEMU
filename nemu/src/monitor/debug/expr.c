@@ -184,8 +184,8 @@ int find_dp(int p, int q) {				//找到dominant operator
 
 			case '!': {}
 			case Deref: {
-				if((index + 1 == i) && (fff == 1)) break;//上一个是!或*
-				if(fff <= 1) {index = i; fff = 1;}
+				// if((index + 1 == i) && (fff == 1)) break;//上一个是!或*
+				if(fff < 1) {index = i; fff = 1;}
 				break;
 			}
 			case '*': {}
