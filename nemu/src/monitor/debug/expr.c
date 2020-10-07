@@ -26,7 +26,7 @@ static struct rule {
 	{" +",	NOTYPE},				// spaces
 	{"0[xX][A-Fa-f0-9]{1,8}", Hex},	//16进制
 	{"[0-9]{1,10}", Number},		//数字
-	{"\\$(e?(ax|dx|cx|bx|si|di|sp)|[a-d][hl]|ip)", Reg},	//寄存器
+	{"\\$(e?(ax|dx|cx|bx|si|di|sp|ip)|[a-d][hl])", Reg},	//寄存器
 	
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// 减
