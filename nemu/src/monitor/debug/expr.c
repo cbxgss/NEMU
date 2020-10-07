@@ -50,6 +50,7 @@ static regex_t re[NR_REGEX];
 /* Rules are used for many times.
  * Therefore we compile them only once before any usage.
  */
+
 void init_regex() {
 	int i;
 	char error_msg[128];
@@ -71,6 +72,22 @@ typedef struct token {
 
 Token tokens[32];
 int nr_token;
+
+bool is_Deref_or_(int i){
+	if(i == 0) return 1;
+	if(tokens[i-1].type == '+') return 1;
+	if(tokens[i-1].type == '-') return 1;
+	if(tokens[i-1].type == '*') return 1;
+	if(tokens[i-1].type == '/') return 1;
+	if(tokens[i-1].type == '(') return 1;
+	if(tokens[i-1].type == '!') return 1;
+	if(tokens[i-1].type == EQ) return 1;
+	if(tokens[i-1].type == NEQ) return 1;
+	if(tokens[i-1].type == LY) return 1;
+	if(tokens[i-1].type == LH) return 1;
+	if(tokens[i-1].type == Deref) return 1;
+	return 0;
+}
 
 static bool make_token(char *e) {
 	int position = 0;
@@ -172,7 +189,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 	//在check_parentheses的if语句过滤后，p和q的地方应该都是数字(即使未来考虑了!，q也是数字)
 	int index = q;					//index为当前找到的dp
 	int i = p; int flag = 0;		// flag = (的个数 - )的个数
-	int fff = 0;					// 当前没有dp, 正负号:0; !* :1;	*/ :2;	+- :3;
+	int fff = 0;					// 当前没有dp :0; 正负号,!* :1;	*/ :2;	+- :3;
 	/// fff表示作为dp的优先级，越大越优先	==,!= :4,	&& :5;	|| :6
 
 	for(i = p; i < q; i++){
@@ -184,7 +201,6 @@ int find_dp(int p, int q) {				//找到dominant operator
 
 			case '!': {}
 			case Deref: {
-				// if((index + 1 == i) && (fff == 1)) break;//上一个是!或*
 				if(fff < 1) {index = i; fff = 1;}
 				break;
 			}
@@ -196,9 +212,12 @@ int find_dp(int p, int q) {				//找到dominant operator
 			case '+': {}					//[优先级最低 + 最后]【三，四】
 			case '-': {
 				if(i == p) {//第一个符号是正负号
-					flag = 1; index = i; break;
+					index = i; fff = 1; break;
 				}
-				if((index != q) && (index + 1 == i)) break;	//正负号
+				if(is_Deref_or_(i)){//正负号
+					if(fff < 1) {index = 1; fff = 1;}
+					break;
+				}
 				if(fff <= 3) {index = i; fff = 3;}
 				break;
 			}
@@ -274,22 +293,6 @@ int eval(int p, int q) {
 	}
 }
 
-bool is_Deref(int i){
-	if(i == 0) return 1;
-	if(tokens[i-1].type == '+') return 1;
-	if(tokens[i-1].type == '-') return 1;
-	if(tokens[i-1].type == '*') return 1;
-	if(tokens[i-1].type == '/') return 1;
-	if(tokens[i-1].type == '(') return 1;
-	if(tokens[i-1].type == '!') return 1;
-	if(tokens[i-1].type == EQ) return 1;
-	if(tokens[i-1].type == NEQ) return 1;
-	if(tokens[i-1].type == LY) return 1;
-	if(tokens[i-1].type == LH) return 1;
-	if(tokens[i-1].type == Deref) return 1;
-	return 0;
-}
-
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
@@ -299,7 +302,7 @@ uint32_t expr(char *e, bool *success) {
 	int i=0;
 	for(i = 0; i < nr_token; i++){
 		if(tokens[i].type == '*'){
-			if(is_Deref(i)) tokens[i].type = Deref;
+			if(is_Deref_or_(i)) tokens[i].type = Deref;
 		}
 	}
 	*success = 1;
