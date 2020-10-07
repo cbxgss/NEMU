@@ -26,7 +26,7 @@ static struct rule {
 	{" +",	NOTYPE},				// spaces
 	{"0[xX][A-Fa-f0-9]{1,8}", Hex},	//16进制
 	{"[0-9]{1,10}", Number},		//数字
-	{"\\$([Ee]?(AX|DX|CX|BX|BP|SI|DI|SP|ax|dx|cx|bx|si|di|sp)|[A-Da-d][HhLl])", Reg},	//寄存器
+	{"\\$([Ee]?(AX|DX|CX|BX|BP|SI|DI|SP|ax|dx|cx|bx|si|di|sp)|[A-Da-d][HhLl]|ip|IP)", Reg},	//寄存器
 	
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// 减
@@ -260,6 +260,7 @@ int eval(int p, int q) {
 				if(strcmp(tokens[p].str + 1, regsb[i]) == 0) return cpu.gpr[i]._8[0];
 				if(strcmp(tokens[p].str + 1, regsb[i+4]) == 0) return cpu.gpr[i]._8[1];
 			}
+			if(strcmp(tokens[p].str +1, "eip") == 0) return cpu.eip;
 		}
 		printf("p Wrong2\n"); return 0;
 	}
