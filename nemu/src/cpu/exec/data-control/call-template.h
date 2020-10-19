@@ -10,11 +10,11 @@ make_helper(concat(call_i_, SUFFIX)) {
     //rsp = eip + len
     swaddr_write (reg_l (R_ESP) , 4 , cpu.eip + len);
     //偏移量
-    DATA_TYPE_S displacement = op_src->val;
+    DATA_TYPE_S imm = op_src->val;
     //打印汇编
-    print_asm("call %x",cpu.eip + 1 + len + displacement);
+    print_asm("call %x",cpu.eip + 1 + len + imm);
     //修改eip
-    cpu.eip += displacement;
+    cpu.eip += imm;
     return len + 1;
     //函数返回该指令长度之后，eip再加上该指令的长度
 }
