@@ -7,7 +7,7 @@ make_helper(concat(call_i_, SUFFIX)) {
     int len = concat(decode_i_, SUFFIX) (eip + 1);
     //开栈
     reg_l (R_ESP) -= DATA_BYTE;
-    //rsp = eip + len
+    //*rsp = eip + len
     swaddr_write (reg_l (R_ESP) , 4 , cpu.eip + len);
     //偏移量
     DATA_TYPE_S imm = op_src->val;
