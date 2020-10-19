@@ -53,7 +53,8 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-USERPROG := obj/testcase/mov
+# USERPROG := obj/testcase/mov		#原来的
+USERPROG := obj/testcase/mov-c 		#替换的
 ENTRY := $(USERPROG)
 
 entry: $(ENTRY)
