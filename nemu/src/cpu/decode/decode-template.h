@@ -11,14 +11,14 @@
 /* Ib, Iv */
 make_helper(concat(decode_i_, SUFFIX)) {
 	/* eip here is pointing to the immediate */
-	op_src->type = OP_TYPE_IMM;
-	op_src->imm = instr_fetch(eip, DATA_BYTE);
-	op_src->val = op_src->imm;
+	op_src->type = OP_TYPE_IMM;						//类型 = 是偏移量
+	op_src->imm = instr_fetch(eip, DATA_BYTE);		//偏移量imm
+	op_src->val = op_src->imm;						//值 = imm
 
 #ifdef DEBUG
 	snprintf(op_src->str, OP_STR_SIZE, "$0x%x", op_src->imm);
 #endif
-	return DATA_BYTE;
+	return DATA_BYTE;								//返回操作数长度
 }
 
 #if DATA_BYTE == 1 || DATA_BYTE == 4

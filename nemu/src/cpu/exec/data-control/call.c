@@ -14,4 +14,4 @@
 
 /* for instruction encoding overloading */
 
-make_helper_v(call_rel)
+make_helper_v(call_i)
