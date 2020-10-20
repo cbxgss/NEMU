@@ -16,7 +16,7 @@ make_helper(concat(call_i_, SUFFIX)) {
     //修改eip
     cpu.eip += imm;
     return len + 1;
-    //函数返回该指令长度之后，eip再加上该指令的长度
+    //函数返回该指令长度之后，eip再加上该指令的长度len+1
 }
 
 #include "cpu/exec/template-end.h"
