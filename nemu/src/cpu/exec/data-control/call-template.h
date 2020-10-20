@@ -8,7 +8,7 @@ make_helper(concat(call_i_, SUFFIX)) {
     //开栈
     reg_l (R_ESP) -= DATA_BYTE;
     //*rsp = eip + len
-    swaddr_write (reg_l (R_ESP) , 4 , cpu.eip + len);
+    swaddr_write (reg_l (R_ESP) , 4 , cpu.eip + len);   //ret的时候，新eip = 此时的eip+len，然后ret命令长度是1,运行完ret后eip再加上这个1,刚好是call的下一条指令
     //偏移量
     DATA_TYPE_S imm = op_src->val;
     //打印汇编
