@@ -23,6 +23,10 @@ static void welcome() {
 			exec_file);
 }
 
+static void init_eflags(){			//初始化eflags寄存器
+	cpu.eflags = 2;
+}
+
 void init_monitor(int argc, char *argv[]) {
 	/* Perform some global initialization */
 
@@ -86,6 +90,8 @@ void restart() {
 
 	/* Set the initial instruction pointer. */
 	cpu.eip = ENTRY_START;
+
+	init_eflags();		//初始化eflags
 
 	/* Initialize DRAM. */
 	init_ddr3();
