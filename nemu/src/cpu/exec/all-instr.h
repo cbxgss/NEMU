@@ -30,3 +30,4 @@
 #include "data-control/push.h"
 #include "data-control/test.h"
 #include "data-control/je.h"
+#include "data-control/cmp.h"
