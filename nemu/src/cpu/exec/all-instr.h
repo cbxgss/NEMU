@@ -31,3 +31,4 @@
 #include "data-control/test.h"
 #include "data-control/je.h"
 #include "data-control/cmp.h"
+#include "data-control/pop.h"
