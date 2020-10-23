@@ -9,12 +9,12 @@ typedef struct {
 	uint32_t type;
 	size_t size;
 	union {
-		uint32_t reg;
-		swaddr_t addr;
-		uint32_t imm;
-		int32_t simm;
+		uint32_t reg;		//寄存器
+		swaddr_t addr;		//地址
+		uint32_t imm;		//u偏移量
+		int32_t simm;		//偏移量
 	};
-	uint32_t val;
+	uint32_t val;			//值
 	char str[OP_STR_SIZE];
 } Operand;
 
