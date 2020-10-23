@@ -55,7 +55,7 @@ clean: clean-cpp
 
 # USERPROG := obj/testcase/mov		#原来的
 # USERPROG := obj/testcase/mov-c 		#替换的
-USERPROG := obj/testcase/add-c 		#替换的
+USERPROG := obj/testcase/add 		#替换的
 
 ENTRY := $(USERPROG)
 
