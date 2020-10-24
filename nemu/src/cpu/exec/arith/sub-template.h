@@ -3,7 +3,6 @@
 #define instr sub
 
 static void do_execute() {
-    
 	print_asm_template2();
 }
 
