@@ -15,3 +15,4 @@
 /* for instruction encoding overloading */
 
 make_helper_v(sub_i2rm)
+make_helper_v(sub_si2rm)
