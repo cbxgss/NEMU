@@ -20,14 +20,12 @@ static void do_execute() {
     cpu.OF = ((a != b) && (b == cpu.SF));
     
     cpu.ZF = !result;                                   // 结果==0 为1
-
-    int qwq = 0;
-    int i;
-    for(i = 0; i < 8; i++) qwq += (result >> i) & 1;    // 结果的最低有效字节包含偶数个1 为1
-    if(qwq % 2) cpu.PF = 0;
-    else cpu.PF = 1;
-
-    //                                                  D3到D4是否进位
+    // 结果的最低有效字节包含偶数个1 为1
+    result ^= result >>4;
+	result ^= result >>2;
+	result ^= result >>1;
+	cpu.PF=!(result & 1);
+    //D3到D4是否进位
     if(( (op_dest->val & 0xf) - (op_src->val & 0xf) ) >> 4) cpu.AF = 1;
     else cpu.AF = 0;
 }
