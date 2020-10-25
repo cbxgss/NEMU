@@ -17,7 +17,7 @@ static void do_execute() {
     // +   -        -
     // -   +        +
     //因此，当a和b符号不同，结果和b的符号相同时，有符号数溢出
-    cpu.OF = (a != b) && (b == cpu.SF);
+    cpu.OF = ((a != b) && (b == cpu.SF));
     
     cpu.ZF = !result;                                   // 结果==0 为1
 
@@ -31,7 +31,7 @@ static void do_execute() {
     if(( (op_dest->val & 0xf) - (op_src->val & 0xf) ) >> 4) cpu.AF = 1;
     else cpu.AF = 0;
 }
-make_instr_helper(i2a)
+
 make_instr_helper(i2rm)
 #if DATA_BYTE == 2 || DATA_BYTE == 4
 make_instr_helper(si2rm)
