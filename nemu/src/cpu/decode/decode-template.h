@@ -34,7 +34,7 @@ make_helper(concat(decode_si_, SUFFIX)) {
 	 */
 	op_src->simm = (DATA_TYPE_S)instr_fetch(eip, DATA_BYTE);	//simm = 从eip读DATA_BYTE个字符
 
-	panic("please implement me");
+	// panic("please implement me");
 
 	op_src->val = op_src->simm;
 
