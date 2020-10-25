@@ -34,10 +34,10 @@
 
 #include "data-control/call.h"
 #include "data-control/push.h"
-#include "data-control/test.h"
 #include "data-control/je.h"
 #include "data-control/cmp.h"
 #include "data-control/pop.h"
 #include "data-control/ret.h"
 #include "data-control/jmp.h"
 #include "data-control/jbe.h"
+#include "data-control/test.h"
