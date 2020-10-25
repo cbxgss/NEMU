@@ -27,7 +27,7 @@ static void do_execute() {
     //D3到D4是否进位
     if(( (op_dest->val & 0xf) - (op_src->val & 0xf) ) >> 4) cpu.AF = 1;
     else cpu.AF = 0;
-    print_asm_no_template2();
+    print_asm_template2();
 }
 
 make_instr_helper(i2rm)
