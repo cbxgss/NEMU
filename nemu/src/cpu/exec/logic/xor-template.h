@@ -7,7 +7,20 @@ static void do_execute () {
 	OPERAND_W(op_dest, result);
 
 	/* TODO: Update EFLAGS. */
-	panic("please implement me");
+	//检查无符号数溢出
+    cpu.CF = 0;
+    // = 结果的符号位
+    cpu.SF = result >> (DATA_BYTE*8 -1);
+    //检查有符号数溢出
+    cpu.OF = 0;
+    // 结果==0 为1
+    cpu.ZF = !result;
+    // 结果的最低有效字节包含偶数个1 为1
+    result ^= result >>4;
+	result ^= result >>2;
+	result ^= result >>1;
+	cpu.PF = !(result & 1);
+	// panic("please implement me");
 
 	print_asm_template2();
 }
