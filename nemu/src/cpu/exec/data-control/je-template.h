@@ -1,5 +1,5 @@
 #include "cpu/exec/template-start.h"
-#include <stdio.h>
+
 #define instr je
 
 static void do_execute() {
