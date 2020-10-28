@@ -155,7 +155,7 @@ make_helper(concat(decode_si_rm2r_, SUFFIX)) {
 /* used by shift instructions */
 make_helper(concat(decode_rm_1_, SUFFIX)) {
 	int len = decode_r2rm(eip);
-	op_src->type = OP_TYPE_IMM;
+	op_src->type = OP_TYPE_IMM;		//立即数1
 	op_src->imm = 1;
 	op_src->val = 1;
 #ifdef DEBUG
@@ -166,7 +166,7 @@ make_helper(concat(decode_rm_1_, SUFFIX)) {
 
 make_helper(concat(decode_rm_cl_, SUFFIX)) {
 	int len = decode_r2rm(eip);
-	op_src->type = OP_TYPE_REG;
+	op_src->type = OP_TYPE_REG;		//寄存器
 	op_src->reg = R_CL;
 	op_src->val = reg_b(R_CL);
 #ifdef DEBUG
@@ -177,7 +177,7 @@ make_helper(concat(decode_rm_cl_, SUFFIX)) {
 
 make_helper(concat(decode_rm_imm_, SUFFIX)) {
 	int len = decode_r2rm(eip);
-	len += decode_i_b(eip + len);
+	len += decode_i_b(eip + len);	//立即数
 	return len;
 }
 
