@@ -57,7 +57,8 @@ clean: clean-cpp
 # USERPROG := obj/testcase/mov-c
 # USERPROG := obj/testcase/add
 # USERPROG := obj/testcase/add-longlong
-USERPROG := obj/testcase/bit
+# USERPROG := obj/testcase/bit
+USERPROG := obj/testcase/bubble-sort
 
 ENTRY := $(USERPROG)
 
