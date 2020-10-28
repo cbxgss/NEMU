@@ -42,3 +42,4 @@
 #include "data-control/jmp.h"
 #include "data-control/jbe.h"
 #include "data-control/test.h"
+#include "data-control/jne.h"
