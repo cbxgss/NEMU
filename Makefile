@@ -54,8 +54,8 @@ clean: clean-cpp
 ##### some convinient rules #####
 
 # USERPROG := obj/testcase/mov		#原来的
-USERPROG := obj/testcase/mov-c
-# USERPROG := obj/testcase/add
+# USERPROG := obj/testcase/mov-c
+USERPROG := obj/testcase/add
 # USERPROG := obj/testcase/add-longlong
 # USERPROG := obj/testcase/bit
 
