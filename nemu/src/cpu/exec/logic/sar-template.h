@@ -11,7 +11,16 @@ static void do_execute () {
 	OPERAND_W(op_dest, dest);
 
 	/* TODO: Update EFLAGS. */
-	panic("please implement me");
+	int len = (DATA_BYTE << 3) - 1;
+	cpu.CF = 0;
+	cpu.OF = 0;
+	cpu.SF = dest >> len;
+    cpu.ZF = !dest;
+	dest ^= dest >>4;
+	dest ^= dest >>2;
+	dest ^= dest >>1;
+	cpu.PF = !(dest & 1);
+	// panic("please implement me");
 
 	print_asm_template2();
 }
