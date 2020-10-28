@@ -5,6 +5,8 @@
 #include "data-mov/cltd.h"
 #include "data-mov/leave.h"
 #include "data-mov/movext.h"
+#include "data-mov/pop.h"
+#include "data-mov/push.h"
 
 #include "arith/dec.h"
 #include "arith/inc.h"
@@ -34,10 +36,8 @@
 #include "special/special.h"
 
 #include "data-control/call.h"
-#include "data-control/push.h"
 #include "data-control/je.h"
 #include "data-control/cmp.h"
-#include "data-control/pop.h"
 #include "data-control/ret.h"
 #include "data-control/jmp.h"
 #include "data-control/jbe.h"
