@@ -4,10 +4,13 @@
 
 static void do_execute() {
     DATA_TYPE_S imm = op_src->val;
-    if( op_src->type == OP_TYPE_IMM ){
+    // if( op_src->type == OP_TYPE_IMM ){
         cpu.eip += imm;
         print_asm("jmp %x",cpu.eip + DATA_BYTE+1);
-    }
+    // }
+    // else {
+
+    // }
 }
 
 make_instr_helper(i)
