@@ -2,18 +2,11 @@
 
 #define instr lods
 
-make_helper(concat(lods_n_, SUFFIX)){//ac; 和movs类似, 改几个字母就ok
+make_helper(concat(lods_n_, SUFFIX)){//ac; 和movs类似
 	// 内存加载。如果操作数为1字节，则将其装载到AL寄存器中，如果操作数为一个字，则它将被加载到AX寄存器中，并将一个双字加载到EAX寄存器中。 
-    if ( ops_decoded.is_operand_size_16 ) {
-		swaddr_write (reg_w(R_AL),2,swaddr_read (reg_w(R_SI),4));
-		if (cpu.DF == 0) { reg_w (R_AL) += DATA_BYTE; reg_w (R_SI) += DATA_BYTE; }
-		else { reg_w (R_AL) -= DATA_BYTE; reg_w (R_SI) -= DATA_BYTE; }
-	}
-	else {
-		swaddr_write (reg_l(R_EAX),4,swaddr_read (reg_l(R_ESI),4));
-		if (cpu.DF == 0) { reg_l (R_EAX) += DATA_BYTE; reg_l (R_ESI) += DATA_BYTE; }
-		else { reg_l (R_EAX) -= DATA_BYTE; reg_l (R_ESI) -= DATA_BYTE; }
-	}
+	swaddr_write (reg_b(R_AL), 1, swaddr_read (reg_w(R_SI), 1));
+	if (cpu.DF == 0) { reg_b (R_AL) += DATA_BYTE; reg_w (R_SI) += DATA_BYTE; }
+	else { reg_b (R_AL) -= DATA_BYTE; reg_w (R_SI) -= DATA_BYTE; }
 	print_asm("lods");
     return 1;
 }
