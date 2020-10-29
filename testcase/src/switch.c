@@ -19,11 +19,11 @@ int ans[] = {-1, 0, 2, 5, 5, 8, 8, 8, 8, 10, 10, 10, 10, 15, -1};
 
 int main() {
 	int i;
-	for(i = 0; i < 1; i ++) {
+	for(i = 0; i < 2; i ++) {
 		nemu_assert(switch_case(i - 1) == ans[i]);
 	}
 
-	nemu_assert(i == 1);
+	nemu_assert(i == 2);
 
 	return 0;
 }
