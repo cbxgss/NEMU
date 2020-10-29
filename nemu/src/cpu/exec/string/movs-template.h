@@ -1,0 +1,31 @@
+#include "cpu/exec/template-start.h"
+
+#define instr movs
+
+make_helper(concat(movs_n_, SUFFIX)) {//没相应的decode，所以自己写
+    // 描述:
+    // 移动字符串数据，复制由ESI寄存器寻址的内存地址处的数据至EDI寻址的内存地址处
+    // 执行的操作：
+    // 1) ((DI))←((SI))
+    // 2) 字节操作：
+    // (SI)←(SI)±1,(DI)←(DI)±1
+    // 当方向标志DF=0时用+，当方向标志DF=1时用-
+    // 3) 字操作：          //没用到
+    // (SI)←(SI)±2,(DI)←(DI)±2
+    // 当方向标志DF=0时用+，当方向标志DF=1时用-
+    // 该指令不影响条件码。
+	if ( ops_decoded.is_operand_size_16 ) {
+		swaddr_write (reg_w(R_DI),2,swaddr_read (reg_w(R_SI),4));
+		if (cpu.DF == 0) { reg_w (R_DI) += DATA_BYTE; reg_w (R_SI) += DATA_BYTE; }
+		else { reg_w (R_DI) -= DATA_BYTE; reg_w (R_SI) -= DATA_BYTE; }
+	}
+	else {
+		swaddr_write (reg_l(R_EDI),4,swaddr_read (reg_l(R_ESI),4));
+		if (cpu.DF == 0) { reg_l (R_EDI) += DATA_BYTE; reg_l (R_ESI) += DATA_BYTE; }
+		else { reg_l (R_EDI) -= DATA_BYTE; reg_l (R_ESI) -= DATA_BYTE; }
+	}
+	print_asm("movs");
+    return 1;
+}
+
+#include "cpu/exec/template-end.h"
