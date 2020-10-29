@@ -7,8 +7,8 @@ make_helper(concat(scas_n_, SUFFIX)){//ae ; 和lods类似
 	DATA_TYPE dest = swaddr_read(reg_b(R_AL), 1); DATA_TYPE src = swaddr_read (reg_l(R_EDI),1);
 	DATA_TYPE result = dest - src;
 	swaddr_write (reg_b(R_AL), 1, result);
-	if (cpu.DF == 0) { reg_b (R_AL) += DATA_BYTE; reg_l (R_EDI) += DATA_BYTE; }
-	else { reg_b (R_AL) -= DATA_BYTE; reg_l (R_EDI) -= DATA_BYTE; }
+	// if (cpu.DF == 0) { reg_b (R_AL) += DATA_BYTE; reg_l (R_EDI) += DATA_BYTE; }
+	// else { reg_b (R_AL) -= DATA_BYTE; reg_l (R_EDI) -= DATA_BYTE; }
 	print_asm("scas");
 
 	//检查无符号数溢出
