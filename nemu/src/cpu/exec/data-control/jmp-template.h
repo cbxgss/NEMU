@@ -10,6 +10,7 @@ static void do_execute() {
     }
     else {
         printf("imm:%x\t", imm);
+        // 似乎imm直接就是要
         cpu.eip = imm - concat (decode_rm_,SUFFIX)(cpu.eip+1) - 1;
 		print_asm_no_template1();
     }
