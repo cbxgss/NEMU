@@ -16,7 +16,7 @@ make_helper(concat(movs_n_, SUFFIX)) {//没相应的decode，所以自己写
     // 该指令不影响条件码。
 	if ( ops_decoded.is_operand_size_16 ) {
 		swaddr_write (reg_w(R_DI),2,swaddr_read (reg_w(R_SI),4));
-		if (cpu.DF == 0) { reg_w (R_DI) += DATA_BYTE; reg_w (R_SI) += DATA_BYTE; }
+		if (cpu.DF == 0) { reg_w (R_DI) += DATA_BYTE; reg_w (R_SI) += DATA_BYTE; }  //DF表示方向
 		else { reg_w (R_DI) -= DATA_BYTE; reg_w (R_SI) -= DATA_BYTE; }
 	}
 	else {
