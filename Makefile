@@ -70,7 +70,8 @@ clean: clean-cpp
 # USERPROG := obj/testcase/matrix-mul
 # USERPROG := obj/testcase/max
 # USERPROG := obj/testcase/min3
-USERPROG := obj/testcase/movsx
+# USERPROG := obj/testcase/movsx
+USERPROG := obj/testcase/mul-longlong
 
 ENTRY := $(USERPROG)
 
