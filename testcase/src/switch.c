@@ -23,7 +23,7 @@ int main() {
 		nemu_assert(switch_case(i - 1) == ans[i]);
 	}
 
-	nemu_assert(i == 15);
+	nemu_assert(i == 1);
 
 	return 0;
 }
