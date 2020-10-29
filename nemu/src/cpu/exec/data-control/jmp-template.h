@@ -5,6 +5,7 @@
 static void do_execute() {
     DATA_TYPE_S imm = op_src->val;
     if( op_src->type == OP_TYPE_IMM ){
+        //是立即数的时候
         cpu.eip += imm;
         print_asm("jmp %x",cpu.eip + DATA_BYTE+1);
     }
