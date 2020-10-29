@@ -3,6 +3,9 @@
 #define instr stos
 
 make_helper(concat(stos_n_, SUFFIX)) {
+    // swaddr_write (reg_w(R_DI), 1, reg_b(R_AL));
+    // if (cpu.DF == 0) reg_w (R_DI) += DATA_BYTE;
+    // else reg_w (R_DI) -= DATA_BYTE;
     if (ops_decoded.is_operand_size_16) {
         swaddr_write (reg_w(R_DI), 2, reg_w(R_AX));
         if (cpu.DF == 0) reg_w (R_DI) += DATA_BYTE;
