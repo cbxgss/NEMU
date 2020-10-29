@@ -43,7 +43,7 @@ make_helper(rep) {
 make_helper(repnz) {
 	int count = 0;
 	while(cpu.ecx) {
-		printf("qwq");
+		// printf("qwq");
 		exec(eip + 1);
 		count ++;
 		cpu.ecx --;
