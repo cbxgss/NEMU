@@ -30,6 +30,7 @@ static void do_execute() {//和sub的基本相同，只需修改-成+，然后�
 	print_asm_template2();
 }
 
+make_instr_helper(i2a)
 make_instr_helper(i2rm)
 #if DATA_BYTE == 2 || DATA_BYTE == 4
 make_instr_helper(si2rm)
