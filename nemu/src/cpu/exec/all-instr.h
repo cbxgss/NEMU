@@ -48,3 +48,4 @@
 #include "data-control/jg.h"
 #include "data-control/jl.h"
 #include "data-control/jge.h"
+#include "data-control/ja.h"
