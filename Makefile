@@ -73,7 +73,8 @@ clean: clean-cpp
 # USERPROG := obj/testcase/movsx
 # USERPROG := obj/testcase/mul-longlong
 # USERPROG := obj/testcase/pascal
-USERPROG := obj/testcase/prime
+# USERPROG := obj/testcase/prime
+USERPROG := obj/testcase/quick-sort
 
 ENTRY := $(USERPROG)
 
