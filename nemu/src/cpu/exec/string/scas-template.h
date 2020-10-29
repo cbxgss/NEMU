@@ -6,7 +6,7 @@ make_helper(concat(scas_n_, SUFFIX)){//ae ; 和lods类似
 	// 将寄存器（AL，AX或EAX）的内容与内存中的项目的内容进行比较
 	DATA_TYPE dest = reg_b(R_AL); DATA_TYPE src = swaddr_read (reg_l(R_EDI),1);
 	DATA_TYPE result = dest - src;
-	reg_b(R_AL) = result;
+	// reg_b(R_AL) = result;						//这里似乎也不能和sub一样赋值，不然strcmp一定只会判断一个字符
 	if (cpu.DF == 0) reg_l (R_EDI) += DATA_BYTE; 
 	else reg_l (R_EDI) -= DATA_BYTE;
 	print_asm("scas");
