@@ -81,7 +81,7 @@ static int cmd_p(char *args){
 	int rax;
 	rax = expr(args, &success);
 	if(!success) printf("p Wrong\n");
-	printf("%x\n", rax);
+	printf("0x%x\n", rax);
 	return 0;
 }
 
