@@ -47,13 +47,20 @@ make_helper(repnz) {
 		exec(eip + 1);
 		count ++;
 		cpu.ecx --;
-		assert(ops_decoded.opcode == 0xa6	// cmpsb
+		// assert(ops_decoded.opcode == 0xa6	// cmpsb
+		// 		|| ops_decoded.opcode == 0xa7	// cmpsw
+		// 		|| ops_decoded.opcode == 0xae	// scasb
+		// 		|| ops_decoded.opcode == 0xaf	// scasw
+		// 	  );
+
+		/* TODO: Jump out of the while loop if necessary. */
+		if(ops_decoded.opcode == 0xa6	// cmpsb
 				|| ops_decoded.opcode == 0xa7	// cmpsw
 				|| ops_decoded.opcode == 0xae	// scasb
 				|| ops_decoded.opcode == 0xaf	// scasw
-			  );
-
-		/* TODO: Jump out of the while loop if necessary. */
+			  ){
+				  if(cpu.CF == 0) break;
+			  }
 
 	}
 
