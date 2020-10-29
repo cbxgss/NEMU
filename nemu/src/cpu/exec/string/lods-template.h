@@ -2,7 +2,7 @@
 
 #define instr lods
 
-make_helper(concat(lods_n_, SUFFIX)){//和movs类似
+make_helper(concat(lods_n_, SUFFIX)){//ac; 和movs类似, 改几个字母就ok
     if ( ops_decoded.is_operand_size_16 ) {
 		swaddr_write (reg_w(R_AL),2,swaddr_read (reg_w(R_SI),4));
 		if (cpu.DF == 0) { reg_w (R_AL) += DATA_BYTE; reg_w (R_SI) += DATA_BYTE; }
