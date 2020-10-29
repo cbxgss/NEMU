@@ -9,6 +9,7 @@ static void do_execute() {
         print_asm("jmp %x",cpu.eip + DATA_BYTE+1);
     }
     else {
+        printf("imm:%x\t", imm);
         cpu.eip = imm - concat (decode_rm_,SUFFIX)(cpu.eip+1) - 1;
 		print_asm_no_template1();
     }
