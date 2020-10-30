@@ -2,9 +2,9 @@
 #include <string.h>
 
 char *s[] = {
-	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 
-	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
-	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n", 
+	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab\n",
+	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n",
 	", World!\n",
 	"Hello, World!\n",
 	"#####"
