@@ -271,7 +271,7 @@ int eval(int p, int q) {
 		if(tokens[p].type == X) {
 			puts("qwq");
 			int i;
-			for (i = 0; i < nr_symtab_entry; i++){
+			for (i = 0; i < nr_symtab_entry; i++){printf("0");
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){
 					char tmp [30];printf("1");
 					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;printf("2");
