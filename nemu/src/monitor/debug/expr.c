@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 enum {
-	NOTYPE = 256, EQ, Number, Hex, Reg, NEQ, Deref, LY, LH
+	NOTYPE = 256, EQ, Number, Hex, Reg, NEQ, Deref, LY, LH, X 		//X是变量
 
 	/* TODO: Add more token types */
 
@@ -26,6 +26,7 @@ static struct rule {
 	{" +",	NOTYPE},				// spaces
 	{"0[xX][A-Fa-f0-9]{1,8}", Hex},	//16进制
 	{"[0-9]{1,10}", Number},		//数字
+	{"[a-zA-Z_0-9]+", X},			// 变量
 	{"\\$(e?(ax|dx|cx|bx|si|di|sp|ip)|[a-d][hl])", Reg},	//寄存器
 	
 	{"\\+", '+'},					// plus
@@ -131,6 +132,11 @@ static bool make_token(char *e) {
 					}
 					case Reg: {
 						tokens[index].type = Reg;
+						strncpy(tokens[index].str, substr_start, substr_len);
+						break;
+					}
+					case X: {
+						tokens[index].type = X;
 						strncpy(tokens[index].str, substr_start, substr_len);
 						break;
 					}
@@ -261,6 +267,18 @@ int eval(int p, int q) {
 				if(strcmp(tokens[p].str + 1, regsb[i+4]) == 0) return cpu.gpr[i]._8[1];
 			}
 			if(strcmp(tokens[p].str +1, "eip") == 0) return cpu.eip;
+		}
+		if(tokens[p].type == X) {
+			int i;
+			for (i = 0; i < nr_symtab_entry; i++){
+				if ((symtab[i].st_info & 0xf) == STT_OBJECT){
+					char tmp [30];
+					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+					strncpy (tmp, strtab + symtab[i].st_name,tmplen);
+					tmp [tmplen] = '\0';
+					if (strcmp (tmp, tokens[p].str) == 0) return symtab[i].st_value;
+				}
+			}
 		}
 		printf("p Wrong2\n"); return 0;
 	}
