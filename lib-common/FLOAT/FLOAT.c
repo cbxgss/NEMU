@@ -1,8 +1,11 @@
 #include "FLOAT.h"
 
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-	nemu_assert(0);
-	return 0;
+	// nemu_assert(0);
+	// a * b = A >> 16 * B >> 16 = (A * B >> 16) >> 16
+	// 2^32 * 2^32 = 2^64	乘法后最多需要64位存
+	long long x = (long long)a * (long long)b;	//防止溢出
+	return (FLOAT)(x >> 16);
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
@@ -24,8 +27,9 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 	 * out another way to perform the division.
 	 */
 
-	nemu_assert(0);
-	return 0;
+	// nemu_assert(0);
+	// 
+	return a / b;
 }
 
 FLOAT f2F(float a) {
