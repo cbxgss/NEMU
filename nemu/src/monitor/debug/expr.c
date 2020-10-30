@@ -273,14 +273,13 @@ int eval(int p, int q) {
 			int i;
 			for (i = 0; i < nr_symtab_entry; i++){
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){
-					char tmp [30];
-					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
-					strncpy (tmp, strtab + symtab[i].st_name,tmplen);
-					tmp [tmplen] = '\0';
+					char tmp [30];printf("1");
+					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;printf("2");
+					strncpy (tmp, strtab + symtab[i].st_name,tmplen);printf("3");
+					tmp [tmplen] = '\0';printf("4");
 					if (strcmp (tmp, tokens[p].str) == 0) return symtab[i].st_value;
 				}
 			}
-			puts("qwq");
 		}
 		printf("p Wrong2\n"); return 0;
 	}
