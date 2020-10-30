@@ -249,7 +249,7 @@ int find_dp(int p, int q) {				//找到dominant operator
 
 int eval(int p, int q) {
 	// printf("nr_tocken = %d\n", nr_token);
-	printf("eval : %d %d\n", p, q);
+	// printf("eval : %d %d\n", p, q);
 	if(p > q) {printf("p Wrong1\n"); return 0;}
 	else if (p == q) {							//一个数字?
 		// printf("nuber's type : %d or %c\n", tokens[p].type, tokens[p].type);
@@ -269,6 +269,7 @@ int eval(int p, int q) {
 			if(strcmp(tokens[p].str +1, "eip") == 0) return cpu.eip;
 		}
 		if(tokens[p].type == X) {
+			puts("");
 			int i;
 			for (i = 0; i < nr_symtab_entry; i++){
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){
