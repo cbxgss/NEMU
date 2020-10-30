@@ -53,3 +53,4 @@
 #include "data-control/jl.h"
 #include "data-control/jge.h"
 #include "data-control/ja.h"
+#include "data-control/js.h"
