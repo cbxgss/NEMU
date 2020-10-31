@@ -19,10 +19,10 @@ all: nemu
 
 
 ##### rules for building the project #####
-include lib-common/FLOAT/Makefile.part
+
 include nemu/Makefile.part
 include testcase/Makefile.part
-
+include lib-common/FLOAT/Makefile.part
 include kernel/Makefile.part
 include game/Makefile.part
 
