@@ -269,7 +269,7 @@ int eval(int p, int q) {
 			if(strcmp(tokens[p].str +1, "eip") == 0) return cpu.eip;
 		}
 		if(tokens[p].type == X) {
-			puts("qwq");
+			// puts("qwq");
 			int i;
 			for (i = 0; i < nr_symtab_entry; i++){printf("0");
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){
