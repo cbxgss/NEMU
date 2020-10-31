@@ -10,7 +10,9 @@ $(FLOAT): $(FLOAT_A_OBJ)
 
 # TODO: complete the following rules
 
-$(FLOAT_O):
+$(FLOAT_O):$(LIB_COMMON_DIR)/FLOAT/FLOAT.c $(LIB_COMMON_DIR)/FLOAT.h
+	gcc -c &^ -o FLOAT.o && mkdir -p obj/lib-common && mv FLOAT.o obj/lib-common
 
-$(FLOAT_VFPRINTF_O):
+$(FLOAT_VFPRINTF_O):$(LIB_COMMON_DIR)/FLOAT/FLOAT_vfprintf.c
+	gcc -c &^ -o FLOAT.o && mkdir -p obj/lib-common && mv FLOAT.o obj/lib-common
 
