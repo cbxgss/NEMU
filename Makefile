@@ -84,7 +84,7 @@ USERPROG := obj/testcase/intergral	#can't
 # USERPROG := obj/testcase/wanshu
 # USERPROG := obj/testcase/struct
 # USERPROG := obj/testcase/string
-USERPROG := obj/testcase/hello-str
+# USERPROG := obj/testcase/hello-str
 
 ENTRY := $(USERPROG)
 
