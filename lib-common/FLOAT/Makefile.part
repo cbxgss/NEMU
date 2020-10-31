@@ -5,7 +5,7 @@ FLOAT_VFPRINTF_O := $(dir $(FLOAT))FLOAT_vfprintf.o
 
 FLOAT_A_OBJ := $(FLOAT_O) $(FLOAT_VFPRINTF_O)													#……OBJ = ?????
 
-$(FLOAT): $(FLOAT_A_OBJ)																							#……OBJ??????
+$(FLOAT): $(FLOAT_A_OBJ)																							#……OBJ??????, ?????FLOAT.a
 	ar r $@ $^
 
 
