@@ -14,7 +14,6 @@ FLOAT := obj/$(LIB_COMMON_DIR)/FLOAT/FLOAT.a
 
 include config/Makefile.git
 include config/Makefile.build
-include lib-common/FLOAT/Makefile.part
 
 all: nemu
 
@@ -23,7 +22,7 @@ all: nemu
 
 include nemu/Makefile.part
 include testcase/Makefile.part
-
+include lib-common/FLOAT/Makefile.part
 include kernel/Makefile.part
 include game/Makefile.part
 
@@ -64,9 +63,9 @@ clean: clean-cpp
 # USERPROG := obj/testcase/fib
 # USERPROG := obj/testcase/gotbaha
 # USERPROG := obj/testcase/hello-inline-asm	#can't
-# USERPROG := obj/testcase/if-else
-USERPROG := obj/testcase/intergral	#can't
-USERPROG := obj/testcase/leap-year
+USERPROG := obj/testcase/if-else
+# USERPROG := obj/testcase/intergral	#can't
+# USERPROG := obj/testcase/leap-year
 # USERPROG := obj/testcase/matrix-mul-small
 # USERPROG := obj/testcase/matrix-mul
 # USERPROG := obj/testcase/max
