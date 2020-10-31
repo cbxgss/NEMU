@@ -5,7 +5,7 @@ FLOAT_VFPRINTF_O := $(dir $(FLOAT))FLOAT_vfprintf.o
 
 FLOAT_A_OBJ := $(FLOAT_O) $(FLOAT_VFPRINTF_O)													#……OBJ = ?????
 
-$(FLOAT): $(FLOAT_A_OBJ)																							#……OBJ??????				???????
+$(FLOAT): $(FLOAT_A_OBJ)																							#……OBJ??????
 	ar r $@ $^
 
 #	 									$(call <expression>,<parm1>,<parm2>,<parm3>,...)
@@ -14,12 +14,9 @@ $(FLOAT): $(FLOAT_A_OBJ)																							#……OBJ??????				???????
 
 # TODO: complete the following rules
 
-# $(FLOAT_O):
+$(FLOAT_O):lib-common/FLOAT/FLOAT.c lib-common/FLOAT.h
+	gcc -c -m32 -O2 -fno-builtin $^ -o $@
 
-# $(FLOAT_VFPRINTF_O):
+$(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c lib-common/FLOAT.h
+	gcc -c -m32 -O2 -fno-builtin $^ -o $@
 
-FLOAT_CFLAGS := -c -m32 -O2 -fno-builtin
-
-$(FLOAT_OBJ): % : $(LIB_COMMON_DIR)/FLOAT.c
-	@mkdir -p obj/$(LIB_COMMON_DIR)
-	$(call make_command, $(CC), $(FLOAT_CFLAGS), cc $<, $^)
