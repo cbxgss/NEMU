@@ -22,11 +22,8 @@ int main() {
 
 
 
-	// FLOAT a = f2F(0.5);
-	// FLOAT b = f2F(0.2);
-	// nemu_assert(F_div_F(a, b) == f2F(2.5));
-
 	FLOAT a = f2F(0.5);
-	nemu_assert(a == f2F(0.5));
+	FLOAT b = f2F(0.2);
+	nemu_assert(Fabs(F_div_F(a, b) - f2F(2.5)) < f2F(1e4));
 	return 0;
 }
