@@ -14,9 +14,12 @@ $(FLOAT): $(FLOAT_A_OBJ)																							#……OBJ??????
 
 # TODO: complete the following rules
 
-$(FLOAT_O):lib-common/FLOAT/FLOAT.c lib-common/FLOAT.h
-	gcc -c -m32 -O2 -fno-builtin $^ -o $@ && mkdir obj/lib-common && mv $@ obj/lib-common
+vpath %.c lib-common
+vpath %.h lib-common
 
-$(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c lib-common/FLOAT.h 
-	gcc -c -m32 -O2 -fno-builtin $^ -o $@ && mkdir obj/lib-common && mv $@ obj/lib-common
+$(FLOAT_O):lib-common/FLOAT/FLOAT.c lib-common/FLOAT.h
+	mkdir obj/lib-common && gcc -m32 -O2 -fno-builtin $^ -o $@ && mv $@ obj/lib-common
+
+$(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c lib-common/FLOAT.h
+	mkdir obj/lib-common && gcc -m32 -O2 -fno-builtin $^ -o $@ && mv $@ obj/lib-common
 
