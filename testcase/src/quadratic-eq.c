@@ -20,8 +20,13 @@ int main() {
 	// nemu_assert(Fabs(x1_ans - x1) < f2F(1e-4));
 	// nemu_assert(Fabs(x2_ans - x2) < f2F(1e-4));
 
+
+
+	// FLOAT a = f2F(0.5);
+	// FLOAT b = f2F(0.2);
+	// nemu_assert(F_div_F(a, b) == f2F(2.5));
+
 	FLOAT a = f2F(0.5);
-	FLOAT b = f2F(0.2);
-	nemu_assert(F_div_F(a, b) == f2F(2.5));
+	nemu_assert(a == f2F(0.5));
 	return 0;
 }
