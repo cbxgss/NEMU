@@ -65,9 +65,9 @@ static int cmd_x(char *args){
 	len = strtok(args, s);//第一个参数 长度
     int len_ = atoi(len);
     x0 = strtok(NULL, s);//第二个参数 初始位置
-	int x0_ = strtol(x0, NULL, 16);
-	// bool success; int x0_ = expr(args, &success);
-	// if(!success) printf("x Wrong\n");
+	// int x0_ = strtol(x0, NULL, 16);
+	bool success; int x0_ = expr(x0, &success);
+	if(!success) printf("x Wrong\n");
 	int i;
 	for( i=0; i < len_; i++){
 		if(i % 8 == 0) printf("0X%06X \t", x0_ + i);
