@@ -12,7 +12,7 @@ $(FLOAT): $(FLOAT_A_OBJ)																							#……OBJ??????, ?????FLOAT.a
 # TODO: complete the following rules
 
 $(FLOAT_O):lib-common/FLOAT/FLOAT.c
-#	mkdir -p obj/lib-common/FLOAT
+	mkdir -p obj/lib-common/FLOAT
 	gcc -c -m32 -O2 -fno-builtin $^ -o $@
 
 $(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c
