@@ -68,11 +68,17 @@ FLOAT f2F(float a) {
 	int sign = b >> 31;
 	int exp = (b >> 23) & 0xff;
 	FLOAT frac = b & 0x7fffff;
-	if (exp != 0) frac += 1 << 23;
+	// 规格化和非规格化，全部指数化
+	if (exp != 0) frac += 1 << 23;		//如果是规格化的，小数点前有1
+	else exp = 1;						//如果非规格话，那么exp当1处理
 	exp -= 150;
-	if (exp < -16) frac >>= -16 - exp;
-	if (exp > -16) frac <<= exp + 16;
-	return sign == 0 ? frac : -frac;
+	// 得到FLOAT
+	// frac << exp << 16		即		frac << (exp + 16)
+	if(exp + 16 > 0) frac <<= exp + 16;
+	else if(exp + 16 < 0) frac >>= -(exp + 16);
+	// 返回，加上符号
+	if(!sign) return frac;
+	else return -frac;
 }
 
 FLOAT Fabs(FLOAT a) {	//返回浮点数的绝对值
