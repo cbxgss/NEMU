@@ -2,8 +2,8 @@
 
 #define instr movs
 
-make_helper(concat(movs_n_, SUFFIX)) {
-    // 描述:
+static void do_execute () {
+	 // 描述:
     // 移动字符串数据，复制由ESI寄存器寻址的内存地址处的数据至EDI寻址的内存地址处   将1字节，Word或双字数据从存储器位置移动到另一个。 
     // 执行的操作：
     // 1) ((DI))←((SI))
@@ -25,7 +25,8 @@ make_helper(concat(movs_n_, SUFFIX)) {
 		else { reg_l (R_EDI) -= DATA_BYTE; reg_l (R_ESI) -= DATA_BYTE; }
 	}
 	print_asm("movs");
-    return 1;
 }
+
+make_instr_helper(n)
 
 #include "cpu/exec/template-end.h"
