@@ -55,7 +55,7 @@ clean: clean-cpp
 ##### some convinient rules #####
 
 # USERPROG := obj/testcase/mov		#原来的
-USERPROG := obj/testcase/mul-longlong
+USERPROG := obj/testcase/pascal
 
 ENTRY := $(USERPROG)
 
