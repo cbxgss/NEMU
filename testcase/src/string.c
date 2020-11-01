@@ -22,7 +22,7 @@ int main() {
 
 	nemu_assert(strcmp( strcat(strcpy(str, str1), s[3]), s[4]) == 0);
 	
-	nemu_assert(memcmp(memset(str, '#', 100), s[100], 100) == 0);
+	nemu_assert(memcmp(memset(str, '#', 19), s[19], 19) == 0);
 
 	return 0;
 }
