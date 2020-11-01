@@ -56,7 +56,7 @@ clean: clean-cpp
 
 # USERPROG := obj/testcase/mov		#原来的
 # USERPROG := obj/testcase/print-FLOAT
-USERPROG := obj/testcase/select-sort
+USERPROG := obj/testcase/shuixianhua
 
 ENTRY := $(USERPROG)
 
