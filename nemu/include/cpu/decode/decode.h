@@ -3,7 +3,7 @@
 
 #include "cpu/helper.h"
 
-make_helper(decode_n_b);
+make_helper(decode_n_b);        //新加三个没有参数的
 make_helper(decode_n_w);
 make_helper(decode_n_l);
 make_helper(decode_r_b);
