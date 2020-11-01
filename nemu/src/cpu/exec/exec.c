@@ -144,7 +144,7 @@ helper_fun opcode_table [256] = {
 /* 0xbc */	mov_i2r_v, mov_i2r_v, mov_i2r_v, mov_i2r_v,
 /* 0xc0 */	group2_i_b, group2_i_v, ret_i_v, ret_n_v,
 /* 0xc4 */	inv, inv, mov_i2rm_b, mov_i2rm_v,
-/* 0xc8 */	inv, leave, inv, inv,
+/* 0xc8 */	inv, leave_r_v, inv, inv,
 /* 0xcc */	int3, inv, inv, inv,
 /* 0xd0 */	group2_1_b, group2_1_v, group2_cl_b, group2_cl_v,
 /* 0xd4 */	inv, inv, nemu_trap, inv,
@@ -234,8 +234,8 @@ make_helper(exec) {
 
 static make_helper(_2byte_esc) {
 	eip ++;
-	// cpu.eip++;
+	cpu.eip++;
 	uint32_t opcode = instr_fetch(eip, 1);
 	ops_decoded.opcode = opcode | 0x100;
-	return _2byte_opcode_table[opcode](eip) + 1; 
+	return _2byte_opcode_table[opcode](eip); 
 }
