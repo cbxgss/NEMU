@@ -56,9 +56,9 @@ clean: clean-cpp
 
 # USERPROG := obj/testcase/mov		#原来的
 # USERPROG := obj/testcase/intergral	#can't
-USERPROG := obj/testcase/quadratic-eq	#cant
+# USERPROG := obj/testcase/quadratic-eq	#cant
 # USERPROG := obj/testcase/string
-# USERPROG := obj/testcase/hello-str
+USERPROG := obj/testcase/hello-str
 
 ENTRY := $(USERPROG)
 
