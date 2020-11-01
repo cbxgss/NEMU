@@ -28,7 +28,6 @@ include game/Makefile.part
 
 nemu: $(nemu_BIN)
 testcase: $(testcase_BIN)
-lib-common: $(lib-common_BIN)
 kernel: $(kernel_BIN)
 game: $(game_BIN)
 
@@ -54,11 +53,8 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-# USERPROG := obj/testcase/mov		#原来的
-# USERPROG := obj/testcase/intergral	#can't
-USERPROG := obj/testcase/quadratic-eq	#cant
-# USERPROG := obj/testcase/string
-# USERPROG := obj/testcase/hello-str
+#USERPROG := obj/testcase/mov
+USERPROG := obj/testcase/quadratic-eq
 
 ENTRY := $(USERPROG)
 
@@ -79,6 +75,3 @@ test: $(nemu_BIN) $(testcase_BIN) entry
 
 submit: clean
 	cd .. && zip -r $(STU_ID).zip $(shell pwd | grep -o '[^/]*$$')
-
-count:
-	find ./nemu -name "*[.c|.h]" | xargs grep '^.' | wc -l
