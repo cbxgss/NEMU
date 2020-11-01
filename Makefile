@@ -55,7 +55,8 @@ clean: clean-cpp
 ##### some convinient rules #####
 
 # USERPROG := obj/testcase/mov		#原来的
-USERPROG := obj/testcase/quadratic-eq
+# USERPROG := obj/testcase/print-FLOAT
+USERPROG := obj/testcase/quick-sort
 
 ENTRY := $(USERPROG)
 
