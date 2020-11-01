@@ -27,7 +27,7 @@ static struct rule {
 	{"0[xX][A-Fa-f0-9]{1,8}", Hex},	//16进制
 	{"[0-9]{1,10}", Number},		//数字
 	{"[a-zA-Z_0-9]+", X},			// 变量
-	{"\\$(e?(ax|dx|cx|bx|si|di|sp|bp)|[a-d][hl])", Reg},	//寄存器
+	{"\\$(e?(ax|dx|cx|bx|si|di|sp|bp|ip)|[a-d][hl])", Reg},	//寄存器
 	
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// 减
