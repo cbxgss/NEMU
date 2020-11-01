@@ -8,7 +8,7 @@ char *s[] = {
 	", World!\n",
 	"Hello, World!\n",
 	// "#####"
-	"####################"
+	"###################"
 };
 
 char str1[] = "Hello";
@@ -23,7 +23,7 @@ int main() {
 
 	nemu_assert(strcmp( strcat(strcpy(str, str1), s[3]), s[4]) == 0);
 	
-	nemu_assert(memcmp(memset(str, '#', 20), s[5], 20) == 0);
+	nemu_assert(memcmp(memset(str, '#', 19), s[5], 19) == 0);
 
 	return 0;
 }
