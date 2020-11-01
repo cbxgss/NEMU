@@ -2,9 +2,9 @@
 
 #define instr scas
 
-make_helper(concat(scas_n_, SUFFIX)){//ae ; 和lods类似
-	// 将寄存器（AL，AX或EAX）的内容与内存中的项目的内容进行比较
-	DATA_TYPE dest = reg_b(R_AL); DATA_TYPE src = swaddr_read (reg_l(R_EDI),1);
+static void do_execute () {
+    // 将寄存器（AL，AX或EAX）的内容与内存中的项目的内容进行比较
+	DATA_TYPE dest = REG(R_EAX); DATA_TYPE src = swaddr_read (reg_l(R_EDI),DATA_BYTE);
 	DATA_TYPE result = dest - src;
 	// reg_b(R_AL) = result;						//这里似乎也不能和sub一样赋值，不然strcmp一定只会判断一个字符
 	if (cpu.DF == 0) reg_l (R_EDI) += DATA_BYTE; 
@@ -35,8 +35,8 @@ make_helper(concat(scas_n_, SUFFIX)){//ae ; 和lods类似
     //D3到D4是否进位
     if(( (op_dest->val & 0xf) - (op_src->val & 0xf) ) >> 4) cpu.AF = 1;
     else cpu.AF = 0;
-
-    return 1;
 }
+
+make_instr_helper(n)
 
 #include "cpu/exec/template-end.h"
