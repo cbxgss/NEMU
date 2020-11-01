@@ -64,13 +64,13 @@ FLOAT f2F(float a) {
 	// 值：	规格化：					(-1)^s * 2^(exp - 127) * (1.frac) = (-1)^s * 2^(exp - 150) * (1frac)
 	// 	   非规格化：	exp == 0		(-1)^s * 2^(1-127) * 0.frac = (-1)^s * 2^(1-150) * frac
 	// 读取float a
-	int b = *((int *)(&a));		//(int)a会真的变成int，所以用指针
+	int b = *(int *)&a;		//(int)a会真的变成int，所以用指针
 	int sign = b >> 31;
 	int exp = (b >> 23) & 0xff;
 	FLOAT frac = b & 0x7fffff;
 	// 规格化和非规格化，全部指数化
 	if (exp != 0) frac += 1 << 23;		//如果是规格化的，小数点前有1
-	// else exp = 1;						//如果非规格话，那么exp当1处理
+	else exp = 1;						//如果非规格话，那么exp当1处理
 	exp -= 150;
 	// 得到FLOAT
 	// frac << exp << 16		即		frac << (exp + 16)
