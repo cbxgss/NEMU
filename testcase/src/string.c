@@ -25,5 +25,7 @@ int main() {
 	
 	nemu_assert(memcmp(memset(str, '#', 19), s[5], 19) == 0);
 
+	nemu_assert(strncmp(memset(str, '#', 19), s[5], 19) == 0);
+
 	return 0;
 }
