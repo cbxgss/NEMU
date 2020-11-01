@@ -75,7 +75,7 @@ clean: clean-cpp
 # USERPROG := obj/testcase/mul-longlong
 # USERPROG := obj/testcase/pascal
 # USERPROG := obj/testcase/prime
-USERPROG := obj/testcase/quadratic-eq	#cant
+# USERPROG := obj/testcase/quadratic-eq	#cant
 # USERPROG := obj/testcase/quick-sort
 # USERPROG := obj/testcase/select-sort
 # USERPROG := obj/testcase/shuixianhua
@@ -85,7 +85,7 @@ USERPROG := obj/testcase/quadratic-eq	#cant
 # USERPROG := obj/testcase/to-lower-case
 # USERPROG := obj/testcase/wanshu
 # USERPROG := obj/testcase/struct
-# USERPROG := obj/testcase/string
+USERPROG := obj/testcase/string
 # USERPROG := obj/testcase/hello-str
 
 ENTRY := $(USERPROG)
