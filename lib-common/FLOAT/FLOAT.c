@@ -1,8 +1,11 @@
 #include "../FLOAT.h"
 
 FLOAT F_mul_F(FLOAT a, FLOAT b) {
-	long long c = (long long)a * (long long)b;
-	return (FLOAT)(c >> 16);
+	// nemu_assert(0);
+	// a * b = A >> 16 * B >> 16 = (A * B >> 16) >> 16
+	// 2^32 * 2^32 = 2^64	乘法后最多需要64位存
+	long long x = (long long)a * (long long)b;	//防止溢出
+	return (FLOAT)(x >> 16);
 }
 
 FLOAT F_div_F(FLOAT a, FLOAT b) {
@@ -34,28 +37,50 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 }
 
 FLOAT f2F(float a) {
-	int b = *(int *)&a;
+	/* You should figure out how to convert `a' into FLOAT without
+	 * introducing x87 floating point instructions. Else you can
+	 * not run this code in NEMU before implementing x87 floating
+	 * point instructions, which is contrary to our expectation.
+	 *
+	 * Hint: The bit representation of `a' is already on the
+	 * stack. How do you retrieve it to another variable without
+	 * performing arithmetic operations on it directly?
+	 */
+	//   提示：“ a”的位表示形式已经在堆栈中。 如何在不直接对其执行算术运算的情况下将其检索到另一个变量？
+
+	// nemu_assert(0);
+	// float : 1 sign + 8 exp + 23 frac
+	// 值：	规格化：					(-1)^s * 2^(exp - 127) * (1.frac) = (-1)^s * 2^(exp - 150) * (1frac)
+	// 	   非规格化：	exp == 0		(-1)^s * 2^(1-127) * 0.frac = (-1)^s * 2^(1-150) * frac
+	// 读取float a
+	int b = *(int *)(&a);		//(int)a会真的变成int，所以用指针
 	int sign = b >> 31;
 	int exp = (b >> 23) & 0xff;
-	FLOAT k = b & 0x7fffff;
-	if (exp != 0) k += 1 << 23;
+	FLOAT frac = b & 0x7fffff;
+	// 规格化和非规格化，全部指数化
+	if (exp != 0) frac += 1 << 23;		//如果是规格化的，小数点前有1
+	else exp = 1;						//如果非规格话，那么exp当1处理
 	exp -= 150;
-	if (exp < -16) k >>= -16 - exp;
-	if (exp > -16) k <<= exp + 16;
-	return sign == 0 ? k : -k;
+	// 得到FLOAT
+	// frac << exp << 16		即		frac << (exp + 16)
+	if(exp + 16 > 0) frac <<= exp + 16;
+	else if(exp + 16 < 0) frac >>= -(exp + 16);
+	// 返回，加上符号
+	if(sign) return frac;
+	else return -frac;
 }
 
-FLOAT Fabs(FLOAT a) {
-	FLOAT b;
-	if (a < 0)
-		b = - a;
-	else
-		b = a;
-	return b;
+FLOAT Fabs(FLOAT a) {	//返回浮点数的绝对值
+	// nemu_assert(0);
+	if(a < 0) return -a;
+	else return a;
 }
+
+/* Functions below are already implemented */
 
 FLOAT sqrt(FLOAT x) {
 	FLOAT dt, t = int2F(2);
+
 	do {
 		dt = F_div_int((F_div_F(x, t) - t), 2);
 		t += dt;
