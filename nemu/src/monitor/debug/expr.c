@@ -271,7 +271,7 @@ int eval(int p, int q) {
 		if(tokens[p].type == X) {				//变量或符号
 		printf("%s :", tokens[p].str);
 			int i; printf("共%d个符号\t", nr_symtab_entry);
-			for (i = 0; i < 7; i++) {
+			for (i = 0; i < 8; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找
 					char tmp [32];
 					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
