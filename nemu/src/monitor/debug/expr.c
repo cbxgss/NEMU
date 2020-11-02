@@ -270,7 +270,7 @@ int eval(int p, int q) {
 		}
 		if(tokens[p].type == X) {				//变量或符号
 		printf("%s :", tokens[p].str);
-			int i;
+			int i; printf("共%d个符号\t", nr_symtab_entry);
 			for (i = 0; i < nr_symtab_entry; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找
 					char tmp [32];
@@ -279,7 +279,7 @@ int eval(int p, int q) {
 					printf("%s :", tmp);
 					printf("\t%d\t", symtab[i].st_value);
 					// if (strcmp (tmp, tokens[p].str) == 0)
-						// return symtab[i].st_value;
+						return symtab[i].st_value;
 				}
 			}
 		}
