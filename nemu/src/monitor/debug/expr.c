@@ -269,20 +269,30 @@ int eval(int p, int q) {
 			if(strcmp(tokens[p].str +1, "eip") == 0) return cpu.eip;
 		}
 		if(tokens[p].type == X) {				//变量或符号
-			int i; printf("共%d个符号\n", nr_symtab_entry);
+			int i;
 			int ret = 0;
 			for (i = 0; i < nr_symtab_entry; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找(/* Symbol is a data object */ elf.h的594行开始)
-					char tmp [32];
-					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
-					strncpy (tmp, strtab + symtab[i].st_name, tmplen);
-					printf("now:%s\t", tmp);
-					// printf("%d\t", symtab[i].st_value);
+					// char tmp [32];
+					// int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+					// strncpy (tmp, strtab + symtab[i].st_name, tmplen);
+					// printf("now:%s\t", tmp);
+					printf("%d\t", symtab[i].st_value);
 					// if (strcmp (tmp, tokens[p].str) == 0)
-						ret = symtab[i].st_value;
+						// ret = symtab[i].st_value;
+					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name - 1)) ret = symtab[i].st_value;
 				}
 			}
 			return ret;
+// typedef struct			//elf.c里好像不能改
+// {
+//   Elf32_Word	st_name;		/* Symbol name (string tbl index) 符号在字符串表中的索引（字节偏移量）*/
+//   Elf32_Addr	st_value;		/* Symbol value 符号所在地址，在可重定位文件中是符号所在位置相对于所在节起始位置的字节偏移量，在可执行文件中则是符号的虚拟地址 */
+//   Elf32_Word	st_size;		/* Symbol size 符号所表示对象的字节数 */
+//   unsigned char	st_info;		/* Symbol type and binding 符号的类型和绑定属性 */
+//   unsigned char	st_other;		/* Symbol visibility 符号的可见性，通常出现在可重定位目标文件中 */
+//   Elf32_Section	st_shndx;		/* Section index 符号所在节在节头表中的索引 */
+// } Elf32_Sym;
 		}
 		printf("p Wrong2\n"); return 0;
 	}
