@@ -276,7 +276,7 @@ int eval(int p, int q) {
 					printf(" : %d\t%x\n", i, symtab[i].st_value);
 					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i].st_size)) 
 						ret = symtab[i].st_value;
-						return symtab[i].st_value;
+						// return symtab[i].st_value;
 				}
 			}
 			return ret;
