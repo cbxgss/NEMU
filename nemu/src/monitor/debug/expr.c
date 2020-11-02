@@ -272,9 +272,11 @@ int eval(int p, int q) {
 			int i; int ret = 0;
 			for (i = 0; i < nr_symtab_entry; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找(/* Symbol is a data object */ elf.h的594行开始)
-					int j; for(j = 0; j < symtab[i+1].st_name - symtab[i].st_name - 1; j++) printf("%c", *(j+strtab+symtab[i].st_name));
+					int j; for(j = 0; j < symtab[i].st_size; j++) printf("%c", *(j+strtab+symtab[i].st_name));
 					printf(" : %d\t%x\n", i, symtab[i].st_value);
-					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name - 1)) ret = symtab[i].st_value;
+					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i].st_size)) 
+						ret = symtab[i].st_value;
+						return symtab[i].st_value;
 				}
 			}
 			return ret;
