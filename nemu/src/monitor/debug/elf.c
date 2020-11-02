@@ -4,9 +4,9 @@
 
 char *exec_file = NULL;
 
-char *strtab = NULL;
-Elf32_Sym *symtab = NULL;
-int nr_symtab_entry;
+char *strtab = NULL;				//字符串表，第69行
+Elf32_Sym *symtab = NULL;			//符号表，第60行
+int nr_symtab_entry;				//符号个数，第64行
 
 void load_elf_tables(int argc, char *argv[]) {
 	int ret;
