@@ -272,15 +272,23 @@ int eval(int p, int q) {
 			int i; int ret = 0;
 			for (i = 0; i < nr_symtab_entry; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找(/* Symbol is a data object */ elf.h的594行开始)
-					int j; for(j = 0; j < symtab[i].st_size; j++) printf("%c", *(j+strtab+symtab[i].st_name));
-					// printf(" : %d\t%x\n", i, symtab[i].st_value);
-					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i].st_size)) 
-						ret = symtab[i].st_value;
-						// return symtab[i].st_value;
+					if(i == nr_symtab_entry - 1) {
+						printf("%s", strtab + symtab[i].st_name);
+						printf(" : %d\t%x\n", i, symtab[i].st_value);
+						if(strcmp(strtab+symtab[i].st_name, tokens[p].str)) ret = symtab[i].st_value;
+					}
+					else {
+						int j; for(j = 0; j < symtab[i+1].st_name - symtab[i].st_name - 1; j++) printf("%c", *(j+strtab+symtab[i].st_name));
+						printf(" : %d\t%x\n", i, symtab[i].st_value);
+						if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name - 1)) ret = symtab[i].st_value;
+					}
 				}
 			}
 			return ret;
-// typedef struct			//elf.c里好像不能改
+// char *strtab = NULL;				//字符串表，第69行
+// Elf32_Sym *symtab = NULL;		//符号表，第60行
+// int nr_symtab_entry;				//符号个数，第64行
+// typedef struct				//elf.c里好像不能改
 // {
 //   Elf32_Word	st_name;		/* Symbol name (string tbl index) 符号在字符串表中的索引（字节偏移量）*/
 //   Elf32_Addr	st_value;		/* Symbol value 符号所在地址，在可重定位文件中是符号所在位置相对于所在节起始位置的字节偏移量，在可执行文件中则是符号的虚拟地址 */
