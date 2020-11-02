@@ -13,7 +13,7 @@ void init_ddr3();
 
 FILE *log_fp = NULL;
 
-static void init_log() {
+static void init_log() {		//打开文件
 	log_fp = fopen("log.txt", "w");
 	Assert(log_fp, "Can not open 'log.txt'");
 }
