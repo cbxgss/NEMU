@@ -278,7 +278,7 @@ int eval(int p, int q) {
 					strncpy (tmp, strtab + symtab[i].st_name, tmplen);
 					printf("now:%s\t", tmp);
 					printf("%d\t", symtab[i].st_value);
-					if (strcmp (tmp, tokens[p].str) == 0) ret = symtab[i].st_value;
+					// if (strcmp (tmp, tokens[p].str) == 0) ret = symtab[i].st_value;
 				}
 			}
 			return ret;
