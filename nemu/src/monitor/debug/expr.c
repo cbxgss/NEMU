@@ -269,13 +269,14 @@ int eval(int p, int q) {
 			if(strcmp(tokens[p].str +1, "eip") == 0) return cpu.eip;
 		}
 		if(tokens[p].type == X) {				//变量或符号
-		printf("%s", tokens[p].str);
+		printf("%s :", tokens[p].str);
 			int i;
 			for (i = 0; i < nr_symtab_entry; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){
-					// char tmp [50];
-					// int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
-					// strncpy (tmp, strtab + symtab[i].st_name, tmplen);
+					char tmp [50];
+					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+					strncpy (tmp, strtab + symtab[i].st_name, tmplen);
+					printf("%s :", tmp);
 					// tmp [tmplen] = 0;
 					// if (strcmp (tmp, tokens[p].str) == 0) return symtab[i].st_value;
 					return symtab[i+1].st_name - symtab[i].st_name - 1;
