@@ -272,7 +272,7 @@ int eval(int p, int q) {
 		printf("%s :", tokens[p].str);
 			int i; printf("共%d个符号\n", nr_symtab_entry);
 			for (i = 0; i < 2; i++) {
-				// if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找
+				if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找(/* Symbol is a data object */ elf.h的597行)
 					char tmp [32];
 					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
 					strncpy (tmp, strtab + symtab[i].st_name, tmplen);
@@ -280,7 +280,7 @@ int eval(int p, int q) {
 					printf("%d\t", symtab[i].st_value);
 					if (strcmp (tmp, tokens[p].str) == 0)
 						return symtab[i].st_value;
-				// }
+				}
 			}
 		}
 		printf("p Wrong2\n"); return 0;
