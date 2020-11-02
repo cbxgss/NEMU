@@ -275,13 +275,13 @@ int eval(int p, int q) {
 					if(i == nr_symtab_entry - 1) {
 						printf("\t%s", strtab + symtab[i].st_name);
 						printf(" : %d\t%x\n", i, symtab[i].st_value);
-						if(strcmp(strtab+symtab[i].st_name, tokens[p].str)) ret = symtab[i].st_value;
+						if(strcmp(strtab+symtab[i].st_name, tokens[p].str) == 1) ret = symtab[i].st_value;
 					}
 					else {
 						printf("%d\t", symtab[i+1].st_name - symtab[i].st_name - 1);
 						int j; for(j = 0; j < symtab[i+1].st_name - symtab[i].st_name - 1; j++) printf("%c", *(j+strtab+symtab[i].st_name));
 						printf(" : %d\t%x\n", i, symtab[i].st_value);
-						if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name - 1)) ret = symtab[i].st_value;
+						if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name - 1) == 1) ret = symtab[i].st_value;
 					}
 				}
 			}
