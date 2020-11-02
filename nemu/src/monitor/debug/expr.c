@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 enum {
-	NOTYPE = 256, EQ, Number, Hex, Reg, NEQ, Deref, LY, LH, X 		//X是变量
+	NOTYPE = 256, EQ, Number, Hex, Reg, NEQ, Deref, LY, LH, X 		//X是变量或符号
 
 	/* TODO: Add more token types */
 
@@ -28,12 +28,12 @@ static struct rule {
 	{"[0-9]{1,10}", Number},		//数字
 	{"[a-zA-Z_0-9]+", X},			// 变量
 	{"\\$(e?(ax|dx|cx|bx|si|di|sp|bp|ip)|[a-d][hl])", Reg},	//寄存器
-	
+
 	{"\\+", '+'},					// plus
 	{"\\-", '-'},					// 减
 	{"\\*", '*'},					// 乘
 	{"/", '/'},						// 除
-	{"\\(", '('},					//	( 
+	{"\\(", '('},					//	(
 	{"\\)", ')'},					//	)
 
 	{"==", EQ},						// equal
@@ -255,10 +255,10 @@ int eval(int p, int q) {
 		// printf("nuber's type : %d or %c\n", tokens[p].type, tokens[p].type);
 		if(tokens[p].type == Number) return atoi(tokens[p].str);
 		if(tokens[p].type == Hex) return strtol(tokens[p].str, NULL, 16);
-		if(tokens[p].type == Reg) {
+		if(tokens[p].type == Reg) {		//寄存器
 			// printf("eax = 0x%X\n", cpu.gpr[0]._32);
 			int i;
-			for(i = 0; i < 8; i++){				//寄存器
+			for(i = 0; i < 8; i++){
 				if(strcmp(tokens[p].str + 1, regsl[i]) == 0) return cpu.gpr[i]._32;
 				if(strcmp(tokens[p].str + 1, regsw[i]) == 0) return cpu.gpr[i]._16;
 			}
@@ -268,7 +268,7 @@ int eval(int p, int q) {
 			}
 			if(strcmp(tokens[p].str +1, "eip") == 0) return cpu.eip;
 		}
-		if(tokens[p].type == X) {
+		if(tokens[p].type == X) {				//变量或符号
 			// puts("qwq");
 			int i;
 			for (i = 0; i < nr_symtab_entry; i++){printf("0");
