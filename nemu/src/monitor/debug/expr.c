@@ -276,7 +276,7 @@ int eval(int p, int q) {
 					char tmp [50];
 					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
 					strncpy (tmp, strtab + symtab[i].st_name, tmplen);
-					// printf("%s :", tmp);
+					printf("%s :", tmp);
 					printf("\t%d\t", symtab[i].st_value);
 					// if (strcmp (tmp, tokens[p].str) == 0)
 						return symtab[i].st_value;
