@@ -280,7 +280,7 @@ int eval(int p, int q) {
 					printf("%d\t", symtab[i].st_value);
 					// if (strcmp (tmp, tokens[p].str) == 0)
 						// ret = symtab[i].st_value;
-					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name - 1)) ret = symtab[i].st_value;
+					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name)) ret = symtab[i].st_value;
 				}
 			}
 			return ret;
