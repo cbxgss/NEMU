@@ -3,10 +3,8 @@
 #include "trap.h"
 
 char buf[128];
-char *qwq;
 
 int main() {
-	qwq = "Hello world!\n";
 	sprintf(buf, "%s", "Hello world!\n");
 	nemu_assert(strcmp(buf, "Hello world!\n") == 0);
 
