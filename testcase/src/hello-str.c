@@ -3,7 +3,7 @@
 #include "trap.h"
 
 char buf[128];
-char qwq[50] = "Hello world!\n";
+char *qwq = "Hello world!\n";;
 
 int main() {
 	sprintf(buf, "%s", "Hello world!\n");
