@@ -273,11 +273,12 @@ int eval(int p, int q) {
 			int i;
 			for (i = 0; i < nr_symtab_entry; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){
-					char tmp [50];
-					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
-					strncpy (tmp, strtab + symtab[i].st_name, tmplen);
-					tmp [tmplen] = 0;
-					if (strcmp (tmp, tokens[p].str) == 0) return symtab[i].st_value;
+					// char tmp [50];
+					// int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+					// strncpy (tmp, strtab + symtab[i].st_name, tmplen);
+					// tmp [tmplen] = 0;
+					// if (strcmp (tmp, tokens[p].str) == 0) return symtab[i].st_value;
+					return symtab[i+1].st_name - symtab[i].st_name - 1;
 				}
 			}
 		}
