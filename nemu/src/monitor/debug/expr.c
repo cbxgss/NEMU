@@ -270,14 +270,12 @@ int eval(int p, int q) {
 		}
 		if(tokens[p].type == X) {				//变量或符号
 			int i;
-			int ret = 0;
 			for (i = 0; i < nr_symtab_entry; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找(/* Symbol is a data object */ elf.h的594行开始)
 					printf("%d\t%d\n", i, symtab[i].st_value);
-					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name)) ret = symtab[i].st_value;
+					if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name)) return symtab[i].st_value;
 				}
 			}
-			return ret;
 // typedef struct			//elf.c里好像不能改
 // {
 //   Elf32_Word	st_name;		/* Symbol name (string tbl index) 符号在字符串表中的索引（字节偏移量）*/
