@@ -270,14 +270,14 @@ int eval(int p, int q) {
 		}
 		if(tokens[p].type == X) {				//变量或符号
 		printf("%s :", tokens[p].str);
-			int i; printf("共%d个符号\t", nr_symtab_entry);
-			for (i = 0; i < 5; i++) {
+			int i; printf("共%d个符号\n", nr_symtab_entry);
+			for (i = 0; i < 1; i++) {
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT){		//在OBJECT里找
 					char tmp [32];
 					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
 					strncpy (tmp, strtab + symtab[i].st_name, tmplen);
-					printf("%s :", tmp);
-					printf("\t%d\t", symtab[i].st_value);
+					printf("now:%s\t", tmp);
+					printf("%d\t", symtab[i].st_value);
 					if (strcmp (tmp, tokens[p].str) == 0)
 						return symtab[i].st_value;
 				}
