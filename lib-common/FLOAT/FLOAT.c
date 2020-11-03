@@ -77,9 +77,7 @@ FLOAT f2F(float a) {
 	if(exp + 16 > 0) frac <<= exp + 16;
 	else if(exp + 16 < 0) frac >>= -(exp + 16);
 	// 返回，加上符号
-	// if(!sign) return frac;
-	// else return -frac;
-	if(sign) return frac;
+	if(!sign) return frac;
 	else return -frac;
 }
 
