@@ -29,22 +29,31 @@ FLOAT F_div_F(FLOAT a, FLOAT b) {
 
 	// nemu_assert(0);
 	// 符号(直接在整数部分处理的话，可能有1的误差)：
-	int qwq = 1;
-	if(a < 0) { qwq *= -1; a = -a; }
-	if(b < 0) { qwq *= -1; b = -b; }
-	// 整数部分：a/b
-	FLOAT x = (a / b);
-	// 小数部分：
-	// for 每一位小数：		x = x * 10 + 1 ? 0 : 还有
+	int sign = 1;
+	if (a < 0) 
+	{
+		sign = -sign;
+		a = -a;
+	}
+	if (b < 0) 
+	{
+		sign = -sign;
+		b = -b;
+	}
+	int res = a / b;
 	a = a % b;
-	int i = 0;
-	for(i; i < 16; i++){
-		a <<= 1; x <<= 1;
-		if(a >= b){	//（a<<i / b） >= 1时
-			a -= b; x++;
+	int i;
+	for (i = 0; i < 16; i++) 
+	{
+		a <<= 1;
+		res <<= 1;
+		if (a >= b) 
+		{
+			a -= b;
+			res++;
 		}
 	}
-	return x * qwq;
+	return res * sign;
 }
 
 FLOAT f2F(float a) {
