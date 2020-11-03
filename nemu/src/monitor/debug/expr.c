@@ -7,6 +7,10 @@
 #include <regex.h>
 #include <stdlib.h>
 
+extern char *strtab;
+extern Elf32_Sym *symtab;
+extern int nr_symtab_entry;
+
 enum {
 	NOTYPE = 256, EQ, Number, Hex, Reg, NEQ, Deref, LY, LH, X 		//X是变量或符号
 
