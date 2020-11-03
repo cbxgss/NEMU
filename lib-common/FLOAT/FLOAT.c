@@ -66,10 +66,10 @@ FLOAT f2F(float a) {
 	// 值：	规格化：					(-1)^s * 2^(exp - 127) * (1.frac) = (-1)^s * 2^(exp - 150) * (1frac)
 	// 	   非规格化：	exp == 0		(-1)^s * 2^(1-127) * 0.frac = (-1)^s * 2^(1-150) * frac
 	// 读取float a
-	// int b = *(int *)&a;		//(int)a会真的变成int，所以用指针
-	int bb[1];
-	memcpy((void *)bb, (void *)&a, 4);
-	int b = bb[1];
+	int b = *(int *)&a;		//(int)a会真的变成int，所以用指针
+	// int bb[1];
+	// memcpy((void *)bb, (void *)&a, 4);
+	// int b = bb[1];
 	int sign = b >> 31;
 	int exp = (b >> 23) & 0xff;
 	FLOAT frac = b & 0x7fffff;
