@@ -17,3 +17,15 @@ $(FLOAT_O):lib-common/FLOAT/FLOAT.c
 
 $(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c
 	gcc -c -m32 -O2 -fno-builtin $^ -o $@
+
+	
+
+
+
+#$(FLOAT_O):
+#	mkdir -p objb-common/FLOAT
+#	$(CC) $(FLOAT_CFLAGS_EXTRA) -c lib-common/FLOAT/FLOAT.c -o $(FLOAT_O) -Ilib-common
+#
+#$(FLOAT_VFPRINTF_O):
+#	mkdir -p objb-common/FLOAT
+#	$(CC) $(FLOAT_CFLAGS_EXTRA) -c lib-common/FLOAT/FLOAT_vfprintf.c -o $(FLOAT_VFPRINTF_O) -Ilib-common
