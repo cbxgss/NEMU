@@ -73,7 +73,6 @@ FLOAT f2F(float a) {
 	int sign = b >> 31;
 	int exp = (b >> 23) & 0xff;
 	FLOAT frac = b & 0x7fffff;
-	free(bb);
 	// 规格化和非规格化，全部指数化
 	if (exp != 0) frac += 1 << 23;		//如果是规格化的，小数点前有1
 	else exp = 1;						//如果非规格话，那么exp当1处理
