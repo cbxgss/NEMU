@@ -104,31 +104,33 @@ typedef struct {
 }PartOfStackFrame;
 
 static int cmd_bt(char *args) {
-	// 打印： #0 返回地址 in 函数名（4个参数）
+	// 打印： #0 返回地址(最后会返回 右边的函数 的哪里) in 函数名（4个参数）
+	// eg:		#0	当前地址	in	当前所在函数（参数，在#0的栈帧）
+	//			#1	#0栈帧中的ret_add	in	左边地址所在的函数（参数，在#1的栈帧）
+	// 			#x	#x-1栈帧中的ret_add	in	左边地址所在的函数（参数，在#x的栈帧）
 	int i = 0;
-	PartOfStackFrame now;
+	PartOfStackFrame now;		//存栈帧信息
+	int ebp = reg_l(R_EBP);		//上一个栈帧位置
+	//第一个栈帧的信息
+	//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
+	now.prev_ebp = swaddr_read(ebp, 4);
 	now.ret_addr = cpu.eip;
-	swaddr_t now_addr = reg_l(R_EBP);
-	while(now_addr) {		//当到了NULL的时候，栈帧到底了
+	int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp+8 + 4*i, 4);
+	while(ebp) {
 		//扫描all符号表里的函数，看看在不在该函数中
 		int j = 0;
 		for (j = 0; j < nr_symtab_entry; j++) {
-			if ((symtab[j].st_info & 0xf) == STT_FUNC){ //是函数
-			printf("qwq");
-				if(symtab[j].st_name <= now.ret_addr && now.ret_addr <= symtab[j].st_name + symtab[j].st_size) {	//在里面
-					char f_name[32];
-					if(j == nr_symtab_entry - 1) strcpy(f_name, strtab + symtab[i].st_name); //最后一个
-					else strcpy(f_name, strtab + symtab[i].st_name);
-					//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
-					//读入参数的内容
-					int k = 0;
-					for(k = 0; k < 4; k++) now.args[k] = swaddr_read(now_addr+8 + 4*i, 4);
+			if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
+				if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
+					//函数的名字
+					char f_name[32];	strcpy(f_name, strtab + symtab[i].st_name);
 					//打印
 					printf("#%d\t0x%08x\tin\t%s (%d, %d, %d, %d)\n", i++, now.ret_addr, f_name, now.args[0], now.args[1], now.args[2], now.args[3]);
-					//更新now_addr和now
-					now.prev_ebp = swaddr_read(now_addr, 4);
-					now.ret_addr = swaddr_read (now_addr + 4 , 4);
-					now_addr = now.ret_addr;		//更旧一层栈帧
+					//更新ebp和now
+					ebp = now.prev_ebp;		//更旧一层栈帧
+					now.prev_ebp = swaddr_read(ebp, 4);
+					now.ret_addr = swaddr_read(ebp + 4 , 4);
+					int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*i, 4);
 					break;
 				}
 			}
