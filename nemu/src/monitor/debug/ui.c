@@ -114,17 +114,25 @@ static int cmd_bt(char *args) {
 	//第一个栈帧的信息
 	//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
 	now.ret_addr = cpu.eip;
-	// int j; bool success;
-	// for (j = 0; j < nr_symtab_entry; j++) {//一个巨坑！！！如果在这个函数的前两行，$ebp还没来得及改！
-	// 	if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
-	// 		if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
-	// 			if(cpu.eip <= expr(strtab + symtab[j].st_name, &success)) {
-					
-	// 			}
-	// 			break;
-	// 		}
-	// 	}
-	// }
+	int j; bool success;
+	//一个巨坑！！！如果在这个函数的前两行，$ebp还没来得及改！
+	for (j = 0; j < nr_symtab_entry; j++) {
+		if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
+			if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
+				if(cpu.eip <= expr(strtab + symtab[j].st_name, &success)) {
+					printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name);
+					//读取当前栈帧信息
+					now.prev_ebp = swaddr_read(reg_l(R_EBP), 4);
+					now.ret_addr = swaddr_read(reg_l(R_EBP) + 4 , 4);
+					int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(reg_l(R_EBP) + 8 + 4*k, 4);
+					printf("(%d, %d, %d, %d)\n", now.args[0], now.args[1], now.args[2], now.args[3]);
+					//更新ebp
+					ebp = now.prev_ebp;		//更旧一层栈帧
+				}
+				break;
+			}
+		}
+	}
 	while(ebp) {
 		// printf("now ebp : %x\n", ebp);
 		int j = 0;
