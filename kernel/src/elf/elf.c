@@ -35,9 +35,9 @@ uint32_t loader() {
 	const uint32_t elf_magic = 0x464c457f;					//readelf开头有magic，开头4个字节
 	uint32_t *p_magic = (void *)buf;
 	nemu_assert(*p_magic == elf_magic);
-printf("qwq");
+
 	/* Load each program segment */
-	panic("please implement me");
+	panic("please implement me");printf("qwq");
 	// int i = 0;
 	// ph = (void *)(buf + elf->e_phoff) ;
 	// for(i = 0; i < elf->e_phnum ; i++, ph++) {
