@@ -128,7 +128,7 @@ static int cmd_bt(char *args) {
 		//读取当前栈帧信息
 		now.prev_ebp = swaddr_read(ebp, 4);
 		now.ret_addr = swaddr_read(ebp + 4 , 4);
-		int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*i, 4);
+		int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*k, 4);
 		printf("(%d, %d, %d, %d)\n", now.args[0], now.args[1], now.args[2], now.args[3]);
 		//更新ebp
 		ebp = now.prev_ebp;		//更旧一层栈帧
