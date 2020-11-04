@@ -110,7 +110,7 @@ static int cmd_bt(char *args) {
 	// 			#x	#x-1栈帧中的ret_add	in	左边地址所在的函数（参数，在#x的栈帧）
 	int i = 0;
 	PartOfStackFrame now;		//存栈帧信息
-	int ebp = reg_l(R_EBP);		//上一个栈帧位置
+	int ebp = reg_l(R_EBP);		//当前栈帧位置
 	//第一个栈帧的信息
 	//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
 	now.prev_ebp = swaddr_read(ebp, 4);
@@ -128,6 +128,7 @@ static int cmd_bt(char *args) {
 					printf("#%d\t0x%08x\tin\t%s (%d, %d, %d, %d)\n", i++, now.ret_addr, f_name, now.args[0], now.args[1], now.args[2], now.args[3]);
 					//更新ebp和now
 					ebp = now.prev_ebp;		//更旧一层栈帧
+					if(!ebp) break;
 					now.prev_ebp = swaddr_read(ebp, 4);
 					now.ret_addr = swaddr_read(ebp + 4 , 4);
 					int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*i, 4);
