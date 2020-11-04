@@ -16,4 +16,4 @@ $(FLOAT_O):lib-common/FLOAT/FLOAT.c
 	gcc $(CFLAGS) -m32 -O2 -fno-builtin $^ -o $@ -Ilib-common
 
 $(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c
-	#gcc $(CFLAGS) -m32 -O2 -fno-builtin $^ -o $@ -Ilib-common
+	gcc $(CFLAGS) -m32 -O2 -fno-builtin $^ -o $@ -Ilib-common
