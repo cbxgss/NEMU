@@ -123,7 +123,7 @@ static int cmd_bt(char *args) {
 			if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
 				if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
 					//函数的名字
-					char f_name[32];	strcpy(f_name, strtab + symtab[i].st_name);
+					char f_name[32];	strcpy(f_name, strtab + symtab[j].st_name);
 					printf("%s\n", strtab + symtab[i].st_name);
 					//打印
 					printf("#%d\t0x%08x in %s (%d, %d, %d, %d)\n", i++, now.ret_addr, f_name, now.args[0], now.args[1], now.args[2], now.args[3]);
