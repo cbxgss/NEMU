@@ -114,6 +114,7 @@ static int cmd_bt(char *args) {
 		int j = 0;
 		for (j = 0; j < nr_symtab_entry; j++) {
 			if ((symtab[j].st_info & 0xf) == STT_FUNC){ //是函数
+			printf("qwq");
 				if(symtab[j].st_name <= now.ret_addr && now.ret_addr <= symtab[j].st_name + symtab[j].st_size) {	//在里面
 					char f_name[32];
 					if(j == nr_symtab_entry - 1) strcpy(f_name, strtab + symtab[i].st_name); //最后一个
