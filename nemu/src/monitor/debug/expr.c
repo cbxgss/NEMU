@@ -278,17 +278,12 @@ int eval(int p, int q) {
 			// int ret = 0;
 			for (i = 0; i < nr_symtab_entry; i++) {
 				if (((symtab[i].st_info & 0xf) == STT_OBJECT) || ((symtab[i].st_info & 0xf) == STT_FUNC)){		//在OBJECT里找(/* Symbol is a data object */ elf.h的594行开始)
-					if(i == nr_symtab_entry - 1) {
-						// printf("\t%s", strtab + symtab[i].st_name);
-						// printf(" : %d\t%x\n", i, symtab[i].st_value);
+					// if(i == nr_symtab_entry - 1) {
 						if(strcmp(strtab+symtab[i].st_name, tokens[p].str) == 0) return symtab[i].st_value;
-					}
-					else {
-						// printf("%d\t", symtab[i+1].st_name - symtab[i].st_name - 1);
-						// int j; for(j = 0; j < symtab[i+1].st_name - symtab[i].st_name - 1; j++) printf("%c", *(j+strtab+symtab[i].st_name));
-						// printf(" : %d\t%x\n", i, symtab[i].st_value);
-						if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name - 1) == 0) return symtab[i].st_value;
-					}
+					// }
+					// else {
+						// if(memcmp(strtab+symtab[i].st_name, tokens[p].str, symtab[i+1].st_name - symtab[i].st_name - 1) == 0) return symtab[i].st_value;
+					// }
 				}
 			}
 			// return ret;
