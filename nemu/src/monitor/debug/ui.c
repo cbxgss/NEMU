@@ -120,6 +120,7 @@ static int cmd_bt(char *args) {
 		if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
 			if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
 				if(cpu.eip <= expr(strtab + symtab[j].st_name, &success)) {
+					printf("now ebp : %x\n", reg_l(R_ESP));
 					printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name);
 					//读取当前栈帧信息
 					now.ret_addr = swaddr_read(reg_l(R_ESP) + 4 , 4);
