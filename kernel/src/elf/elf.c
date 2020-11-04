@@ -25,13 +25,13 @@ uint32_t loader() {
 #ifdef HAS_DEVICE
 	ide_read(buf, ELF_OFFSET_IN_DISK, 4096);
 #else
-	ramdisk_read(buf, ELF_OFFSET_IN_DISK, 4096);
+	ramdisk_read(buf, ELF_OFFSET_IN_DISK, 4096);	//从 ramdisk 中 offset 偏移处的 len 字节读入到 buf 中
 #endif
 
 	elf = (void*)buf;
 
 	/* TODO: fix the magic number with the correct one */
-	const uint32_t elf_magic = 0xBadC0de;
+	const uint32_t elf_magic = 0x464c457f;					//readelf开头有magic，开头4个字节
 	uint32_t *p_magic = (void *)buf;
 	nemu_assert(*p_magic == elf_magic);
 
@@ -44,12 +44,12 @@ uint32_t loader() {
 			/* TODO: read the content of the segment from the ELF file 
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
-			 
-			 
+			ramdisk_read ((void *)ph->p_vaddr, ph->p_offset, ph->p_filesz);
+
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
-
+			memset ((void *)(ph->p_vaddr+ph->p_filesz), 0, ph->p_memsz - ph->p_filesz);
 
 #ifdef IA32_PAGE
 			/* Record the program break for future use. */
