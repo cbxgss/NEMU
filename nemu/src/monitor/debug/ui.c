@@ -114,6 +114,15 @@ static int cmd_bt(char *args) {
 	//第一个栈帧的信息
 	//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
 	now.ret_addr = cpu.eip;
+	int j; bool success;
+	for (j = 0; j < nr_symtab_entry; j++) {//一个巨坑！！！如果在这个函数的前两行，$ebp还没来得及改！
+		if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
+			if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
+				if(cpu.eip <= expr(strtab + symtab[j].st_name, &success)) ebp = reg_l(R_ESP);
+				break;
+			}
+		}
+	}
 	while(ebp) {
 		// printf("now ebp : %x\n", ebp);
 		int j = 0;
