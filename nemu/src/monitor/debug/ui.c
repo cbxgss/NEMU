@@ -103,35 +103,75 @@ typedef struct {
     uint32_t args[4];			//前4个参数
 }PartOfStackFrame;
 
+// static int cmd_bt(char *args) {
+// 	// 打印： #0 返回地址(最后会返回 右边的函数 的哪里) in 函数名（4个参数）
+// 	// eg:		#0	当前地址	in	当前所在函数（参数，在#0的栈帧）
+// 	//			#1	#0栈帧中的ret_add	in	左边地址所在的函数（参数，在#1的栈帧）
+// 	// 			#x	#x-1栈帧中的ret_add	in	左边地址所在的函数（参数，在#x的栈帧）
+// 	int i = 0;
+// 	PartOfStackFrame now;		//存栈帧信息
+// 	int ebp = reg_l(R_EBP);		//当前栈帧位置
+// 	//第一个栈帧的信息
+// 	//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
+// 	now.ret_addr = cpu.eip;
+// 	while(ebp) {
+// 		printf("now ebp : %x\n", ebp);
+// 		int j = 0;
+// 		for (j = 0; j < nr_symtab_entry; j++) {	//扫描all符号表里的函数，看看在不在该函数中
+// 			if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
+// 				if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
+// 					printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name);
+// 					break;
+// 				}
+// 			}
+// 		}
+// 		//读取当前栈帧信息
+// 		now.prev_ebp = swaddr_read(ebp, 4);
+// 		now.ret_addr = swaddr_read(ebp + 4 , 4);
+// 		int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*i, 4);
+// 		printf("(%d, %d, %d, %d)\n", now.args[0], now.args[1], now.args[2], now.args[3]);
+// 		//更新ebp
+// 		ebp = now.prev_ebp;		//更旧一层栈帧
+// 	}
+// 	return 0;
+// }
+
+static void read_ebp (swaddr_t addr , PartOfStackFrame *ebp)
+{
+	ebp -> prev_ebp = swaddr_read (addr , 4);
+	ebp -> ret_addr = swaddr_read (addr + 4 , 4);
+	int i;
+	for (i = 0;i < 4;i ++)
+	{
+		ebp -> args [i] = swaddr_read (addr + 8 + 4 * i , 4);
+	}
+}
 static int cmd_bt(char *args) {
-	// 打印： #0 返回地址(最后会返回 右边的函数 的哪里) in 函数名（4个参数）
-	// eg:		#0	当前地址	in	当前所在函数（参数，在#0的栈帧）
-	//			#1	#0栈帧中的ret_add	in	左边地址所在的函数（参数，在#1的栈帧）
-	// 			#x	#x-1栈帧中的ret_add	in	左边地址所在的函数（参数，在#x的栈帧）
-	int i = 0;
-	PartOfStackFrame now;		//存栈帧信息
-	int ebp = reg_l(R_EBP);		//当前栈帧位置
-	//第一个栈帧的信息
-	//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
-	now.ret_addr = cpu.eip;
-	while(ebp) {
-		printf("now ebp : %x\n", ebp);
-		int j = 0;
-		for (j = 0; j < nr_symtab_entry; j++) {	//扫描all符号表里的函数，看看在不在该函数中
-			if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
-				if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
-					printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name);
-					break;
-				}
+	int i,j = 0;
+	PartOfStackFrame now_ebp;
+	char tmp [32];
+	int tmplen;
+	swaddr_t addr = reg_l (R_EBP);
+	now_ebp.ret_addr = cpu.eip;
+	while (addr > 0)
+	{
+		printf ("#%d  0x%08x in ",j++,now_ebp.ret_addr);
+		for (i=0;i<nr_symtab_entry;i++)
+		{
+			if (symtab[i].st_value <= now_ebp.ret_addr && symtab[i].st_value +  symtab[i].st_size >= now_ebp.ret_addr && (symtab[i].st_info&0xf) == STT_FUNC)
+			{
+				tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+				strncpy (tmp,strtab+symtab[i].st_name,tmplen);
+				tmp [tmplen] = '\0';
+				break;
 			}
 		}
-		//读取当前栈帧信息
-		now.prev_ebp = swaddr_read(ebp, 4);
-		now.ret_addr = swaddr_read(ebp + 4 , 4);
-		int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*i, 4);
-		printf("(%d, %d, %d, %d)\n", now.args[0], now.args[1], now.args[2], now.args[3]);
-		//更新ebp
-		ebp = now.prev_ebp;		//更旧一层栈帧
+		printf("%s\t",tmp);
+		read_ebp (addr,&now_ebp);
+		if (strcmp (tmp,"main") == 0)printf ("( )\n");
+		else printf ("( %d , %d , %d , %d )\n", now_ebp.args[0],now_ebp.args[1],now_ebp.args[2],now_ebp.args[3]);
+		addr = now_ebp.prev_ebp;
+		
 	}
 	return 0;
 }
