@@ -158,8 +158,7 @@ static int cmd_help(char *args);
 
 static struct {
 	char *name;
-	char *description;
-	int (*handler) (char *);
+	char *description;	int (*handler) (char *);
 } cmd_table [] = {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
