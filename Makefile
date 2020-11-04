@@ -54,13 +54,10 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-# USERPROG := obj/testcase/mov		#原来的
-# USERPROG := obj/testcase/print-FLOAT
-# USERPROG := obj/testcase/integral
-# USERPROG := obj/testcase/quadratic-eq
 USERPROG := obj/testcase/add
 
-ENTRY := $(USERPROG)
+# ENTRY := $(USERPROG)
+ENTRY := $(kernel_BIN)
 
 entry: $(ENTRY)
 	objcopy -S -O binary $(ENTRY) entry
