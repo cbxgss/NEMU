@@ -31,9 +31,9 @@ uint32_t loader() {
 	elf = (void*)buf;
 
 	/* TODO: fix the magic number with the correct one */
-	// const uint32_t elf_magic = 0x464c457f;					//readelf开头有magic，开头4个字节
-	// uint32_t *p_magic = (void *)buf;
-	// nemu_assert(*p_magic == elf_magic);
+	const uint32_t elf_magic = 0x464c457f;					//readelf开头有magic，开头4个字节
+	uint32_t *p_magic = (void *)buf;
+	nemu_assert(*p_magic == elf_magic);
 
 	/* Load each program segment */
 	panic("please implement me");
