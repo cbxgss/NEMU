@@ -25,7 +25,7 @@ uint32_t loader() {
 #ifdef HAS_DEVICE
 	ide_read(buf, ELF_OFFSET_IN_DISK, 4096);
 #else
-	ramdisk_read(buf, ELF_OFFSET_IN_DISK, 4096);
+	ramdisk_read(buf, ELF_OFFSET_IN_DISK, 4096);	//从 ramdisk 中 offset 偏移处的 len 字节读入到 buf 中
 #endif
 
 	elf = (void*)buf;
