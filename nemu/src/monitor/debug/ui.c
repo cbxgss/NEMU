@@ -122,9 +122,9 @@ static int cmd_bt(char *args) {
 				if(cpu.eip <= expr(strtab + symtab[j].st_name, &success)) {
 					printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name);
 					//读取当前栈帧信息
-					now.prev_ebp = swaddr_read(reg_l(R_EBP), 4);
-					now.ret_addr = swaddr_read(reg_l(R_EBP) + 4 , 4);
-					int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(reg_l(R_EBP) + 8 + 4*k, 4);
+					now.prev_ebp = swaddr_read(reg_l(R_ESP), 4);
+					now.ret_addr = swaddr_read(reg_l(R_ESP) + 4 , 4);
+					int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(reg_l(R_ESP) + 8 + 4*k, 4);
 					printf("(%d, %d, %d, %d)\n", now.args[0], now.args[1], now.args[2], now.args[3]);
 					//更新ebp
 					ebp = now.prev_ebp;		//更旧一层栈帧
