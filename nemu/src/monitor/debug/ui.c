@@ -119,7 +119,7 @@ static int cmd_bt(char *args) {
 	for (j = 0; j < nr_symtab_entry; j++) {
 		if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
 			if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
-				if(cpu.eip <= expr(strtab + symtab[j].st_name, &success)) {
+				if(cpu.eip <= expr(strtab + symtab[j].st_name, &success) + 1) {
 					printf("now esp : %x\n", reg_l(R_ESP));
 					printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name);
 					//读取当前栈帧信息
