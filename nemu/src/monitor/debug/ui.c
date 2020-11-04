@@ -126,7 +126,7 @@ static int cmd_bt(char *args) {
 	// 	}
 	// }
 	while(ebp) {
-		printf("now ebp : %x\n", ebp);
+		// printf("now ebp : %x\n", ebp);
 		int j = 0;
 		for (j = 0; j < nr_symtab_entry; j++) {	//扫描all符号表里的函数，看看在不在该函数中
 			if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
