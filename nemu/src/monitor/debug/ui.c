@@ -117,7 +117,7 @@ static int cmd_bt(char *args) {
 				if(symtab[j].st_name <= now.ret_addr && now.ret_addr <= symtab[j].st_name + symtab[j].st_size) {	//在里面
 					char f_name[32];
 					if(j == nr_symtab_entry - 1) strcpy(f_name, strtab + symtab[i].st_name); //最后一个
-					else strncpy(f_name, strtab + symtab[i].st_name, symtab[i+1].st_name - symtab[i].st_name);
+					else strcpy(f_name, strtab + symtab[i].st_name);
 					//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
 					//读入参数的内容
 					int k = 0;
