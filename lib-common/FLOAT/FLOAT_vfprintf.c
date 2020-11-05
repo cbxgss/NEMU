@@ -3,7 +3,7 @@
 #include "FLOAT.h"
 #include <sys/mman.h>
 
-extern char _vfprintf_internal;
+extern char _vfprintf_internal;				//就算换成int也不是真正的函数的地址（尽管反汇编里是）
 extern char _fpmaxtostr;
 // extern int _vfprintf_internal;
 // extern int _fpmaxtostr;
@@ -29,15 +29,15 @@ static void modify_vfprintf() {
 	 * is the code section in _vfprintf_internal() relative to the
 	 * hijack.
 	 */
-	printf("_vfprintf_internal : 0x%x\n", _vfprintf_internal);
+	// printf("_vfprintf_internal : 0x%x\n", _vfprintf_internal);
 	void *p = (void *)(int)_vfprintf_internal + (0x80497f9-0x80494f3);	//指向call指令
-	printf("call <_fpmaxtostr> : %p\n", p);
+	// printf("call <_fpmaxtostr> : %p\n", p);
 	// mprotect((void *)(((int)p - 100) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
 	p++;													//指向imm
-	printf("imm                : %p\n", p);
-	printf("format_FLOAT       : %p\n", format_FLOAT);
-	printf("_fpmaxtostr        : 0x%x\n", _fpmaxtostr);
-	// *(int *)p += ((int)format_FLOAT - _fpmaxtostr);				//修改
+	// printf("imm                : %p\n", p);
+	// printf("format_FLOAT       : %p\n", format_FLOAT);
+	// printf("_fpmaxtostr        : 0x%x\n", _fpmaxtostr);
+	*(int *)p += ((int)format_FLOAT - _fpmaxtostr);				//修改
 
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
