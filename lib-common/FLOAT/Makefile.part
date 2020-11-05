@@ -13,7 +13,7 @@ $(FLOAT): $(FLOAT_A_OBJ)																							#……OBJ??????, ?????FLOAT.a
 
 $(FLOAT_O):lib-common/FLOAT/FLOAT.c
 	mkdir -p obj/lib-common/FLOAT
-	gcc $(CFLAGS) -m32 -O2 -fno-builtin -fno-stack-protector -D_FORTIFY_SOURCE=0 -fno-builtin -march=i386 -mtune=i386 $^ -o $@ -Ilib-common
+	gcc $(CFLAGS) -m32 -O2 -fno-builtin -fno-stack-protector -D_FORTIFY_SOURCE=0 -fno-builtin $^ -o $@ -Ilib-common
 
 $(FLOAT_VFPRINTF_O):lib-common/FLOAT/FLOAT_vfprintf.c
-	gcc $(CFLAGS) -m32 -O2 -fno-builtin -fno-stack-protector -D_FORTIFY_SOURCE=0 -fno-builtin -march=i386 -mtune=i386 $^ -o $@ -Ilib-common
+	gcc $(CFLAGS) -m32 -O2 -fno-builtin -fno-stack-protector -D_FORTIFY_SOURCE=0 -fno-builtin $^ -o $@ -Ilib-common
