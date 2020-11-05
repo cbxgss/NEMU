@@ -3,10 +3,10 @@
 #include "FLOAT.h"
 #include <sys/mman.h>
 
-extern char _vfprintf_internal;
-extern char _fpmaxtostr;
-// extern int _vfprintf_internal;
-// extern int _fpmaxtostr;
+// extern char _vfprintf_internal;
+// extern char _fpmaxtostr;
+extern int _vfprintf_internal;
+extern int _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
