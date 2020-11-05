@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "FLOAT.h"
+#include <sys/mman.h>
 
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
+// extern int _vfprintf_internal;
+// extern int _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
@@ -26,6 +29,12 @@ static void modify_vfprintf() {
 	 * is the code section in _vfprintf_internal() relative to the
 	 * hijack.
 	 */
+	printf("qwq");
+	char *p = (char *)_vfprintf_internal + (0x80497f9-0x80494f3);	//指向call指令
+	printf("qwq");
+	mprotect((void *)(((int)p - 100) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	p++;													//指向imm
+	*p += ((int)format_FLOAT - _fpmaxtostr);				//修改
 
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
