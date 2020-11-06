@@ -6,8 +6,7 @@
 extern char _vfprintf_internal;				//就算换成int也不是真正的函数的地址（尽管反汇编里是）			这里extern只是引入了一个变量，这个变量的的地址 = 这个函数的地址
 extern char _fpmaxtostr;
 extern char _ppfs_setargs;
-// extern _vfprintf_internal;
-// extern _fpmaxtostr;
+
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
@@ -73,11 +72,6 @@ static void modify_vfprintf() {
 	p -= (0x8049de4 - 0x8049dcf);
 	*(char *)p = 0x90; *(char *)(p+1) = 0x90;
 	*(char *)(p+4) = 0x90; *(char *)(p+5) = 0x90;
-	p = (void *)&_ppfs_setargs;
-	p += (0x804a0c4 - 0x804a050);	*(char *)p = 0x90; *(char *)(p+1) = 0x90;
-	p += (0x9 - 0x4);	*(char *)p = 0x90; *(char *)(p+1) = 0x90;
-	p += (0xe7 - 0xc9);	*(char *)p = 0x90; *(char *)(p+1) = 0x90;
-	p += (0xf - 0x7);	*(char *)p = 0x90; *(char *)(p+1) = 0x90;
 
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
@@ -125,6 +119,12 @@ static void modify_ppfs_setargs() {
 	 * the modification.
 	 */
 
+	void *p = &_ppfs_setargs;
+	p += (0x804a0f1 - 0x804a080);		//7的case
+	*(char *)p = 0xe9;
+	p++;
+	*(int *)p = (0x804a123 - 0x804a0f1 - 5);
+
 #if 0
 	enum {                          /* C type: */
 		PA_INT,                       /* int */
@@ -134,7 +134,7 @@ static void modify_ppfs_setargs() {
 		PA_WSTRING,                   /* const wchar_t *, wide character string */
 		PA_POINTER,                   /* void * */
 		PA_FLOAT,                     /* float */
-		PA_DOUBLE,                    /* double */
+		PA_DOUBLE,          //7          /* double */
 		__PA_NOARG,                   /* non-glibc -- signals non-arg width or prec */
 		PA_LAST
 	};
@@ -145,7 +145,7 @@ static void modify_ppfs_setargs() {
 #define __PA_FLAG_CHAR		(0x0100) /* non-gnu -- to deal with hh */
 #define PA_FLAG_SHORT		(0x0200)
 #define PA_FLAG_LONG		(0x0400)
-#define PA_FLAG_LONG_LONG	(0x0800)
+#define PA_FLAG_LONG_LONG	(0x0800)	//800
 #define PA_FLAG_LONG_DOUBLE	PA_FLAG_LONG_LONG
 #define PA_FLAG_PTR		(0x1000) /* TODO -- make dynamic??? */
 
