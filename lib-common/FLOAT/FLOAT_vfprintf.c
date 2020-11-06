@@ -119,11 +119,34 @@ static void modify_ppfs_setargs() {
 	 * the modification.
 	 */
 
-	void *p = &_ppfs_setargs;
-	p += (0x804a0f1 - 0x804a080);		//7的case
-	*(char *)p = 0xe9;
-	p++;
-	*(int *)p = (0x804a123 - 0x804a0f1 - 5);
+	// void *p = &_ppfs_setargs;
+	// p += (0x804a0f1 - 0x804a080);		//7的case
+	// *(char *)p = 0xe9;
+	// p++;
+	// *(int *)p = (0x804a123 - 0x804a0f1 - 5);
+
+
+
+	// 1.
+	uint_fast32_t target = (uint_fast32_t)(&_ppfs_setargs) + 0xa3;
+	// 2.
+	uint8_t * addr_double_first = (uint8_t *)(
+		(uint_fast32_t)(&_ppfs_setargs) + 0x71
+	);
+	// 3.
+	int rel = (int)target - (int)addr_double_first - 5;
+	// 4. 写入指令.
+	*addr_double_first = 0xe9;
+	*( (uint_fast32_t *)((uint_fast32_t)addr_double_first + 1) ) = rel;
+
+	// 5. 清除浮点指令
+	uint_least16_t * addr_1 = (uint_least16_t *)((uint_fast32_t)(&_vfprintf_internal) + 
+							  0x800e29 - 0x800b45);
+	uint_least16_t * addr_2 = (uint_least16_t *)((uint_fast32_t)(&_vfprintf_internal) + 
+							  0x800e2d - 0x800b45);
+	*addr_1 = 0x9090;
+	*addr_2 = 0x9090;
+
 
 #if 0
 	enum {                          /* C type: */
