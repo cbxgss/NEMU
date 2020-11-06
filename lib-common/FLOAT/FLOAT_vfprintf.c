@@ -123,7 +123,7 @@ static void modify_ppfs_setargs() {
 	p += (0x804a0f1 - 0x804a080);		//7的case
 	*(char *)p = 0xe9;
 	p++;
-	*(int *)p = (0x804a123 - 0x804a0f1 - 5);
+	*(int *)p = (0x804a123 - 0x804a0f1);
 
 #if 0
 	enum {                          /* C type: */
