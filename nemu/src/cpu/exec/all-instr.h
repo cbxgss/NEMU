@@ -29,6 +29,7 @@
 #include "logic/shr.h"
 #include "logic/shrd.h"
 #include "logic/setne.h"
+#include "logic/sete.h"
 
 #include "string/rep.h"
 #include "string/movs.h"
