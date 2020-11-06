@@ -3,10 +3,10 @@
 #include "FLOAT.h"
 #include <sys/mman.h>
 
-extern char _vfprintf_internal;				//就算换成int也不是真正的函数的地址（尽管反汇编里是）
+extern char _vfprintf_internal;				//就算换成int也不是真正的函数的地址（尽管反汇编里是）			这里extern只是引入了一个变量，这个变量的的地址 = 这个函数的地址
 extern char _fpmaxtostr;
-// extern int _vfprintf_internal;
-// extern int _fpmaxtostr;
+// extern _vfprintf_internal;
+// extern _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
@@ -17,9 +17,28 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 *         0x00010000    "1.000000"
 	 *         0x00013333    "1.199996"
 	 */
-
+	// printf("steam : %p\n", stream);
+	// printf("f     : 0x%x\n", f);
 	char buf[80];
-	int len = sprintf(buf, "0x%08x", f);
+	// int len = sprintf(buf, "0x%08x", f);
+	//	FLOAT f    转    平时写的小数 到buf
+	// 符号
+	int len = 0;
+	if(f < 0) { buf[len++] = '-'; f = -f; }
+	// 整数部分，先是倒序，后面再掉头
+	int ret = (f >> 16);
+	while(ret != 0) { buf[len++] = '0' + ret % 10; ret /= 10; }
+	char tmp; int l = 0; int r = len-1;
+	if(buf[0] == '-') l++;
+	while(l < r) { tmp = buf[l]; buf[l] = buf[r]; buf[r] = tmp; }
+	buf[len++] = '.';	//小数点
+	// 小数部分(6位)
+	f &= 0xffff; int i = 0;
+	for(i = 0; i < 6; i++) {
+		f *= 10; buf[len++] = '0' + (f >> 16); f &= 0xffff;
+	}
+	buf[len++] = 0;
+	// printf("%s\n", buf);
 	return __stdio_fwrite(buf, len, stream);
 }
 
@@ -29,15 +48,29 @@ static void modify_vfprintf() {
 	 * is the code section in _vfprintf_internal() relative to the
 	 * hijack.
 	 */
-	// printf("_vfprintf_internal : 0x%x\n", _vfprintf_internal);
-	void *p = (void *)(int)_vfprintf_internal + (0x80497f9-0x80494f3);	//指向call指令
+	// printf("_vfprintf_internal : %p\n", &_vfprintf_internal);
+	void *p = (void *)(int)&_vfprintf_internal + (0x80497f9-0x80494f3);	//指向call指令
 	// printf("call <_fpmaxtostr> : %p\n", p);
-	// mprotect((void *)(((int)p - 100) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	// printf("mprotect           : %p, %p\n", (void *)(((int)p - 100) & 0xfffff000), (void *)(((int)p - 100) & 0xfffff000) + 4096*2);
+	mprotect((void *)(((int)p - 100) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);
 	p++;													//指向imm
 	// printf("imm                : %p\n", p);
 	// printf("format_FLOAT       : %p\n", format_FLOAT);
-	// printf("_fpmaxtostr        : 0x%x\n", _fpmaxtostr);
-	*(int *)p += ((int)format_FLOAT - _fpmaxtostr);				//修改
+	// printf("_fpmaxtostr        : %p\n", &_fpmaxtostr);
+	// printf("p - >                %p\n", (int *)p);
+	// printf("imm_prev           : %x = %d\n", *(int *)p, *(int *)p);
+	*(int *)p += ((int)format_FLOAT - (int)&_fpmaxtostr);				//修改
+	p--;	//指向call
+	// 修改成push
+	p -= (0xb4 - 0xaa);		//指向fstpt
+	*(char *)p = 0xff; p++; *(char *)p = 0x32; p++; *(char *)p = 0x90;//改三个字节
+	p -= 2;					//指向fstpt
+	// 修改栈空间
+	p -= 3;		//指向上一次sub esp
+	p += 2;	*(char *)p -= 0x4; p -= 2;
+	p += (0xb9 - 0xa7);		//指向add esp
+	// p += 2; *(char *)p -= 0x4; p -= 2;		//搞了半天，不用这句==
+	p -= 3;		//指向call
 
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
