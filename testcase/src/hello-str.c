@@ -15,7 +15,7 @@ int main() {
 	// nemu_assert(strcmp(buf, "2 + 10 = 12\n") == 0);
 
 
-	sprintf(buf, "%s %s", "-1.199996", "123456");
+	sprintf(buf, "%s %d", "-1.199996", 123456);
 	nemu_assert(strcmp(buf, "-1.199996 123456") == 0);
 
 	return 0;
