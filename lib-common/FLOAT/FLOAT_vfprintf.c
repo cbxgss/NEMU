@@ -70,9 +70,9 @@ static void modify_vfprintf() {
 	p -= 3;		//指向上一次sub esp
 	p += 2;	*(char *)p -= 0x4; p -= 2;
 	// 修改浮点指令
-	p -= (0x8049de4 - 0x8049dcf);
-	*(char *)p = 0x90; *(char *)(p+1) = 0x90;
-	*(char *)(p+4) = 0x90; *(char *)(p+5) = 0x90;
+	// p -= (0x8049de4 - 0x8049dcf);
+	// *(char *)p = 0x90; *(char *)(p+1) = 0x90;
+	// *(char *)(p+4) = 0x90; *(char *)(p+5) = 0x90;
 
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
