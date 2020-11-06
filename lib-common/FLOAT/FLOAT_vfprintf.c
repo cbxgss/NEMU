@@ -37,7 +37,6 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	for(i = 0; i < 6; i++) {
 		f *= 10; buf[len++] = '0' + (f >> 16); f &= 0xffff;
 	}
-	buf[len++] = 0;
 	// printf("%s\n", buf);
 	return __stdio_fwrite(buf, len, stream);
 }
