@@ -52,7 +52,7 @@ static void modify_vfprintf() {
 	void *p = (void *)(int)&_vfprintf_internal + (0x80497f9-0x80494f3);	//指向call指令
 	// printf("call <_fpmaxtostr> : %p\n", p);
 	// printf("mprotect           : %p, %p\n", (void *)(((int)p - 100) & 0xfffff000), (void *)(((int)p - 100) & 0xfffff000) + 4096*2);
-	mprotect((void *)(((int)p - 100) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);			//nemu还不支持系统调用
+	// mprotect((void *)(((int)p - 100) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);			//nemu还不支持系统调用
 	p++;													//指向imm
 	// printf("imm                : %p\n", p);
 	// printf("format_FLOAT       : %p\n", format_FLOAT);
