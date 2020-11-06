@@ -5,6 +5,7 @@
 
 extern char _vfprintf_internal;				//就算换成int也不是真正的函数的地址（尽管反汇编里是）			这里extern只是引入了一个变量，这个变量的的地址 = 这个函数的地址
 extern char _fpmaxtostr;
+
 // extern _vfprintf_internal;
 // extern _fpmaxtostr;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
@@ -52,7 +53,7 @@ static void modify_vfprintf() {
 	void *p = (void *)(int)&_vfprintf_internal + (0x80497f9-0x80494f3);	//指向call指令
 	// printf("call <_fpmaxtostr> : %p\n", p);
 	// printf("mprotect           : %p, %p\n", (void *)(((int)p - 100) & 0xfffff000), (void *)(((int)p - 100) & 0xfffff000) + 4096*2);
-	// mprotect((void *)(((int)p - 100) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);			//nemu还不支持系统调用
+	mprotect((void *)(((int)p - 100) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);			//nemu还不支持系统调用
 	p++;													//指向imm
 	// printf("imm                : %p\n", p);
 	// printf("format_FLOAT       : %p\n", format_FLOAT);
@@ -71,10 +72,10 @@ static void modify_vfprintf() {
 	p += (0xb9 - 0xa7);		//指向add esp
 	// p += 2; *(char *)p -= 0x4; p -= 2;		//搞了半天，不用这句==
 	p -= 3;		//指向call
-	// 修改浮点指令
-	p -= (0x8049df1 - 0x8049dcf);
-	*(char *)p = 0x90; *(char *)(p+1) = 0x90;
-	*(char *)(p+4) = 0x90; *(char *)(p+5) = 0x90;
+	// // 修改浮点指令
+	// p -= (0x8049df1 - 0x8049dcf);
+	// *(char *)p = 0x90; *(char *)(p+1) = 0x90;
+	// *(char *)(p+4) = 0x90; *(char *)(p+5) = 0x90;
 
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
