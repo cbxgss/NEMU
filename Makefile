@@ -28,7 +28,7 @@ include game/Makefile.part
 
 nemu: $(nemu_BIN)
 testcase: $(testcase_BIN)
-lib-common: $(lib-common_BIN)
+# lib-common: $(lib-common_BIN)
 kernel: $(kernel_BIN)
 game: $(game_BIN)
 
@@ -55,7 +55,6 @@ clean: clean-cpp
 ##### some convinient rules #####
 
 USERPROG := obj/testcase/print-FLOAT
-USERPROG := obj/testcase/string
 
 # ENTRY := $(USERPROG)
 ENTRY := $(kernel_BIN)
