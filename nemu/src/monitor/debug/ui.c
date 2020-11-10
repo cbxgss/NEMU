@@ -132,13 +132,15 @@ static int cmd_bt(char *args) {
 	// 	}
 	// }
 	// 但是没办法解决
+	bool first = 1;
 	while(ebp) {
 		// printf("now ebp : %x\n", ebp);
 		int j = 0;
 		for (j = 0; j < nr_symtab_entry; j++) {	//扫描all符号表里的函数，看看在不在该函数中
 			if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
 				if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
-					printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name);
+					if(first) { printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name); first = 0; }
+					else printf("#%d\t0x%08x in %s", i++, now.ret_addr + 1, strtab + symtab[j].st_name);
 					break;
 				}
 			}
