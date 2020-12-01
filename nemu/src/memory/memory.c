@@ -6,6 +6,9 @@
 #define Cache_ways 8		// 几路组相连
 #define Cache_sets 1024/8	// Cache的组数
 
+void ddr3_read (hwaddr_t, void *);
+void ddr3_write (hwaddr_t, void *, uint8_t *);
+
 /* Cache的class */
 typedef struct block {
 	uint32_t tag;					// 标记位(19位)
@@ -66,8 +69,7 @@ uint32_t cache_read(hwaddr_t addr) {			//返回是set_index的哪个block
 		cache.sets[set_now].blocks[i].tag = tag_now;
 		int j;
 		for ( j = 0; j < BURST_LEN; j++ )
-			ddr3_read(((addr>>6)<<6) + j * BURST_LEN, &(cache.sets[set_now].blocks[i]) + j*BURST_LEN);
-
+			ddr3_read(((addr>>6)<<6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j*BURST_LEN);
 	}
 	return i;
 }
