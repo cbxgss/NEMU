@@ -64,9 +64,9 @@ uint32_t cache_read(hwaddr_t addr) {			//返回是set_index的哪个block
 		// 复制到这个块
 		cache.sets[set_now].blocks[i].valid = true;
 		cache.sets[set_now].blocks[i].tag = tag_now;
-		// int j;
-		// for ( j = 0; j < BURST_LEN; j++ )
-			// ddr3_read(((addr>>6)<<6) + j * BURST_LEN, &cache.sets[set_now].blocks[i] + j*BURST_LEN);
+		int j;
+		for ( j = 0; j < BURST_LEN; j++ )
+			ddr3_read(((addr>>6)<<6) + j * BURST_LEN, &(cache.sets[set_now].blocks[i]) + j*BURST_LEN);
 
 	}
 	return i;
