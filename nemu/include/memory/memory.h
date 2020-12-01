@@ -17,7 +17,7 @@ extern uint8_t *hw_mem;
 	hwa_to_va(addr); \
 })
 
-void init_cache();				//初始化
+void init_cache();				//初始化cache
 
 uint32_t swaddr_read(swaddr_t, size_t);
 uint32_t lnaddr_read(lnaddr_t, size_t);
