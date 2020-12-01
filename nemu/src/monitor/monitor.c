@@ -91,8 +91,11 @@ void restart() {
 	/* Set the initial instruction pointer. */
 	cpu.eip = ENTRY_START;
 
-	init_eflags();		//初始化eflags
+	/* 初始化eflags */
+	init_eflags();
 
+	/* 初始化cache */
+	
 	/* Initialize DRAM. */
 	init_ddr3();
 }
