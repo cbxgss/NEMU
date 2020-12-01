@@ -5,31 +5,30 @@
 #define Cache_sets 1024/8	// Cache的组数
 
 /* Cache的class */
-typedef struct {
+typedef struct block {
 	uint32_t tag;					// 标记位
 	uint8_t block[block_bytes];		// 64个字节
-	uint8_t valid;					// valid bit
+	bool valid;					// valid bit
 } block;
-typedef struct {
+typedef struct set {
 	block blocks[Cache_ways];
 } set;
-typedef struct Cache{
+typedef struct Cache {
 	/* 成员属性 */
 	set sets[Cache_sets];			// 2**10个块
 	/* 成员函数 */
-	void (* init)(struct Cache *this);
-} cache;
+	// void (* init)(struct Cache *this);
+} Cache;
+Cache cache;
 /* 成员函数的实现 */
-void init_(struct Cache *x) {
+void init_cache() {
 	int i, j;
 	for(i = 0; i < Cache_sets; i++) {
 		for(j = 0; j < Cache_ways; j++) {
-			x->sets[i].blocks[j].valid = 0;
+			cache.sets[i].blocks[j].valid = false;
 		}
 	}
 }
-/* 成员函数的对接 */
-// cache.init = init_;
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);

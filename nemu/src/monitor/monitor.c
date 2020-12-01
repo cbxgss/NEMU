@@ -95,7 +95,7 @@ void restart() {
 	init_eflags();
 
 	/* 初始化cache */
-	
+	init_cache();
 	/* Initialize DRAM. */
 	init_ddr3();
 }
