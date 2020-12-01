@@ -75,7 +75,8 @@ uint32_t cache_read(hwaddr_t addr) {			//返回是set_index的哪个block
 }
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	return 0;
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
