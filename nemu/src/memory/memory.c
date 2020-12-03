@@ -42,7 +42,8 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
 
-uint32_t cache_read(hwaddr_t addr) {			//返回是set_index的哪个block
+// 返回是set_index的哪个block，如果miss，先处理，再返回
+uint32_t cache_read(hwaddr_t addr) {
 	// 地址32位 = 19位tags + 7位sets + 6位块内偏移
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;
 	uint32_t set_now = (addr >> 6) & 0x7f;
@@ -74,9 +75,17 @@ uint32_t cache_read(hwaddr_t addr) {			//返回是set_index的哪个block
 	return i;
 }
 
+// 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
+	/* 原来的代码 */
 	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
-	return 0;
+
+	/* 加上 chahe 之后的代码 */
+	// 地址处理
+	uint32_t tag_now = (addr >> 13) & 0x7ffff;
+	uint32_t set_now = (addr >> 6) & 0x7f;
+	uint32_t block_now = cache_read(addr);
+
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
