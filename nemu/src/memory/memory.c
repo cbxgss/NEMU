@@ -106,7 +106,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	printf("\n");
 	dram_write(addr, len, data);
-	printf("hhh");
+	printf("hhh\n");
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
