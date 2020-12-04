@@ -33,6 +33,7 @@ void init_cache() {
 	for(i = 0; i < Cache_sets; i++) {
 		for(j = 0; j < Cache_ways; j++) {
 			cache.sets[i].blocks[j].valid = false;
+			cache.sets[i].blocks[j].tag = 0;
 		}
 	}
 }
@@ -82,10 +83,22 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 	/* 加上 chahe 之后的代码 */
 	// 地址处理
-	uint32_t tag_now = (addr >> 13) & 0x7ffff;
 	uint32_t set_now = (addr >> 6) & 0x7f;
 	uint32_t block_now = cache_read(addr);
-
+	uint32_t imm_now = addr & 0x3f;
+	// 读
+	uint8_t tmp[block_bytes] = {};
+	if(imm_now + len >= block_bytes) {													// 两个块
+		// 第2个块的地址翻译
+		uint32_t set_last = ((addr + len) >> 6) & 0x7f;
+		uint32_t block_last = cache_read(addr + len);
+		uint32_t imm_last = (addr + len) & 0x3f;
+		memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, block_bytes - imm_now);					// 复制第一个块的内容
+		memcpy(tmp + block_bytes - imm_now, cache.sets[set_last].blocks[block_last].block, len - (block_last - imm_last));// 复制剩下的第2个块
+	}
+	else memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, len);		//一个块
+	int qwq = 0;
+	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
