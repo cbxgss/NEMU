@@ -80,7 +80,7 @@ uint32_t cache_read(hwaddr_t addr) {
 
 // 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	printf("(0x%x", addr);
+	// printf("(0x%x", addr);
 	/* 原来的代码 */
 	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 
@@ -101,14 +101,14 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	}
 	else memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, len);		//一个块
 	int qwq = 0;
-	printf(",qwq)\t");
+	// printf(",qwq)\t");
 	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));						//	在nemu/include/macro.h
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	printf("\nwrite ");
+	// printf("\nwrite ");
 	dram_write(addr, len, data);
-	printf("hhh\n");
+	// printf("hhh\n");
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
