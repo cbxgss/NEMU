@@ -45,7 +45,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 // 返回是set_index的哪个block，如果miss，先处理，再返回
 uint32_t cache_read(hwaddr_t addr) {
-	printf("(0x%x", addr);
+	// printf("(0x%x", addr);
 	// 地址32位 = 19位tags + 7位sets + 6位块内偏移
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;
 	uint32_t set_now = (addr >> 6) & 0x7f;
@@ -74,12 +74,13 @@ uint32_t cache_read(hwaddr_t addr) {
 		for ( j = 0; j < BURST_LEN; j++ )
 			ddr3_read(((addr>>6)<<6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j*BURST_LEN);
 	}
-	printf(",qwq)\t");
+	// printf(",qwq)\t");
 	return i;
 }
 
 // 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
+	printf("(0x%x", addr);
 	/* 原来的代码 */
 	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 
@@ -100,6 +101,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	}
 	else memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, len);		//一个块
 	int qwq = 0;
+	printf(",qwq)\t");
 	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));						//	在nemu/include/macro.h
 }
 
