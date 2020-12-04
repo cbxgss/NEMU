@@ -45,7 +45,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 // 返回是set_index的哪个block，如果miss，先处理，再返回
 uint32_t cache_read(hwaddr_t addr) {
-	printf("x%x\t", addr);
+	printf("(x%x", addr);
 	// 地址32位 = 19位tags + 7位sets + 6位块内偏移
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;
 	uint32_t set_now = (addr >> 6) & 0x7f;
@@ -74,7 +74,7 @@ uint32_t cache_read(hwaddr_t addr) {
 		for ( j = 0; j < BURST_LEN; j++ )
 			ddr3_read(((addr>>6)<<6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j*BURST_LEN);
 	}
-	puts("");
+	printf(",qwq)\t");
 	return i;
 }
 
@@ -104,7 +104,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	printf("qwq ");
+	printf("\n");
 	dram_write(addr, len, data);
 	printf("hhh");
 }
