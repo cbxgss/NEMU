@@ -72,15 +72,15 @@ uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如�
 			memset(mask, 1, BURST_LEN * 2);
 			int j = 0;
 			for(j = 0; j < block_bytes / BURST_LEN; j++) {
-				ddr3_write(((addr >> 6) << 6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j*BURST_LEN, mask);
+				ddr3_write(((addr >> 6) << 6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j * BURST_LEN, mask);
 			}
 		}
 		// 复制到这个块
 		cache.sets[set_now].blocks[i].valid = true;
 		cache.sets[set_now].blocks[i].tag = tag_now;
 		int j;
-		for ( j = 0; j < BURST_LEN; j++ )
-			ddr3_read(((addr>>6)<<6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j*BURST_LEN);
+		for ( j = 0; j < block_bytes / BURST_LEN; j++ )
+			ddr3_read(((addr >> 6) << 6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j * BURST_LEN);
 		cache.t_sum += 200;
 	}
 	else cache.t_sum += 2;
@@ -90,7 +90,7 @@ uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如�
 
 // 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	printf("(0x%x) ", addr);
+	// printf("(0x%x) ", addr);
 	/* 原来的代码 */
 	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 
