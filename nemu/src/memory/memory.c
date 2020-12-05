@@ -99,8 +99,6 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 	/* 加上 chahe 之后的代码 */
 	// 地址处理
-	if(((addr >> 6) << 6) == 0x801000) puts("5555");
-	if((((addr+len) >> 6) << 6) == 0x801000) puts("5555");
 	uint32_t set_now = (addr >> 6) & 0x7f;
 	uint32_t block_now = cache_read(addr);
 	uint32_t imm_now = addr & 0x3f;
@@ -123,6 +121,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* 原来的代码 */
 	// dram_write(addr, len, data);
 	/* 加入cache后的代码 */
+	if(((addr >> 6) << 6) == 0x801000) puts("5555");
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;	//19
 	uint32_t set_now = (addr >> 6) & 0x7f;		//7
 	uint32_t imm_now = addr & 0x3f;				//6
