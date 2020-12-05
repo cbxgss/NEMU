@@ -90,20 +90,19 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	uint32_t block_now = cache_read(addr);
 	uint32_t imm_now = addr & 0x3f;
 	// 读
-	uint8_t tmp[4] = {};
-	if(imm_now + len >= block_bytes) {													// 两个块
+	uint8_t tmp[block_bytes] = {};														// 把得到的len长度的内容存tmp里（长度为变量len不通过）
+	if(imm_now + len >= block_bytes) {													// 跨了两个块
 		// 第2个块的地址翻译
 		uint32_t set_last = ((addr + len) >> 6) & 0x7f;
 		uint32_t block_last = cache_read(addr + len);
-		uint32_t imm_last = (addr + len) & 0x3f;
-		memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, block_bytes - imm_now);					// 复制第一个块的内容
-		memcpy(tmp + block_bytes - imm_now, cache.sets[set_last].blocks[block_last].block, len - (block_last - imm_last));// 复制剩下的第2个块
+		memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, block_bytes - imm_now);							// 复制第一个块的内容
+		memcpy(tmp + block_bytes - imm_now, cache.sets[set_last].blocks[block_last].block, len - (block_bytes - imm_now));	// 复制剩下的第2个块
 	}
 	else memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, len);		//一个块
 	int qwq = 0;
 	printf("0x%x\t", addr);
 	int i = 0;
-	for(i = 0; i < sizeof(tmp); i++) printf("%x ", (int)tmp[i]); puts("");
+	for(i = 0; i < (int)len; i++) printf("%x ", (int)tmp[i]); puts("");
 	// printf(",qwq)\t");
 	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));						//	在nemu/include/macro.h
 }
