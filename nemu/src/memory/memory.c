@@ -101,14 +101,14 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	}
 	else memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, len);		//一个块
 	int qwq = 0;
+	int i = 0;
+	for(i = 0; i < block_bytes; i++) printf("%c ", tmp[i]); puts("");
 	// printf(",qwq)\t");
 	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));						//	在nemu/include/macro.h
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	// printf("\nwrite ");
 	dram_write(addr, len, data);
-	// printf("hhh\n");
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
