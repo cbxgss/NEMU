@@ -101,6 +101,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	}
 	else memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, len);		//一个块
 	int qwq = 0;
+	printf("0x%x\t", addr);
 	int i = 0;
 	for(i = 0; i < block_bytes; i++) printf("%x ", (int)tmp[i]); puts("");
 	// printf(",qwq)\t");
