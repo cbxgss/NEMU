@@ -46,10 +46,9 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
 
-// 返回是set_index的哪个block，如果miss，先处理，再返回
-uint32_t cache_read(hwaddr_t addr) {
+// 地址32位 = 19位tags + 7位sets + 6位块内偏移
+uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果miss，先处理，再返回
 	// printf("(0x%x", addr);
-	// 地址32位 = 19位tags + 7位sets + 6位块内偏移
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;
 	uint32_t set_now = (addr >> 6) & 0x7f;
 	bool hit = false;
@@ -91,7 +90,7 @@ uint32_t cache_read(hwaddr_t addr) {
 
 // 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	// printf("(0x%x) ", addr);
+	printf("(0x%x) ", addr);
 	/* 原来的代码 */
 	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 
@@ -121,9 +120,9 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* 原来的代码 */
 	// dram_write(addr, len, data);
 	/* 加入cache后的代码 */
-	uint32_t tag_now = (addr >> 13) & 0x7ffff;
-	uint32_t set_now = (addr >> 6) & 0x7f;
-	uint32_t imm_now = addr & 0x3f;
+	uint32_t tag_now = (addr >> 13) & 0x7ffff;	//19
+	uint32_t set_now = (addr >> 6) & 0x7f;		//7
+	uint32_t imm_now = addr & 0x3f;				//6
 	bool hit = false;
 	int i;
 	for (i = 0; i < Cache_ways; i++) {	//在set中每个block检查
