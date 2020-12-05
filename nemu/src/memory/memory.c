@@ -113,7 +113,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	int qwq = 0;
 	// int i = 0;
 	// for(i = 0; i < (int)len; i++) printf("%x ", (int)tmp[i]); puts("");
-	p_cache_t();
+	// p_cache_t();
 	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));						//	在nemu/include/macro.h
 }
 
