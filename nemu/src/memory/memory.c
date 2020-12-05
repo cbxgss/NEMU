@@ -59,7 +59,7 @@ uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如�
 		}
 	}
 	if(!hit) {	// miss
-		if(((addr >> 6) << 6) == 0x801000) puts("5555");
+		// if(((addr >> 6) << 6) == 0x801000) puts("5555");
 		// 找到位置
 		for (i = 0; i < Cache_ways; i++) {
 			if ( !cache.sets[set_now].blocks[i].valid ) break;
@@ -99,6 +99,8 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 	/* 加上 chahe 之后的代码 */
 	// 地址处理
+	if(((addr >> 6) << 6) == 0x801000) puts("5555");
+	if((((addr+len) >> 6) << 6) == 0x801000) puts("5555");
 	uint32_t set_now = (addr >> 6) & 0x7f;
 	uint32_t block_now = cache_read(addr);
 	uint32_t imm_now = addr & 0x3f;
