@@ -82,6 +82,9 @@ uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如�
 		for ( j = 0; j < block_bytes / BURST_LEN; j++ )
 			ddr3_read(((addr >> 6) << 6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j * BURST_LEN);
 		cache.t_sum += 200;
+		// 打印
+		int k;
+		for(k = 0; k < block_bytes; k++) printf("%x ", (int)cache.sets[set_now].blocks[i].block[k]); puts("");
 	}
 	else cache.t_sum += 2;
 	// printf(",qwq)\t");
@@ -110,8 +113,6 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	}
 	else memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, len);		//一个块
 	int qwq = 0;
-	// int i = 0;
-	// for(i = 0; i < (int)len; i++) printf("%x ", (int)tmp[i]); puts("");
 	// p_cache_t();
 	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));						//	在nemu/include/macro.h
 }
