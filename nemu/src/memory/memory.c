@@ -121,7 +121,8 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* 原来的代码 */
 	// dram_write(addr, len, data);
 	/* 加入cache后的代码 */
-	if(((addr >> 6) << 6) == 0x801000) puts("5555");
+	uint32_t qwq = hwaddr_read(addr, len);
+	printf("%d", qwq);
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;	//19
 	uint32_t set_now = (addr >> 6) & 0x7f;		//7
 	uint32_t imm_now = addr & 0x3f;				//6
@@ -134,7 +135,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 		}
 	}
 	if(hit == false) {
-		if(((addr >> 6) << 6) == 0x801000) puts("555555555555555555555555555");
+		if(((addr >> 6) << 6) == 0x801000) puts("5555");
 		dram_write(addr, len, data);	cache.t_sum += 200;
 	}
 	else {
