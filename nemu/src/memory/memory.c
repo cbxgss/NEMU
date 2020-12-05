@@ -94,7 +94,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	// 地址处理
 	uint32_t set_now = (addr >> 6) & 0x7f;
 	uint32_t block_now = cache_read(addr);
-	uint32_t imm_now = ((addr >> 6) << 6);
+	uint32_t imm_now = addr & 0x3f;
 	// 读
 	uint8_t tmp[block_bytes] = {};														// 把得到的len长度的内容存tmp里（长度为变量len不通过）
 	if(imm_now + len >= block_bytes) {													// 跨了两个块
@@ -113,20 +113,23 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* 原来的代码 */
-	dram_write(addr, len, data);
+	// dram_write(addr, len, data);
 	/* 加入cache后的代码 */
-	// uint32_t tag_now = (addr >> 13) & 0x7ffff;
-	// uint32_t set_now = (addr >> 6) & 0x7f;
-	// uint32_t imm_now = ((addr >> 6) << 6);
-	// bool hit = false;
-	// int i;
-	// for (i = 0; i < Cache_ways; i++) {	//在set中每个block检查
-	// 	if ( !cache.sets[set_now].blocks[i].valid ) continue;
-	// 	if ( cache.sets[set_now].blocks[i].tag == tag_now ) {
-	// 		hit = true; break;
-	// 	}
-	// }
-
+	uint32_t tag_now = (addr >> 13) & 0x7ffff;
+	uint32_t set_now = (addr >> 6) & 0x7f;
+	uint32_t imm_now = addr & 0x3f;
+	bool hit = false;
+	int i;
+	for (i = 0; i < Cache_ways; i++) {	//在set中每个block检查
+		if ( !cache.sets[set_now].blocks[i].valid ) continue;
+		if ( cache.sets[set_now].blocks[i].tag == tag_now ) {
+			hit = true; break;
+		}
+	}
+	if(hit == false) dram_write(addr, len, data);
+	else {
+		memcpy(cache.sets[set_now].blocks[i].block + imm_now, &data, len);
+	}
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
