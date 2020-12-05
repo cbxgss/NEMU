@@ -58,7 +58,7 @@ USERPROG := obj/testcase/add
 USERPROG := obj/testcase/matrix-mul
 
 ENTRY := $(USERPROG)
-# ENTRY := $(kernel_BIN)
+ENTRY := $(kernel_BIN)
 
 entry: $(ENTRY)
 	objcopy -S -O binary $(ENTRY) entry
