@@ -93,7 +93,7 @@ uint32_t cache_read(hwaddr_t addr) {
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	// printf("(0x%x) ", addr);
 	/* 原来的代码 */
-	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 
 	/* 加上 chahe 之后的代码 */
 	// 地址处理
@@ -119,7 +119,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* 原来的代码 */
-	dram_write(addr, len, data);
+	// dram_write(addr, len, data);
 	/* 加入cache后的代码 */
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;
 	uint32_t set_now = (addr >> 6) & 0x7f;
