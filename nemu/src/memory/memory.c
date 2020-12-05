@@ -133,7 +133,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 		}
 	}
 	if(hit == false) {
-		if(((addr >> 6) << 6) == 0x801000) { printf("%d ", data); puts("55555555555"); }					
+		if(((addr >> 6) << 6) == 0x801000) { printf("%x ", data); puts("55555555555"); }					
 		dram_write(addr, len, data);	cache.t_sum += 200;
 	}
 	else {
