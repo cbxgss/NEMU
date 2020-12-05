@@ -83,8 +83,8 @@ uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如�
 			ddr3_read(((addr >> 6) << 6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j * BURST_LEN);
 		cache.t_sum += 200;
 		// 打印
-		printf("(0x%x)", ((addr >> 6) << 6)); int k;																							
-		for(k = 0; k < block_bytes; k++) printf("%x ", (int)cache.sets[set_now].blocks[i].block[k]); puts("");									
+		// printf("(0x%x)", ((addr >> 6) << 6)); int k;																							
+		// for(k = 0; k < block_bytes; k++) printf("%x ", (int)cache.sets[set_now].blocks[i].block[k]); puts("");									
 	}
 	else cache.t_sum += 2;
 	// printf(",qwq)\t");
