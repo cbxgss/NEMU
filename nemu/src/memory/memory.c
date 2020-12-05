@@ -80,9 +80,9 @@ uint32_t cache_read(hwaddr_t addr) {
 
 // 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	// printf("(0x%x", addr);
+	printf("(0x%x)", addr);
 	/* 原来的代码 */
-	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 
 	/* 加上 chahe 之后的代码 */
 	// 地址处理
