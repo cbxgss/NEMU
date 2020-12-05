@@ -48,7 +48,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 // 地址32位 = 19位tags + 7位sets + 6位块内偏移
 uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果miss，先处理，再返回
-	// printf("(0x%x", addr);
+	printf("(0x%x", addr);
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;
 	uint32_t set_now = (addr >> 6) & 0x7f;
 	bool hit = false;
