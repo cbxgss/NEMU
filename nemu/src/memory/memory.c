@@ -137,7 +137,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 		dram_write(addr, len, data);	cache.t_sum += 200;
 	}
 	else {
-		if(imm_now + len > block_bytes) puts("qwqqwwqqwqw");
+		printf("%d ", data);
 		memcpy(cache.sets[set_now].blocks[i].block + imm_now, &data, len);	cache.t_sum += 2;
 	}
 }
