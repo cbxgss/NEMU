@@ -59,7 +59,7 @@ uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如�
 		}
 	}
 	if(!hit) {	// miss
-		printf("(0x%x)", addr);
+		printf("(0x%x)", ((addr >> 6) << 6));
 		// 找到位置
 		for (i = 0; i < Cache_ways; i++) {
 			if ( !cache.sets[set_now].blocks[i].valid ) break;
