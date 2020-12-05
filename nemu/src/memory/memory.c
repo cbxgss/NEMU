@@ -100,9 +100,8 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	}
 	else memcpy(tmp, cache.sets[set_now].blocks[block_now].block + imm_now, len);		//一个块
 	int qwq = 0;
-	int i = 0;
-	for(i = 0; i < (int)len; i++) printf("%x ", (int)tmp[i]); puts("");
-	// printf(",qwq)\t");
+	// int i = 0;
+	// for(i = 0; i < (int)len; i++) printf("%x ", (int)tmp[i]); puts("");
 	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));						//	在nemu/include/macro.h
 }
 
