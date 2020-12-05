@@ -37,6 +37,9 @@ void init_cache() {
 		}
 	}
 }
+void p_cache_t() {
+	printf("%lu\n", cache.t_sum);
+}
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
@@ -79,7 +82,9 @@ uint32_t cache_read(hwaddr_t addr) {
 		int j;
 		for ( j = 0; j < BURST_LEN; j++ )
 			ddr3_read(((addr>>6)<<6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j*BURST_LEN);
+		cache.t_sum += 200;
 	}
+	else cache.t_sum += 2;
 	// printf(",qwq)\t");
 	return i;
 }
@@ -108,6 +113,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	int qwq = 0;
 	// int i = 0;
 	// for(i = 0; i < (int)len; i++) printf("%x ", (int)tmp[i]); puts("");
+	p_cache_t();
 	return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));						//	在nemu/include/macro.h
 }
 
@@ -126,9 +132,11 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 			hit = true; break;
 		}
 	}
-	if(hit == false) dram_write(addr, len, data);
+	if(hit == false) {
+		dram_write(addr, len, data);	cache.t_sum += 200;
+	}
 	else {
-		memcpy(cache.sets[set_now].blocks[i].block + imm_now, &data, len);
+		memcpy(cache.sets[set_now].blocks[i].block + imm_now, &data, len);	cache.t_sum += 2;
 	}
 }
 
