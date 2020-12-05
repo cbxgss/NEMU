@@ -90,7 +90,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	uint32_t block_now = cache_read(addr);
 	uint32_t imm_now = addr & 0x3f;
 	// 读
-	uint8_t tmp[block_bytes] = {};
+	uint8_t tmp[4] = {};
 	if(imm_now + len >= block_bytes) {													// 两个块
 		// 第2个块的地址翻译
 		uint32_t set_last = ((addr + len) >> 6) & 0x7f;
