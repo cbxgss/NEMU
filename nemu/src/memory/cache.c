@@ -41,13 +41,6 @@ uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如�
 		if(i == Cache_ways) {									// 替换算法
 			srand(0);
 			i = rand() % Cache_ways;
-			// 写回，被替换的时候写回ddr3
-			// uint8_t mask[BURST_LEN * 2] = {};
-			// memset(mask, 1, BURST_LEN * 2);
-			// int j = 0;
-			// for(j = 0; j < block_bytes / BURST_LEN; j++) {
-			// 	ddr3_write(((addr >> 6) << 6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j * BURST_LEN, mask);
-			// }
 		}
 		// 复制到这个块
 		cache.sets[set_now].blocks[i].valid = true;
