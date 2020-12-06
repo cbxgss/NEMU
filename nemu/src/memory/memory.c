@@ -119,7 +119,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	// dram_write(addr, len, data);
 	/* 加入cache后的代码 */
 	// if(((addr >> 6) << 6) == 0x801000) puts("5555");							
-	printf("%u\t%u\n", cache_read(addr), cache_read(addr + len));
+	// printf("%u\t%u\n", cache_read(addr), cache_read(addr + len));
 	uint32_t tag_now = (addr >> 13) & 0x7ffff;	//19
 	uint32_t set_now = (addr >> 6) & 0x7f;		//7
 	uint32_t imm_now = addr & 0x3f;				//6
