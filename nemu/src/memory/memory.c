@@ -22,8 +22,6 @@ typedef struct Cache {
 	/* 成员属性 */
 	set sets[Cache_sets];			// 2**10个块
 	uint64_t t_sum;					// 计时变量
-	/* 成员函数 */
-	// void (* init)(struct Cache *this);
 } Cache;
 Cache cache;		// 实例化
 /* 成员函数的实现 */
@@ -133,7 +131,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 		}
 	}
 	if(hit == false) {
-		if(((addr >> 6) << 6) == 0x801000) { printf("%x\t%x \t\t", addr, data); puts("55555555555"); }					
+		// if(((addr >> 6) << 6) == 0x801000) { printf("%x\t%x \t\t", addr, data); puts("55555555555"); }					
 		dram_write(addr, len, data);	cache.t_sum += 200;
 	}
 	else {
