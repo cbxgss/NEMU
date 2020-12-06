@@ -32,6 +32,7 @@ void init_cache() {
 		for(j = 0; j < Cache_ways; j++) {
 			cache.sets[i].blocks[j].valid = false;
 			cache.sets[i].blocks[j].tag = 0;
+			memset(cache.sets[i].blocks[j].block, 0, block_bytes);
 		}
 	}
 }
@@ -77,7 +78,7 @@ uint32_t cache_read(hwaddr_t addr) { // 返回是set_index的哪个block，如�
 		cache.sets[set_now].blocks[i].valid = true;
 		cache.sets[set_now].blocks[i].tag = tag_now;
 		int j;
-		for ( j = 0; j < BURST_LEN; j++ )
+		for ( j = 0; j < block_bytes / BURST_LEN; j++ )
 			ddr3_read(((addr >> 6) << 6) + j * BURST_LEN, cache.sets[set_now].blocks[i].block + j * BURST_LEN);
 		cache.t_sum += 200;
 		// 打印
