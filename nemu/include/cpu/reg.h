@@ -15,23 +15,6 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  */
 
 typedef struct {
-	// struct {
-	// 	uint32_t _32;
-	// 	uint16_t _16;
-	// 	uint8_t _8[2];
-	// } gpr[8];
-	
-	// union {
-	// 	uint32_t _32;//32位==4bytes
-	// 	struct {
-	// 		uint16_t _16_0;
-	// 		union {
-	// 			uint16_t _16;//16位==2bytes
-	// 			uint8_t _8[2];//[1]为后8位==1byte
-	// 		};
-	// 	};
-	// } gpr[8];
-
 	union {
 		union {//小端序
 			uint32_t _32;//32位==4bytes
@@ -49,9 +32,7 @@ typedef struct {
 			uint32_t eax, ecx, edx, ebx, esp, ebp, esi, edi;
 		};
 	};
-
 	swaddr_t eip;
-
 	//EFLAGS寄存器
 	union {
 		struct {
@@ -76,7 +57,7 @@ typedef struct {
 		};
 		uint32_t eflags;
 	};
-
+	
 } CPU_state;
 
 extern CPU_state cpu;
