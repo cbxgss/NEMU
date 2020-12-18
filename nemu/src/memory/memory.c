@@ -33,7 +33,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* 原来的代码 */
 	dram_write(addr, len, data);
 	/* 加入cache后的代码 */
-	l1_write(addr, len, data);
+	// l1_write(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
