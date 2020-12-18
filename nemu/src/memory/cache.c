@@ -106,14 +106,12 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 	if(hit) {	// write through 都改
 		if(imm_l1 + len <= block_size) {
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, len);	// l1
-			l2_write(addr, len, data);											// l2
-			dram_write(addr, len, data);										// dram
+			l2_write(addr, len, data);								// l2
 		}
 		else {	// 两个块
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, block_size - imm_l1);				// 低位低地址
 			l2_write(addr, block_size - imm_l1, data);
-			dram_write(addr, block_size - imm_l1, data);
-			l1_write(addr + block_size - imm_l1, len - block_size + imm_l1, data >> (block_size - imm_l1)); // 高位高地址
+			l1_write(addr + block_size - imm_l1, len - (block_size - imm_l1), data >> (block_size - imm_l1)); // 高位高地址
 		}
 	}
 	else { // not write allocate 直接往l2写
