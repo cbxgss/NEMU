@@ -17,7 +17,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	int32_t i = l1_read(addr);
 	int32_t imm_l1 = (addr & (block_size - 1));
 	int8_t tmp[block_size] = {};														// 把得到的len长度的内容存tmp里（长度为变量len不通过）
-	if(imm_l1 + len >= block_size) {													/* 跨了两个块 */
+	if(imm_l1 + len > block_size) {													/* 跨了两个块 */
 		// 第2个块的地址翻译
 		uint32_t set_last = ((addr + len) >> l1_sets_bit) & (l1_sets - 1);
 		uint32_t i_last = l1_read(addr + len);

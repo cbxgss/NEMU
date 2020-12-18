@@ -104,7 +104,7 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 		}
 	}
 	if(hit) {	// write through 都改
-		if(imm_l1 + len < block_size) {
+		if(imm_l1 + len <= block_size) {
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, len);	// l1
 			l2_write(addr, len, data);											// l2
 			dram_write(addr, len, data);										// dram
