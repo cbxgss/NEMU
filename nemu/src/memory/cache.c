@@ -74,10 +74,13 @@ int32_t l2_read(hwaddr_t addr) {
 	if(i == l2_ways) i = rand() % l2_ways;	// 替换算法 write back 需要写回
 	if(l2_cache[set_l2][i].valid && l2_cache[set_l2][i].dirty) { // 被改动了，需要写回
 		uint8_t tmp[BURST_LEN * 2];
+		uint32_t gid = (addr >> block_size_bit) & (l2_sets - 1);
+		uint32_t st = (l2_cache[set_l2][i].tag << (l2_sets_bit + block_size_bit)) | (gid << block_size_bit);
         memset(tmp, 1, sizeof(tmp));
 		int j;
         for (j = 0; j < block_size / BURST_LEN; j++) {
-            ddr3_write(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
+            // ddr3_write(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
+			ddr3_write(st + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
         }
 	}
 	// 复制到这个块
