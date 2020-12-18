@@ -133,7 +133,7 @@ void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 	}
 	if(hit) {	// write back 只改l2, 不改dram
 		l2_cache[set_l2][i].dirty = true;
-		if(imm_l2 + len < block_size) {
+		if(imm_l2 + len <= block_size) {
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, len);	// l2
 		}
 		else {	// 两个块
