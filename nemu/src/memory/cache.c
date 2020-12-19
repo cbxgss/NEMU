@@ -62,12 +62,11 @@ int32_t l2_read(hwaddr_t addr) {
 	for (i = 0; i < l2_ways; i++) {	//在set中每个block检查
 		if ( !l2_cache[set_l2][i].valid ) continue;
 		if ( l2_cache[set_l2][i].tag == tag_l2 ) {
-			l2_t += 2;
-			return i;
+			l2_t += 2; return i;
 		}
 	}
 	/* miss */
-	// 找到位置
+	/* 找到位置 */
 	for (i = 0; i < l2_ways; i++) {			// 有空位
 		if ( !l2_cache[set_l2][i].valid ) break;
 	}
@@ -76,11 +75,12 @@ int32_t l2_read(hwaddr_t addr) {
 		uint8_t tmp[BURST_LEN * 2];
         memset(tmp, 1, sizeof(tmp));
 		int j;
-        for (j = 0; j < block_size / BURST_LEN; j++) {
-            cache_ddr3_write(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
+        for (j = 0; j < block_size / BURST_LEN; j++) {		// 写回到被替换的block的地址....
+			uint32_t addr_last = ((tag_l2 << (l2_sets_bit + block_size_bit)) | (set_l2 <<block_size_bit));
+            cache_ddr3_write(addr_last + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
         }
 	}
-	// 复制到这个块
+	/* 复制到这个块 */
 	l2_cache[set_l2][i].valid = true; l2_cache[set_l2][i].tag = tag_l2; l2_cache[set_l2][i].dirty = false;
 	int j;
 	for(j = 0; j < block_size / BURST_LEN; j++) {
