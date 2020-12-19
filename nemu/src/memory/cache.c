@@ -55,7 +55,8 @@ int32_t l1_read(hwaddr_t addr) {
 	memcpy(l1_cache[set_l1][i].block, l2_cache[set_l2][ii].block, block_size);
 	l1_t += 200; return i;
 }
-int32_t l2_read(hwaddr_t addr) {
+/*	
+	int32_t l2_read(hwaddr_t addr) {
 	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
 	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
 	int i;
@@ -66,8 +67,8 @@ int32_t l2_read(hwaddr_t addr) {
 			l2_t += 2; return i;
 		}
 	}
-	/* miss */
-	/* 找到位置 */
+	// miss*******************
+	// 找到位置
 	for (i = 0; i < l2_ways; i++) {			// 有空位
 		if ( !l2_cache[set_l2][i].valid ) break;
 	}
@@ -82,7 +83,7 @@ int32_t l2_read(hwaddr_t addr) {
 			cache_ddr3_write(addr_pre + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
         }
 	}
-	/* 复制到这个块 */
+	// 复制到这个块
 	l2_cache[set_l2][i].valid = true; l2_cache[set_l2][i].tag = tag_l2; l2_cache[set_l2][i].dirty = false;
 	int j;
 	for(j = 0; j < block_size / BURST_LEN; j++) {
@@ -90,7 +91,8 @@ int32_t l2_read(hwaddr_t addr) {
     }
 	l2_t += 200; return i;
 }
-int read_L2(hwaddr_t addr){
+*/
+int l2_read(hwaddr_t addr){
     uint32_t tag = (addr >> (block_size_bit + l2_sets_bit));
     uint32_t gid = (addr >> block_size_bit) & (l2_sets - 1);
     uint32_t bst = (addr >> block_size_bit) << block_size_bit;
