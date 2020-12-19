@@ -98,6 +98,7 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 		}
 	}
 	if(hit) {	// write through 都改
+		printf("写入l1[%d][%d]\n", set_l1, i);																				
 		if(imm_l1 + len <= block_size) {
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, len);	// l1
 		}
@@ -122,6 +123,7 @@ void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 		}
 	}
 	if(hit) {	// write back 只改l2, 不改dram
+		printf("写入l2[%d][%d]\n", set_l2, i);																	
 		l2_cache[set_l2][i].dirty = true;
 		if(imm_l2 + len <= block_size) {
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, len);	// l2
