@@ -37,7 +37,7 @@ int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果mis
 	for (i = 0; i < l1_ways; i++) {	//在set中每个block检查
 		if ( !l1_cache[set_l1][i].valid ) continue;
 		if ( l1_cache[set_l1][i].tag == tag_l1 ) {
-			printf("读取hit\tl1[%d][%d]\n", set_l1, i);																
+			printf("读取hit \tl1[%d][%d]\n", set_l1, i);																
 			l1_t += 2; return i;
 		}
 	}
@@ -61,7 +61,7 @@ int32_t l2_read(hwaddr_t addr) {
 	for (i = 0; i < l2_ways; i++) {	//在set中每个block检查
 		if ( !l2_cache[set_l2][i].valid ) continue;
 		if ( l2_cache[set_l2][i].tag == tag_l2 ) {
-			printf("读取hit\tl2[%d][%d]\n", set_l2, i);																
+			printf("读取hit \tl2[%d][%d]\n", set_l2, i);																
 			l2_t += 2; return i;
 		}
 	}
