@@ -15,7 +15,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	/* 原来的代码 */
 	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	/* 加上 chahe 之后的代码 */
-	int32_t set_l2 = (addr >> l2_sets_bit) & (l2_sets - 1);
+	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
 	int32_t i = l2_read(addr);
 	int32_t imm_l2 = (addr & (block_size - 1));
 	int8_t tmp [block_size * 2];	// 把得到的len长度的内容存tmp里（长度为变量len不通过）

@@ -50,7 +50,7 @@ int32_t l1_read(hwaddr_t addr) { // 返回组号，如果miss，先处理
 }
 int32_t l2_read(hwaddr_t addr) {
 	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
-	int32_t set_l2 = (addr >> l2_sets_bit) & (l2_sets - 1);
+	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
 	int i;
 	for (i = 0; i < l2_ways; i++) {	//在set中每个block检查
 		if ( !l2_cache[set_l2][i].valid ) continue;
