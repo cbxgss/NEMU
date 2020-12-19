@@ -109,7 +109,8 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, block_size - imm_l1);				// 低位低地址
 			l1_write(addr + block_size - imm_l1, len - (block_size - imm_l1), data >> (block_size - imm_l1)); // 高位高地址
 		}
-	}
+		l1_t += 2;
+	} else l1_t += 200;
 	// not write allocate 直接往l2写	or	write through往l2写
 	l2_write(addr, len, data);
 }
@@ -126,6 +127,7 @@ void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 		}
 	}
 	if(hit) {	// write back 只改l2, 不改dram
+		l2_t += 2;
 		// printf("写入 l2[%d][%d]\n", set_l2, i);																	
 		l2_cache[set_l2][i].dirty = true;
 		if(imm_l2 + len <= block_size) {
