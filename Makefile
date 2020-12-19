@@ -56,6 +56,7 @@ clean: clean-cpp
 
 USERPROG := obj/testcase/add
 # USERPROG := obj/testcase/matrix-mul
+USERPROG := obj/testcase/string
 
 ENTRY := $(USERPROG)
 # ENTRY := $(kernel_BIN)
