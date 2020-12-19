@@ -35,7 +35,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	// puts("");
 	int qwq = 0; uint32_t ret = unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));					//	在nemu/include/macro.h
 	uint32_t ans = dram_read(addr, len) & (~0u >> ((4 - len) << 3));																	
-	printf("ret is %u.\tAnd it should be %d\n", ret, ans);																				
+	printf("ret is 0x%x.\tAnd it should be 0x%x\n", ret, ans);																				
 	return ret;
 }
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
