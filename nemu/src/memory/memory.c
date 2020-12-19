@@ -27,7 +27,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 		memcpy(tmp + block_size - imm_l2, l2_cache[set_last][i_last].block, len - (block_size - imm_l2));		// 复制剩下的第2个块
 	}
 	else memcpy(tmp, l2_cache[set_l2][i].block + imm_l2, len);						/* 一个块 */
-	printf("tmp: "); int jkl;																
+	printf("from l2[%d][%d] :tmp: ", set_l2, i); int jkl;																
 	for(jkl = 0; jkl < len; jkl++) {
 		printf("%x ", tmp[jkl]);
 	}
