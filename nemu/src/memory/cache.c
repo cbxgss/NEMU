@@ -67,7 +67,7 @@ int32_t l2_read(hwaddr_t addr) {
 	if(i == l2_ways) i = rand() % l2_ways;	// 替换算法 write back 需要写回
 	printf("读取miss\tl2[%d][%d]\n", set_l2, i);																
 	if(l2_cache[set_l2][i].valid && l2_cache[set_l2][i].dirty) { // 被改动了，需要写回
-	puts("替换");
+		// puts("替换");																						
 		uint8_t tmp[BURST_LEN * 2];
         memset(tmp, 1, sizeof(tmp));
 		int j; uint32_t addr_pre = ((l2_cache[set_l2][i].tag << (l2_sets_bit + block_size_bit)) | (set_l2 <<block_size_bit));
