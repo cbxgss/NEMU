@@ -44,7 +44,7 @@ int32_t l1_read(hwaddr_t addr) { // 返回组号，如果miss，先处理
 	// printf("读取miss\tl1[%d][%d]\n", set_l1, i);																
 	// 复制到这个块
 	l1_cache[set_l1][i].valid = true; l1_cache[set_l1][i].tag = tag_l1;
-	int set_l2 = (addr >> l2_sets_bit) & (l2_sets - 1); int ii = l2_read(addr);
+	int set_l2 = (addr >> block_size_bit) & (l2_sets - 1); int ii = l2_read(addr);
 	memcpy(l1_cache[set_l1][i].block, l2_cache[set_l2][ii].block, block_size);
 	l1_t += 200; return i;
 }
