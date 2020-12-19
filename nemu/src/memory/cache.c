@@ -135,7 +135,7 @@ void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, len);	// l2
 		}
 		else {	// 至少2块
-			if((addr >= 0x801dfc) && (addr <= 0x801dfc+6)) printf("addr=0x%x, eip=0x%x\ndata: 0x%x, h: %x data_h: 0x%x\n", addr, cpu.eip, data, (block_size - imm_l2), (data >> (block_size - imm_l2)));
+			if((addr >= 0x801dfc) && (addr <= 0x801dfc+6)) printf("addr=0x%x, eip=0x%x\ndata: 0x%x >> %x = 0x%x\n", addr, cpu.eip, data, (block_size - imm_l2), (data >> (block_size - imm_l2)));
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, block_size - imm_l2);								// 低位低地址
 			l2_write(addr + block_size - imm_l2, len - (block_size - imm_l2), data >> (block_size - imm_l2));	// 高位高地址
 		}
