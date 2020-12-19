@@ -31,7 +31,7 @@ void p_cache_t() {
 }
 
 int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果miss，先处理，再返回
-	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit)) & ((1 << l1_tag_bit) - 1);
+	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
 	int i;
 	for (i = 0; i < l1_ways; i++) {	//在set中每个block检查
@@ -56,7 +56,7 @@ int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果mis
 	return i;
 }
 int32_t l2_read(hwaddr_t addr) {
-	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit)) & ((1 << l2_tag_bit) - 1);
+	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
 	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
 	int i;
 	for (i = 0; i < l2_ways; i++) {	//在set中每个block检查
@@ -91,7 +91,6 @@ int32_t l2_read(hwaddr_t addr) {
 }
 
 void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
-	l1_read(addr);
 	/* write through	&	not write allocate */
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit)) & ((1 << l1_tag_bit) - 1);
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
@@ -120,9 +119,8 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 	}
 }
 void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
-	l2_read(addr);
 	/* write back	&	write allocate */
-	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit)) & ((1 << l2_tag_bit) - 1);
+	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
 	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
 	int32_t imm_l2 = (addr & (block_size - 1));
 	bool hit = false;
