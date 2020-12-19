@@ -8,23 +8,17 @@ void cache_ddr3_read (hwaddr_t addr, void* data);
 void cache_ddr3_write (hwaddr_t addr, void *data, uint8_t *mask);
 
 void init_cache() {
-	l1_t = l2_t = 0;
-	int i, j;
+	l1_t = l2_t = 0;	int i, j;	srand(clock());
 	for(i = 0; i < l1_sets; i++) {
 		for(j = 0; j < l1_ways; j++) {
 			l1_cache[i][j].valid = false;
-			l1_cache[i][j].tag = 0;
-			memset(l1_cache[i][j].block, 0, block_size);
 		}
 	}
 	for(i = 0; i < l2_sets; i++) {
 		for(j = 0; j < l2_ways; j++) {
 			l2_cache[i][j].valid = l2_cache[i][j].dirty = false;
-			l2_cache[i][j].tag = 0;
-			memset(l2_cache[i][j].block, 0, block_size);
 		}
 	}
-	srand(clock());
 }
 void p_cache_t() {
 	printf("(l1: %lu)\t(l2: %lu)\n", l1_t, l2_t);
