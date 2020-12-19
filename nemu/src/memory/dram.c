@@ -51,7 +51,8 @@ void init_ddr3() {
 	}
 }
 
-void ddr3_read(hwaddr_t addr, void *data) {						// 去掉了static
+/* static函数在外面无法用，所以写了两个函数来专门调用这两个函数 */
+static void ddr3_read(hwaddr_t addr, void *data) {
 	Assert(addr < HW_MEM_SIZE, "physical address %x is outside of the physical memory!", addr);
 
 	dram_addr temp;
@@ -71,8 +72,7 @@ void ddr3_read(hwaddr_t addr, void *data) {						// 去掉了static
 	/* burst read */
 	memcpy(data, rowbufs[rank][bank].buf + col, BURST_LEN);
 }
-
-void ddr3_write(hwaddr_t addr, void *data, uint8_t *mask) {
+static void ddr3_write(hwaddr_t addr, void *data, uint8_t *mask) {
 	Assert(addr < HW_MEM_SIZE, "physical address %x is outside of the physical memory!", addr);
 
 	dram_addr temp;
@@ -94,6 +94,12 @@ void ddr3_write(hwaddr_t addr, void *data, uint8_t *mask) {
 
 	/* write back to dram */
 	memcpy(dram[rank][bank][row], rowbufs[rank][bank].buf, NR_COL);
+}
+void cache_ddr3_read(hwaddr_t addr, void *data){
+	ddr3_read(addr, data);
+}
+void cache_ddr3_write(hwaddr_t addr, void *data, uint8_t *mask) {
+	ddr3_write(addr, data, mask);
 }
 
 uint32_t dram_read(hwaddr_t addr, size_t len) {

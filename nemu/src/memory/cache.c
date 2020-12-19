@@ -4,8 +4,8 @@
 #include <time.h>
 
 void dram_write(hwaddr_t addr, size_t len, uint32_t data);
-void ddr3_read (hwaddr_t addr, void* data);
-void ddr3_write (hwaddr_t addr, void *data, uint8_t *mask);
+void cache_ddr3_read (hwaddr_t addr, void* data);
+void cache_ddr3_write (hwaddr_t addr, void *data, uint8_t *mask);
 
 void init_cache() {
 	l1_t = l2_t = 0;
@@ -77,14 +77,14 @@ int32_t l2_read(hwaddr_t addr) {
         memset(tmp, 1, sizeof(tmp));
 		int j;
         for (j = 0; j < block_size / BURST_LEN; j++) {
-            ddr3_write(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
+            cache_ddr3_write(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
         }
 	}
 	// 复制到这个块
 	l2_cache[set_l2][i].valid = true; l2_cache[set_l2][i].tag = tag_l2; l2_cache[set_l2][i].dirty = false;
 	int j;
 	for(j = 0; j < block_size / BURST_LEN; j++) {
-        ddr3_read(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j,  l2_cache[set_l2][i].block + BURST_LEN * j);
+        cache_ddr3_read(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j,  l2_cache[set_l2][i].block + BURST_LEN * j);
     }
 	l2_t += 200;
 	return i;
