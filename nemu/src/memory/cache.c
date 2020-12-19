@@ -76,7 +76,7 @@ int32_t l2_read(hwaddr_t addr) {
         memset(tmp, 1, sizeof(tmp));
 		int j;
         for (j = 0; j < block_size / BURST_LEN; j++) {		// 写回到被替换的block的地址....
-			uint32_t addr_last = ((tag_l2 << (l2_sets_bit + block_size_bit)) | (set_l2 <<block_size_bit));
+			uint32_t addr_last = ((l2_cache[set_l2][i].tag << (l2_sets_bit + block_size_bit)) | (set_l2 <<block_size_bit));
             cache_ddr3_write(addr_last + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
         }
 	}
