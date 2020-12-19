@@ -92,7 +92,7 @@ int32_t l2_read(hwaddr_t addr) {
 
 void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 	/* write through	&	not write allocate */
-	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit)) & ((1 << l1_tag_bit) - 1);
+	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
 	int32_t imm_l1 = (addr & (block_size - 1));
 	bool hit = false;
