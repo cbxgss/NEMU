@@ -13,7 +13,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	// printf("addr(r) : 0x%x\teip : 0x%x\n", addr, cpu.eip);													
 	/* 原来的代码 */
-	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	/* 加上 chahe 之后的代码 */
 	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
 	int32_t i = l2_read(addr);
@@ -41,7 +41,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	// printf("addr(w) :0x%x\n", addr);																	
 	/* 原来的代码 */
-	// dram_write(addr, len, data); return;
+	dram_write(addr, len, data); return;
 	/* 加入cache后的代码 */
 	l2_write(addr, len, data);
 }
