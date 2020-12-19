@@ -4,8 +4,8 @@
 #include <time.h>
 
 void dram_write(hwaddr_t addr, size_t len, uint32_t data);
-void ddr3_read (hwaddr_t, void *);
-void ddr3_write (hwaddr_t, void *, uint8_t *);
+void ddr3_read (hwaddr_t addr, void* data);
+void ddr3_write (hwaddr_t addr, void *data, uint8_t *mask);
 
 void init_cache() {
 	l1_t = l2_t = 0;
