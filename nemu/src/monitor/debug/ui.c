@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/cache.h>
 
 void cpu_exec(uint32_t);
 
@@ -85,6 +86,11 @@ static int cmd_p(char *args){
 	if(!success) printf("p Wrong\n");
 	printf("0x%x = %d\n", rax, rax);
 	return 0;
+}
+
+static int cmd_p_cache() {
+	p_cache_t();
+	return 1;
 }
 
 static int cmd_w(char *args){
@@ -169,6 +175,7 @@ static struct {
 	{ "si", "单步执行", cmd_si },
 	{ "info", "打印程序状态", cmd_info },
 	{ "p", "表达式求值", cmd_p },
+	{ "p_cache", "cache命中状况", cmd_p_cache },
 	{ "x", "扫描内存", cmd_x },
 	{ "w", "设置监视点", cmd_w },
 	{ "d", "删除监视点", cmd_d },
