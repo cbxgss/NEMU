@@ -2,6 +2,7 @@
 #include "burst.h"
 #include <stdlib.h>
 #include <time.h>
+#include <cpu/reg.h>
 
 void dram_write(hwaddr_t addr, size_t len, uint32_t data);
 void cache_ddr3_read (hwaddr_t addr, void* data);
@@ -134,7 +135,7 @@ void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, len);	// l2
 		}
 		else {	// 至少2块
-			if((addr >= 0x801dfc) && (addr <= 0x801dfc+6)) puts("qwq");
+			if((addr >= 0x801dfc) && (addr <= 0x801dfc+6)) printf("eip = 0x%x\n", cpu.eip);
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, block_size - imm_l2);								// 低位低地址
 			l2_write(addr + block_size - imm_l2, len - (block_size - imm_l2), data >> (block_size - imm_l2));	// 高位高地址
 		}
