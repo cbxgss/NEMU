@@ -108,7 +108,7 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, len);	// l1
 			l2_write(addr, len, data);								// l2
 		}
-		else {	// 两个块
+		else {	// 至少2块
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, block_size - imm_l1);				// 低位低地址
 			l2_write(addr, block_size - imm_l1, data);
 			l1_write(addr + block_size - imm_l1, len - (block_size - imm_l1), data >> (block_size - imm_l1)); // 高位高地址
@@ -135,7 +135,7 @@ void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 		if(imm_l2 + len <= block_size) {
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, len);	// l2
 		}
-		else {	// 两个块
+		else {	// 至少2块
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, block_size - imm_l2);								// 低位低地址
 			l2_write(addr + block_size - imm_l2, len - (block_size - imm_l2), data >> (block_size - imm_l2));	// 高位高地址
 		}
