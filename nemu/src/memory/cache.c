@@ -71,7 +71,7 @@ int32_t l2_read(hwaddr_t addr) {
 		if ( !l2_cache[set_l2][i].valid ) break;
 	}
 	if(i == l2_ways) i = rand() % l2_ways;	// 替换算法 write back 需要写回
-	if(l2_cache[set_l2][i].valid) { // 被改动了，需要写回
+	if(l2_cache[set_l2][i].valid && l2_cache[set_l2][i].dirty) { // 被改动了，需要写回
 		uint8_t tmp[BURST_LEN * 2];
         memset(tmp, 1, sizeof(tmp));
 		int j;
