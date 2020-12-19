@@ -55,6 +55,7 @@ clean: clean-cpp
 ##### some convinient rules #####
 
 USERPROG := obj/testcase/print-FLOAT
+USERPROG := obj/testcase/add
 # USERPROG := obj/testcase/matrix-mul
 
 ENTRY := $(USERPROG)
