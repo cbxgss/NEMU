@@ -46,7 +46,7 @@ int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果mis
 		if ( !l1_cache[set_l1][i].valid ) break;
 	}
 	if(i == l1_ways) i = rand() % l1_ways;	// 替换算法 write through 不用写回
-	printf("读取l1[%d][%d]\n", set_l1, i);																
+	printf("读取 l1[%d][%d]\n", set_l1, i);																
 	// 复制到这个块
 	l1_cache[set_l1][i].valid = true; l1_cache[set_l1][i].tag = tag_l1;
 	int set_l2 = (addr >> l2_sets_bit) & (l2_sets - 1); int ii = l2_read(addr);
@@ -69,7 +69,7 @@ int32_t l2_read(hwaddr_t addr) {
 		if ( !l2_cache[set_l2][i].valid ) break;
 	}
 	if(i == l2_ways) i = rand() % l2_ways;	// 替换算法 write back 需要写回
-	printf("读取l2[%d][%d]\n", set_l2, i);																
+	printf("读取 l2[%d][%d]\n", set_l2, i);																
 	if(l2_cache[set_l2][i].valid && l2_cache[set_l2][i].dirty) { // 被改动了，需要写回
 	puts("替换");
 		uint8_t tmp[BURST_LEN * 2];
@@ -101,7 +101,7 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 		}
 	}
 	if(hit) {	// write through 都改
-		printf("写入l1[%d][%d]\n", set_l1, i);																				
+		printf("写入 l1[%d][%d]\n", set_l1, i);																				
 		if(imm_l1 + len <= block_size) {
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, len);	// l1
 		}
@@ -126,7 +126,7 @@ void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 		}
 	}
 	if(hit) {	// write back 只改l2, 不改dram
-		printf("写入l2[%d][%d]\n", set_l2, i);																	
+		printf("写入 l2[%d][%d]\n", set_l2, i);																	
 		l2_cache[set_l2][i].dirty = true;
 		if(imm_l2 + len <= block_size) {
 			memcpy(l2_cache[set_l2][i].block + imm_l2, &data, len);	// l2
