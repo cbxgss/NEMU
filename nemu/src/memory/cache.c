@@ -30,8 +30,7 @@ void p_cache_t() {
 	printf("(l1: %lu)\t(l2: %lu)\n", l1_t, l2_t);
 }
 
-// 返回组号，如果miss，先处理
-int32_t l1_read(hwaddr_t addr) {
+int32_t l1_read(hwaddr_t addr) { // 返回组号，如果miss，先处理，再返回
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
 	int i;
@@ -55,8 +54,7 @@ int32_t l1_read(hwaddr_t addr) {
 	memcpy(l1_cache[set_l1][i].block, l2_cache[set_l2][ii].block, block_size);
 	l1_t += 200; return i;
 }
-/*	
-	int32_t l2_read(hwaddr_t addr) {
+int32_t l2_read(hwaddr_t addr) {
 	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
 	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
 	int i;
@@ -67,8 +65,8 @@ int32_t l1_read(hwaddr_t addr) {
 			l2_t += 2; return i;
 		}
 	}
-	// miss*******************
-	// 找到位置
+	/* miss */
+	/* 找到位置 */
 	for (i = 0; i < l2_ways; i++) {			// 有空位
 		if ( !l2_cache[set_l2][i].valid ) break;
 	}
@@ -83,7 +81,7 @@ int32_t l1_read(hwaddr_t addr) {
 			cache_ddr3_write(addr_pre + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
         }
 	}
-	// 复制到这个块
+	/* 复制到这个块 */
 	l2_cache[set_l2][i].valid = true; l2_cache[set_l2][i].tag = tag_l2; l2_cache[set_l2][i].dirty = false;
 	int j;
 	for(j = 0; j < block_size / BURST_LEN; j++) {
@@ -91,40 +89,8 @@ int32_t l1_read(hwaddr_t addr) {
     }
 	l2_t += 200; return i;
 }
-*/
-int l2_read(hwaddr_t addr){
-    uint32_t tag = (addr >> (block_size_bit + l2_sets_bit));
-    uint32_t gid = (addr >> block_size_bit) & (l2_sets - 1);
-    uint32_t bst = (addr >> block_size_bit) << block_size_bit;
-    int i;
-    int g = gid * l2_ways;
-    for(i = g; i < g + l2_ways; ++ i){
-        if(tag == l2_cache[0][i].tag && l2_cache[0][i].valid){
-            return i;
-        }
-    }
-    // not hit
-    int id = g + rand() % l2_ways;
-    // write back
-    if(l2_cache[0][id].valid && l2_cache[0][id].dirty){
-        uint8_t ret[BURST_LEN * 2];
-        uint32_t st = (l2_cache[0][id].tag << (l2_sets_bit + block_size_bit)) | (gid << block_size_bit);
-        memset(ret,1,sizeof ret);
-        for (i = 0;i < block_size / BURST_LEN; ++ i){
-            cache_ddr3_write(st + BURST_LEN * i, l2_cache[0][id].block + BURST_LEN * i,ret);
-        }
-    }
-    // update
-    for(i = 0; i < block_size / BURST_LEN; ++ i){
-        cache_ddr3_read(bst + BURST_LEN * i, l2_cache[0][id].block + BURST_LEN * i);
-    }
-    // printf("i value %d\n",i);
-    l2_cache[0][id].tag = tag;
-    l2_cache[0][id].valid = 1;
-    l2_cache[0][id].dirty = 0;
-    return id;
-}
-void l1_write(hwaddr_t addr, size_t len, uint32_t data) {
+
+void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 	/* write through	&	not write allocate */
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
@@ -149,7 +115,7 @@ void l1_write(hwaddr_t addr, size_t len, uint32_t data) {
 	// not write allocate 直接往l2写	or	write through往l2写
 	l2_write(addr, len, data);
 }
-void l2_write(hwaddr_t addr, size_t len, uint32_t data) {
+void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 	/* write back	&	write allocate */
 	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
 	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
