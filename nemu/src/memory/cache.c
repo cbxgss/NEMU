@@ -81,7 +81,7 @@ int32_t l2_read(hwaddr_t addr) {
 	for(j = 0; j < block_size / BURST_LEN; j++) {
         cache_ddr3_read(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j,  l2_cache[set_l2][i].block + BURST_LEN * j);
     }
-	for(j = 0; j < block_size; j++) {
+	for(j = 0; j < block_size; j++) {					// 打印这个块的信息
 		printf("%x ", l2_cache[set_l2][i].block[j]);
 	} puts("");
 	l2_t += 200; return i;
