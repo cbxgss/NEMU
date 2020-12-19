@@ -27,6 +27,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 		memcpy(tmp + block_size - imm_l1, l1_cache[set_last][i_last].block, len - (block_size - imm_l1));		// 复制剩下的第2个块
 	}
 	else memcpy(tmp, l1_cache[set_l1][i].block + imm_l1, len);						/* 一个块 */
+	printf("%s\n", tmp);
 	int qwq = 0; return unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));					//	在nemu/include/macro.h
 }
 
@@ -59,3 +60,11 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data) {
 	lnaddr_write(addr, len, data);
 }
 
+// addr : 0x100000
+// addr : 0x100001
+// addr : 0x100000
+// addr : 0x100001
+// addr : 0x100002
+// addr : 0x100003
+// addr : 0x100004
+//   100000:   bd 00 00 00 00                        movl $0x0,%ebp
