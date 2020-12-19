@@ -36,7 +36,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	printf("addr(w) :0x%x\n", addr);																	
+	// printf("addr(w) :0x%x\n", addr);																	
 	/* 原来的代码 */
 	// dram_write(addr, len, data); return;
 	/* 加入cache后的代码 */

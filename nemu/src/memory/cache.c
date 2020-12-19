@@ -91,6 +91,7 @@ int32_t l2_read(hwaddr_t addr) {
 }
 
 void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
+	l1_read(addr);
 	/* write through	&	not write allocate */
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
@@ -116,6 +117,7 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 	l2_write(addr, len, data);
 }
 void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
+	l2_read(addr);
 	/* write back	&	write allocate */
 	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
 	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);
