@@ -24,7 +24,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 		// puts("two block");
 		memcpy(tmp, l2_cache[set_l2][i].block + imm_l2, block_size - imm_l2);									// 复制第一个块的内容
 		int32_t i_last = l2_read(addr + block_size - imm_l2);
-		int32_t set_last = ((addr + block_size - imm_l2) >> l2_sets_bit) & (l2_sets - 1);
+		int32_t set_last = ((addr + block_size - imm_l2) >> block_size_bit) & (l2_sets - 1);
 		memcpy(tmp + block_size - imm_l2, l2_cache[set_last][i_last].block, len - (block_size - imm_l2));		// 复制剩下的第2个块
 	}
 	else memcpy(tmp, l2_cache[set_l2][i].block + imm_l2, len);						/* 一个块 */
@@ -34,8 +34,8 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	// }
 	// puts("");
 	int qwq = 0; uint32_t ret = unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));					//	在nemu/include/macro.h
-	uint32_t ans = dram_read(addr, len) & (~0u >> ((4 - len) << 3));																	
-	printf("ret is 0x%x.\tAnd it is 0x%x in dram.\n", ret, ans);																				
+	// uint32_t ans = dram_read(addr, len) & (~0u >> ((4 - len) << 3));																	
+	// printf("ret is 0x%x.\tAnd it is 0x%x in dram.\n", ret, ans);																				
 	return ret;
 }
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
