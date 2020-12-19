@@ -30,7 +30,7 @@ void p_cache_t() {
 	printf("(l1: %lu)\t(l2: %lu)\n", l1_t, l2_t);
 }
 
-int32_t l1_read(hwaddr_t addr) { // 返回组号，如果miss，先处理，再返回
+int32_t l1_read(hwaddr_t addr) { // 返回组号，如果miss，先处理
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
 	int i;
