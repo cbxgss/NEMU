@@ -30,7 +30,8 @@ void p_cache_t() {
 	printf("(l1: %lu)\t(l2: %lu)\n", l1_t, l2_t);
 }
 
-int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果miss，先处理，再返回
+// 返回组号，如果miss，先处理
+int32_t l1_read(hwaddr_t addr) {
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
 	int i;
@@ -90,8 +91,7 @@ int32_t l2_read(hwaddr_t addr) {
 	l2_t += 200; return i;
 }
 
-void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
-	l1_read(addr);
+void l1_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* write through	&	not write allocate */
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
@@ -116,8 +116,7 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 	// not write allocate 直接往l2写	or	write through往l2写
 	l2_write(addr, len, data);
 }
-void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
-	l2_read(addr);
+void l2_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* write back	&	write allocate */
 	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
 	int32_t set_l2 = (addr >> block_size_bit) & (l2_sets - 1);

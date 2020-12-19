@@ -40,7 +40,7 @@ void p_cache_t();
 
 int32_t l1_read(hwaddr_t addr);
 int32_t l2_read(hwaddr_t addr);
-void l1_write(hwaddr_t addr,size_t len, uint32_t data);
-void l2_write(hwaddr_t addr,size_t len, uint32_t data);
+void l1_write(hwaddr_t addr, size_t len, uint32_t data);
+void l2_write(hwaddr_t addr, size_t len, uint32_t data);
 
 #endif
