@@ -73,3 +73,6 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data) {
 // addr : 0x100003
 // addr : 0x100004
 //   100000:   bd 00 00 00 00                        movl $0x0,%ebp
+
+// 0X100000        BD 00 00 00 00 BC 00 00 
+// 0X100008        00 08 E9 91 07 00 00 90 
