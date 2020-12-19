@@ -11,7 +11,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 // 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	// printf("addr(r) : 0x%x\teip : 0x%x\n", addr, cpu.eip);													
+	printf("addr(r) : 0x%x\teip : 0x%x\n", addr, cpu.eip);													
 	/* 原来的代码 */
 	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	/* 加上 chahe 之后的代码 */
@@ -33,8 +33,8 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	// }
 	// puts("");
 	int qwq = 0; uint32_t ret = unalign_rw(tmp + qwq, 4) & (~0u >> ((4 - len) << 3));					//	在nemu/include/macro.h
-	// uint32_t ans = dram_read(addr, len) & (~0u >> ((4 - len) << 3));																	
-	// printf("ret is %u.\tAnd it should be %d\n", ret, ans);																				
+	uint32_t ans = dram_read(addr, len) & (~0u >> ((4 - len) << 3));																	
+	printf("ret is %u.\tAnd it should be %d\n", ret, ans);																				
 	return ret;
 }
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {

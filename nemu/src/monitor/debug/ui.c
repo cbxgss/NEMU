@@ -71,8 +71,8 @@ static int cmd_x(char *args){
 	if(!success) printf("x Wrong\n");
 	int i;
 	for( i=0; i < len_; i++){
-		if(i % 8 == 0) printf("0X%06X \t", x0_ + i);
-		printf("%02X ", swaddr_read(x0_ + i, 1));
+		if(i % 8 == 0) printf("0x%06x \t", x0_ + i);
+		printf("%02x ", swaddr_read(x0_ + i, 1));
 		if((i+1) % 8 == 0) printf("\n");
 	}
 	if((i+1) % 8) printf("\n");
