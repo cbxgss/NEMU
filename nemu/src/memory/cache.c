@@ -65,7 +65,7 @@ int32_t l2_read(hwaddr_t addr) {
 		if ( !l2_cache[set_l2][i].valid ) break;
 	}
 	if(i == l2_ways) i = rand() % l2_ways;	// 替换算法 write back 需要写回
-	printf("读取miss\tl2[%d][%d]\n", set_l2, i);																
+	// printf("读取miss\tl2[%d][%d]\n", set_l2, i);																
 	if(l2_cache[set_l2][i].valid && l2_cache[set_l2][i].dirty) { // 被改动了，需要写回
 		// puts("替换");																						
 		uint8_t tmp[BURST_LEN * 2];
@@ -81,10 +81,10 @@ int32_t l2_read(hwaddr_t addr) {
 	for(j = 0; j < block_size / BURST_LEN; j++) {
         cache_ddr3_read(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j,  l2_cache[set_l2][i].block + BURST_LEN * j);
     }
-	printf("l2[%x][%x]: ", set_l2, i);
-	for(j = 0; j < block_size; j++) {					// 打印这个块的信息
-		printf("%x ", l2_cache[set_l2][i].block[j]);
-	} puts("");
+	// printf("l2[%x][%x]: ", set_l2, i);																			
+	// for(j = 0; j < block_size; j++) {					// 打印这个块的信息
+	// 	printf("%x ", l2_cache[set_l2][i].block[j]);
+	// } puts("");
 	l2_t += 200; return i;
 }
 
