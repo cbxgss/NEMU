@@ -11,7 +11,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 // 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	/* 原来的代码 */
-	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	/* 加上 chahe 之后的代码 */
 	int32_t set_l1 = (addr >> l1_sets_bit) & (l1_sets - 1);
 	int32_t i = l1_read(addr);
@@ -30,7 +30,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* 原来的代码 */
-	dram_write(addr, len, data); return;
+	// dram_write(addr, len, data); return;
 	/* 加入cache后的代码 */
 	l1_write(addr, len, data);
 }
