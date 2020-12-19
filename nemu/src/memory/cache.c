@@ -37,8 +37,7 @@ int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果mis
 	for (i = 0; i < l1_ways; i++) {	//在set中每个block检查
 		if ( !l1_cache[set_l1][i].valid ) continue;
 		if ( l1_cache[set_l1][i].tag == tag_l1 ) {
-			l1_t += 2;
-			return i;
+			l1_t += 2; return i;
 		}
 	}
 	/* miss */
@@ -49,11 +48,9 @@ int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果mis
 	if(i == l1_ways) i = rand() % l1_ways;	// 替换算法 write through 不用写回
 	// 复制到这个块
 	l1_cache[set_l1][i].valid = true; l1_cache[set_l1][i].tag = tag_l1;
-	int ii = l2_read(addr);
-	int set_l2 = (addr >> l2_sets_bit) & (l2_sets - 1);
+	int set_l2 = (addr >> l2_sets_bit) & (l2_sets - 1); int ii = l2_read(addr);
 	memcpy(l1_cache[set_l1][i].block, l2_cache[set_l2][ii].block, block_size);
-	l1_t += 200;
-	return i;
+	l1_t += 200; return i;
 }
 int32_t l2_read(hwaddr_t addr) {
 	int32_t tag_l2 = (addr >> (l2_sets_bit + block_size_bit));
@@ -74,10 +71,9 @@ int32_t l2_read(hwaddr_t addr) {
 	if(l2_cache[set_l2][i].valid && l2_cache[set_l2][i].dirty) { // 被改动了，需要写回
 		uint8_t tmp[BURST_LEN * 2];
         memset(tmp, 1, sizeof(tmp));
-		int j;
+		int j; uint32_t addr_pre = ((l2_cache[set_l2][i].tag << (l2_sets_bit + block_size_bit)) | (set_l2 <<block_size_bit));
         for (j = 0; j < block_size / BURST_LEN; j++) {		// 写回到被替换的block的地址....
-			uint32_t addr_last = ((l2_cache[set_l2][i].tag << (l2_sets_bit + block_size_bit)) | (set_l2 <<block_size_bit));
-            cache_ddr3_write(addr_last + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
+			cache_ddr3_write(addr_pre + BURST_LEN * j, l2_cache[set_l2][i].block + BURST_LEN * j, tmp);
         }
 	}
 	/* 复制到这个块 */
@@ -86,8 +82,7 @@ int32_t l2_read(hwaddr_t addr) {
 	for(j = 0; j < block_size / BURST_LEN; j++) {
         cache_ddr3_read(((addr >> block_size_bit) << block_size_bit) + BURST_LEN * j,  l2_cache[set_l2][i].block + BURST_LEN * j);
     }
-	l2_t += 200;
-	return i;
+	l2_t += 200; return i;
 }
 
 void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
@@ -95,8 +90,7 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
 	int32_t set_l1 = (addr >> block_size_bit) & (l1_sets - 1);
 	int32_t imm_l1 = (addr & (block_size - 1));
-	bool hit = false;
-	int i;
+	bool hit = false; int i;
 	for (i = 0; i < l1_ways; i++) {	//在set中每个block检查
 		if ( !l1_cache[set_l1][i].valid ) continue;
 		if ( l1_cache[set_l1][i].tag == tag_l1 ) {
@@ -106,17 +100,14 @@ void l1_write(hwaddr_t addr,size_t len, uint32_t data) {
 	if(hit) {	// write through 都改
 		if(imm_l1 + len <= block_size) {
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, len);	// l1
-			l2_write(addr, len, data);								// l2
 		}
 		else {	// 至少2块
 			memcpy(l1_cache[set_l1][i].block + imm_l1, &data, block_size - imm_l1);				// 低位低地址
-			l2_write(addr, block_size - imm_l1, data);
 			l1_write(addr + block_size - imm_l1, len - (block_size - imm_l1), data >> (block_size - imm_l1)); // 高位高地址
 		}
 	}
-	else { // not write allocate 直接往l2写
-		l2_write(addr, len, data);
-	}
+	// not write allocate 直接往l2写	or	write through往l2写
+	l2_write(addr, len, data);
 }
 void l2_write(hwaddr_t addr,size_t len, uint32_t data) {
 	/* write back	&	write allocate */
