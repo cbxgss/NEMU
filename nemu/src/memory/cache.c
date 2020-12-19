@@ -90,7 +90,38 @@ int32_t l2_read(hwaddr_t addr) {
     }
 	l2_t += 200; return i;
 }
-
+int read_L2(hwaddr_t addr){
+    uint32_t tag = (addr >> (block_size_bit + l2_sets_bit));
+    uint32_t gid = (addr >> block_size_bit) & (l2_sets - 1);
+    uint32_t bst = (addr >> block_size_bit) << block_size_bit;
+    int i;
+    int g = gid * l2_ways;
+    for(i = g; i < g + l2_ways; ++ i){
+        if(tag == l2_cache[0][i].tag && l2_cache[0][i].valid){
+            return i;
+        }
+    }
+    // not hit
+    int id = g + rand() % l2_ways;
+    // write back
+    if(l2_cache[0][id].valid && l2_cache[0][id].dirty){
+        uint8_t ret[BURST_LEN * 2];
+        uint32_t st = (l2_cache[0][id].tag << (l2_sets_bit + block_size_bit)) | (gid << block_size_bit);
+        memset(ret,1,sizeof ret);
+        for (i = 0;i < block_size / BURST_LEN; ++ i){
+            cache_ddr3_write(st + BURST_LEN * i, l2_cache[0][id].block + BURST_LEN * i,ret);
+        }
+    }
+    // update
+    for(i = 0; i < block_size / BURST_LEN; ++ i){
+        cache_ddr3_read(bst + BURST_LEN * i, l2_cache[0][id].block + BURST_LEN * i);
+    }
+    // printf("i value %d\n",i);
+    l2_cache[0][id].tag = tag;
+    l2_cache[0][id].valid = 1;
+    l2_cache[0][id].dirty = 0;
+    return id;
+}
 void l1_write(hwaddr_t addr, size_t len, uint32_t data) {
 	/* write through	&	not write allocate */
 	int32_t tag_l1 = (addr >> (l1_sets_bit + block_size_bit));
