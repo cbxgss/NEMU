@@ -37,7 +37,7 @@ int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果mis
 	for (i = 0; i < l1_ways; i++) {	//在set中每个block检查
 		if ( !l1_cache[set_l1][i].valid ) continue;
 		if ( l1_cache[set_l1][i].tag == tag_l1 ) {
-			printf("读取hit l1[%d][%d]\n", set_l1, i);																
+			printf("读取hit\tl1[%d][%d]\n", set_l1, i);																
 			l1_t += 2; return i;
 		}
 	}
@@ -47,7 +47,7 @@ int32_t l1_read(hwaddr_t addr) { // 返回是set_index的哪个block，如果mis
 		if ( !l1_cache[set_l1][i].valid ) break;
 	}
 	if(i == l1_ways) i = rand() % l1_ways;	// 替换算法 write through 不用写回
-	printf("读取miss l1[%d][%d]\n", set_l1, i);																
+	printf("读取miss\tl1[%d][%d]\n", set_l1, i);																
 	// 复制到这个块
 	l1_cache[set_l1][i].valid = true; l1_cache[set_l1][i].tag = tag_l1;
 	int set_l2 = (addr >> l2_sets_bit) & (l2_sets - 1); int ii = l2_read(addr);
@@ -61,7 +61,7 @@ int32_t l2_read(hwaddr_t addr) {
 	for (i = 0; i < l2_ways; i++) {	//在set中每个block检查
 		if ( !l2_cache[set_l2][i].valid ) continue;
 		if ( l2_cache[set_l2][i].tag == tag_l2 ) {
-			printf("读取hit l2[%d][%d]\n", set_l2, i);																
+			printf("读取hit\tl2[%d][%d]\n", set_l2, i);																
 			l2_t += 2; return i;
 		}
 	}
@@ -71,7 +71,7 @@ int32_t l2_read(hwaddr_t addr) {
 		if ( !l2_cache[set_l2][i].valid ) break;
 	}
 	if(i == l2_ways) i = rand() % l2_ways;	// 替换算法 write back 需要写回
-	printf("读取miss l2[%d][%d]\n", set_l2, i);																
+	printf("读取miss\tl2[%d][%d]\n", set_l2, i);																
 	if(l2_cache[set_l2][i].valid && l2_cache[set_l2][i].dirty) { // 被改动了，需要写回
 	puts("替换");
 		uint8_t tmp[BURST_LEN * 2];
