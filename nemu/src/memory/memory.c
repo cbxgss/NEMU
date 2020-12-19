@@ -11,7 +11,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 // 读从addr开始的len个字节
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	// printf("addr(r) : 0x%x\teip : 0x%x\n", addr, cpu.eip);													
+	printf("addr(r) : 0x%x\teip : 0x%x\n", addr, cpu.eip);													
 	/* 原来的代码 */
 	// return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
 	/* 加上 chahe 之后的代码 */
