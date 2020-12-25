@@ -65,3 +65,94 @@ This is a fork of the demo of NJU 2013 oslab0(the origin repository has been del
 ## NEMU-PAL
 
 This is a fork of Wei Mingzhi's SDLPAL(https://github.com/CecilHarvey/sdlpal). It is obtained by refactoring the original SDLPAL, as well as porting to NEMU.
+
+
+
+
+
+# PA3
+
+## 分段
+
+### 16位的8086
+
+$$
+physical\_address = (seg\_reg<<4) + offset
+$$
+
+- seg_reg： 段寄存器的值
+
+- offset：偏移量
+
+- seg_reg和offset的搭配：
+
+	|              |                     seg_reg寄存器 16位                     | offset寄存器 |                             说明                             |
+	| :----------: | :--------------------------------------------------------: | :----------: | :----------------------------------------------------------: |
+	|    取指令    |                             CS                             |    IPeip)    |                                                              |
+	| 内存数据访问 |         DS，也可以显式使用ES<br />(extra segment)          |              | $$mov\quad\%ax,(\%bx)$$<br />用寄存器传输语言（RTL）描述就是：$$M[DS:BX]<-R[AX]$$ |
+	|     堆栈     | SS(stack segment) 或 SP(stack pointer) 和 BP(base pointer) |              |                                                              |
+	|    字符串    |                             ES                             |              |                                                              |
+
+#### 问题：
+
+1. 1MB内存容量的瓶颈
+2. 恶意程序(段寄存器随便改)
+
+### 32位的80386
+
+- CR0 寄存器：
+
+	32位4GB足够了，理论上可以去掉段寄存器，但为了兼容，设置了CR0寄存器的PE位作为开关，为1时进入保护模式
+
+- Segment Descriptor 段描述符：
+
+	64位，需要放内存里
+
+	![image-20201225200318999](README.assets/image-20201225200318999.png)
+
+- GDT **全局**描述符表：
+
+	一个数组，数组元素是段描述符，在80386里，段寄存器存其索引
+
+- GDTR 寄存器：
+
+	存放GDT的首地址（线性地址，无需再经过分段机制的地址翻译）和长度
+
+- 段选择符：
+
+	段寄存器除了存放段描述符的索引，还包含了一些属性
+
+	![image-20201225192350055](README.assets/image-20201225192350055.png)
+
+	
+
+- LDT 每个进程的描述符表
+
+- LDTR寄存器：
+
+	存放LDT的位置(实际上是LDT段在GDT中的索引)
+
+#### 80386的分段机制
+
+1. 通过段寄存器的段选择符TI位，决定在哪个表里查找（在LDT还是GDT）
+2. 读GDTR或LDTR
+3. 读段选择符的index，找到段描述符
+4. 在段描述符中读段的基地址，和虚拟地址相加得线性地址
+
+### 80286就有了的进程特权等级
+
+| 进程等级（0最高） |      进程       |
+| :---------------: | :-------------: |
+|         0         | 内核，GDT，页表 |
+|         1         |                 |
+|         2         |   一般的程序    |
+|         3         |                 |
+
+- DPL域：在段描述符中，描述一个段所在的特权级
+- RPL域：段选择符中，描述了请求者所在的特权级
+- CPL：指示当前进程的特权级，一般与当前CS寄存器指向的段描述符的DPL相等
+
+$$
+数据段切换操作合法\quad iff\quad 请求者和当前进程比目标段权限高
+$$
+
