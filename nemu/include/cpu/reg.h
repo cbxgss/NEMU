@@ -2,10 +2,12 @@
 #define __REG_H__
 
 #include "common.h"
+#include "../../lib-common/x86-inc/cpu.h"
 
 enum { R_EAX, R_ECX, R_EDX, R_EBX, R_ESP, R_EBP, R_ESI, R_EDI };
 enum { R_AX, R_CX, R_DX, R_BX, R_SP, R_BP, R_SI, R_DI };
 enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
+enum { R_CS, R_DS, R_SS, R_ES};
 
 /* TODO: Re-organize the `CPU_state' structure to match the register
  * encoding scheme in i386 instruction format. For example, if we
@@ -13,6 +15,11 @@ enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
  * cpu.gpr[1]._8[1], we will get the 'ch' register. Hint: Use `union'.
  * For more details about the register encoding scheme, see i386 manual.
  */
+
+typedef struct{
+	uint16_t selector;				// 段描述符
+	uint32_t base, limit, type;		// 隐藏信息
+} S_reg;
 
 typedef struct {
 	// reg
@@ -58,7 +65,23 @@ typedef struct {
 		};
 		uint32_t eflags;
 	};
-	
+	// 段
+	struct{
+		uint32_t base, limit;	// GDT的 首地址 和 长度
+	} GDTR;
+	CR0 cr0;
+	union{
+		struct{
+			S_reg sreg[4];	// 为了方便swaddr_read和seg_translate
+		};
+		struct{
+			S_reg CS, DS, SS, ES;
+			// CS是代码段寄存器
+			// DS是数据段寄存器
+			// SS是堆栈段寄存器
+			// ES是扩展段寄存器
+		};
+	};
 } CPU_state;
 
 extern CPU_state cpu;

@@ -4,7 +4,7 @@
 /* the Control Register 0 */
 typedef union CR0 {
 	struct {
-		uint32_t protect_enable      : 1;
+		uint32_t protect_enable      : 1;	// PE
 		uint32_t monitor_coprocessor : 1;
 		uint32_t emulation           : 1;
 		uint32_t task_switched       : 1;
