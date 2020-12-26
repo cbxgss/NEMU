@@ -70,6 +70,7 @@ typedef struct {
 		uint32_t base, limit;	// GDT的 首地址 和 长度
 	} GDTR;
 	CR0 cr0;
+	CR3 cr3;
 	union{
 		struct{
 			S_reg sreg[4];	// 为了方便swaddr_read和seg_translate

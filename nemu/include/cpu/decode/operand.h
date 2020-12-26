@@ -10,7 +10,11 @@ typedef struct {
 	size_t size;
 	union {
 		uint32_t reg;		//寄存器
-		swaddr_t addr;		//地址
+		// swaddr_t addr;		//地址
+		struct {
+			swaddr_t addr;
+			uint8_t sreg;
+		};
 		uint32_t imm;		//u偏移量
 		int32_t simm;		//偏移量
 	};

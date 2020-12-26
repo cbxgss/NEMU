@@ -28,4 +28,33 @@ make_helper(concat(mov_moffs2a_, SUFFIX)) {
 	return 5;
 }
 
+make_helper(mov_cr2r) {
+	uint8_t tmp = instr_fetch(eip+1, 1);
+	uint8_t cr = (tmp >> 3) & 7;	// 倒数4~6位
+	uint8_t reg = tmp & 7;			// 后3位
+	if(cr == 0) {
+		reg_l(reg) = cpu.cr0.val;
+		print_asm("mov cr0 %%%s", REG_NAME(reg));
+	}
+	else if(cr == 3) {
+		reg_l(reg) = cpu.cr3.val;
+		print_asm("mov cr3 %%%s", REG_NAME(reg));
+	}
+	return 2;
+}
+make_helper(mov_r2cr) {
+	uint8_t tmp = instr_fetch(eip+1, 1);
+	uint8_t cr = (tmp >> 3) & 7;	// 倒数4~6位
+	uint8_t reg = tmp & 7;			// 后3位
+	if(cr == 0) {
+		cpu.cr0.val = reg_l(reg);
+		print_asm("mov %%%s cr0", REG_NAME(reg));
+	}
+	else if(cr == 3) {
+		cpu.cr3.val = reg_l(reg);
+		print_asm("mov %%%s cr3", REG_NAME(reg));
+	}
+	return 2;
+}
+
 #include "cpu/exec/template-end.h"
