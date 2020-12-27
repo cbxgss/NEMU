@@ -72,7 +72,7 @@ static int cmd_x(char *args){
 	int i;
 	for( i=0; i < len_; i++){
 		if(i % 8 == 0) printf("0x%06x \t", x0_ + i);
-		printf("%02x ", swaddr_read(x0_ + i, 1));
+		printf("%02x ", swaddr_read(x0_ + i, 1, R_DS));
 		if((i+1) % 8 == 0) printf("\n");
 	}
 	if((i+1) % 8) printf("\n");
@@ -152,9 +152,9 @@ static int cmd_bt(char *args) {
 			}
 		}
 		//读取当前栈帧信息
-		now.prev_ebp = swaddr_read(ebp, 4);
-		now.ret_addr = swaddr_read(ebp + 4 , 4);
-		int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*k, 4);
+		now.prev_ebp = swaddr_read(ebp, 4, R_SS);
+		now.ret_addr = swaddr_read(ebp + 4 , 4, R_SS);
+		int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*k, 4, R_SS);
 		printf("(%d, %d, %d, %d)\n", now.args[0], now.args[1], now.args[2], now.args[3]);
 		//更新ebp
 		ebp = now.prev_ebp;		//更旧一层栈帧

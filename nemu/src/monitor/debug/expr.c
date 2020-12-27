@@ -306,7 +306,7 @@ int eval(int p, int q) {
 			if(tokens[dp].type == '+') {val1 = 0; val2 = eval(p+1, q);}
 			else if(tokens[dp].type == '-') {val1 = 0; val2 = eval(p+1, q);}
 			else if(tokens[dp].type == '!') return !eval(p+1, q);
-			else if(tokens[dp].type == Deref)  return swaddr_read(eval(p+1, q), 4);
+			else if(tokens[dp].type == Deref)  return swaddr_read(eval(p+1, q), 4, R_DS);
 		}else{
 			val1 = eval(p, dp - 1); val2 = eval(dp + 1, q);
 		}
