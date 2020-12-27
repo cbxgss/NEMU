@@ -78,8 +78,20 @@ static void load_entry() {
 	fclose(fp);
 }
 
+static void init_cr0(){
+	cpu.cr0.protect_enable = 0; // real mode
+	cpu.cr0.paging = 0;
+}
+static void init_cs(){
+	cpu.CS.base = 0, cpu.CS.limit = 0xffffffff;
+}
+
 void restart() {
 	/* Perform some initialization to restart a program */
+	init_eflags();
+	init_cache();
+	init_cr0();
+	init_cs();
 #ifdef USE_RAMDISK
 	/* Read the file with name `argv[1]' into ramdisk. */
 	init_ramdisk();
@@ -91,11 +103,6 @@ void restart() {
 	/* Set the initial instruction pointer. */
 	cpu.eip = ENTRY_START;
 
-	/* 初始化eflags */
-	init_eflags();
-
-	/* 初始化cache */
-	init_cache();
 	/* Initialize DRAM. */
 	init_ddr3();
 }

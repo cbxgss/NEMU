@@ -94,7 +94,7 @@ typedef struct{
 	};
 	union{
 		struct{
-			uint32_t b2: 8, a: 1, type: 3, s:	1, dpl: 2, p: 1, lim2: 4;
+			uint32_t b2: 8, a: 1, type: 3, s: 1, dpl: 2, p: 1, lim2: 4;
 			uint32_t avl: 1, : 1,x: 1, g: 1,b3: 8;
 		};
 		uint32_t p2;
