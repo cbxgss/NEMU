@@ -16,11 +16,6 @@ enum { R_CS, R_DS, R_SS, R_ES};
  * For more details about the register encoding scheme, see i386 manual.
  */
 
-typedef struct{
-	uint16_t selector;				// 段描述符
-	uint32_t base, limit, type;		// 隐藏信息
-} S_reg;
-
 typedef struct {
 	// reg
 	union {
@@ -71,7 +66,7 @@ typedef struct {
 	} GDTR;
 	CR0 cr0;
 	CR3 cr3;
-	union{
+	union{ // 段寄存器
 		struct{
 			S_reg sreg[4];	// 为了方便swaddr_read和seg_translate
 		};
@@ -84,6 +79,11 @@ typedef struct {
 		};
 	};
 } CPU_state;
+
+typedef struct{
+	uint16_t selector;				// 段描述符
+	uint32_t base, limit, type;		// 隐藏信息
+} S_reg;
 
 typedef struct{
 	union{
