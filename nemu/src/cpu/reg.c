@@ -42,7 +42,7 @@ void reg_test() {
 	assert(eip_sample == cpu.eip);
 }
 
-void sreg_set(uint8_t id){
+void sreg_set(uint8_t id){	// 根据段描述符 更新 段描述符高速缓存
 	lnaddr_t chart_addr = cpu.GDTR.base + ((cpu.sreg[id].selector >> 3) << 3);	//段描述符地址
 	sreg_info.p1 = lnaddr_read(chart_addr, 4);
 	sreg_info.p2 = lnaddr_read(chart_addr + 4, 4);
