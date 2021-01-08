@@ -18,7 +18,7 @@ enum { R_CS, R_DS, R_SS, R_ES};
 
 typedef struct{
 	uint16_t selector;				// 段选择符
-	uint32_t base, limit, type;		// 段描述符的信息
+	uint32_t base, limit, type;		// 段描述符高速缓存 段描述符的信息
 } S_reg;
 typedef struct {
 	/* reg */
@@ -70,7 +70,7 @@ typedef struct {
 	} GDTR;
 	CR0 cr0;
 	CR3 cr3;
-	union{ // 段寄存器
+	union{ // 段选择符
 		struct{
 			S_reg sreg[4];	// 为了方便swaddr_read和seg_translate
 		};
