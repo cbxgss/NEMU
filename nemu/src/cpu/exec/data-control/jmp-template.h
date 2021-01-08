@@ -21,7 +21,7 @@ make_instr_helper(i)
 make_instr_helper(rm)
 
 #if DATA_BYTE == 4
-extern Sreg_info sreg_info;
+// extern Sreg_info sreg_info;
 Sreg_info tmp;
 make_helper(ljmp){
     // sreg_info = tmp;
