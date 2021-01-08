@@ -24,7 +24,7 @@ make_instr_helper(rm)
 extern Sreg_info sreg_info;
 Sreg_info tmp;
 make_helper(ljmp){
-    sreg_info = tmp;
+    // sreg_info = tmp;
     cpu.eip = instr_fetch(cpu.eip+1, 4) - 7;
     cpu.CS.selector = instr_fetch(cpu.eip+1 + 4, 2);
 
