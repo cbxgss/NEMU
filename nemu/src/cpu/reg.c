@@ -52,4 +52,7 @@ void sreg_set(uint8_t id){	// 根据段描述符 更新 段描述符高速缓存
 		cpu.sreg[id].limit <<= 12;
 	}
 	printf("%d %x %x\n", id, cpu.sreg[id].base, cpu.sreg[id].limit);
+	for(id = 0; id < 4; id++){
+		printf("%d %x %x\n", id, cpu.sreg[id].base, cpu.sreg[id].limit);
+	}
 }
