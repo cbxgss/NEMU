@@ -51,5 +51,5 @@ void sreg_set(uint8_t id){
 	if (sreg_info.g == 1) {	//粒度位（G）：0表示段界限单位是B；1表示4KB
 		cpu.sreg[id].limit <<= 12;
 	}
-	printf("%d %d %d\n", id, cpu.sreg[id].base, cpu.sreg[id].limit);
+	printf("%d %x %x\n", id, cpu.sreg[id].base, cpu.sreg[id].limit);
 }
