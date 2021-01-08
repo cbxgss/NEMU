@@ -17,8 +17,8 @@ enum { R_CS, R_DS, R_SS, R_ES};
  */
 
 typedef struct{
-	uint16_t selector;				// 段描述符
-	uint32_t base, limit, type;		// 隐藏信息
+	uint16_t selector;				// 段选择符
+	uint32_t base, limit, type;		// 段描述符的信息
 } S_reg;
 typedef struct {
 	/* reg */
