@@ -99,7 +99,7 @@ Sreg_info sreg_info;
 
 extern CPU_state cpu;
 
-void sreg_set(uint8_t);
+// void sreg_set(uint8_t);
 
 static inline int check_reg_index(int index) {
 	assert(index >= 0 && index < 8);
