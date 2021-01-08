@@ -68,7 +68,7 @@ make_helper(mov_sreg2rm){
 	uint8_t sreg = (modrm >> 3) & 7;
 	uint8_t reg = (modrm & 7);
 	cpu.sreg[sreg].selector = reg_w(reg);
-	sreg_set(sreg);									// 更新描述符高速缓存
+	// sreg_set(sreg);									// 更新描述符高速缓存
 	print_asm("mov %s sreg%d", REG_NAME(reg), sreg);
 	return 2;
 }
