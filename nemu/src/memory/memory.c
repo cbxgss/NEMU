@@ -57,6 +57,7 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 /* 虚拟地址 */
 lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){ // 虚拟地址->线性地址
 	if (cpu.cr0.protect_enable == 0) return addr;
+	if(sreg == 1) puts("qwq");
 	return cpu.sreg[sreg].base + addr;
 }
 uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
