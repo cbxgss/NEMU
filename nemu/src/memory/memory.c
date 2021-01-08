@@ -9,7 +9,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
 
-// 读从addr开始的len个字节
+/* 物理地址 */
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	// printf("addr(r) : 0x%x\teip : 0x%x\n", addr, cpu.eip);													
 	/* 原来的代码 */
@@ -46,6 +46,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	l1_write(addr, len, data);
 }
 
+/* 线性地址 */
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 	return hwaddr_read(addr, len);
 }
@@ -53,6 +54,7 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 	hwaddr_write(addr, len, data);
 }
 
+/* 虚拟地址 */
 lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){
 	if (cpu.cr0.protect_enable == 0) return addr;
 	return cpu.sreg[sreg].base + addr;
@@ -67,15 +69,3 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 	lnaddr_t lnaddr = seg_translate(addr, len, sreg);
 	lnaddr_write(lnaddr, len, data);
 }
-
-// addr : 0x100000
-// addr : 0x100001
-// addr : 0x100000
-// addr : 0x100001
-// addr : 0x100002
-// addr : 0x100003
-// addr : 0x100004
-//   100000:   bd 00 00 00 00                        movl $0x0,%ebp
-
-// 0X100000        BD 00 00 00 00 BC 00 00 
-// 0X100008        00 08 E9 91 07 00 00 90 

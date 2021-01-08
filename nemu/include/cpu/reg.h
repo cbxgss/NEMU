@@ -16,8 +16,12 @@ enum { R_CS, R_DS, R_SS, R_ES};
  * For more details about the register encoding scheme, see i386 manual.
  */
 
+typedef struct{
+	uint16_t selector;				// 段描述符
+	uint32_t base, limit, type;		// 隐藏信息
+} S_reg;
 typedef struct {
-	// reg
+	/* reg */
 	union {
 		union {//小端序
 			uint32_t _32;//32位==4bytes
@@ -36,7 +40,7 @@ typedef struct {
 		};
 	};
 	swaddr_t eip;
-	//EFLAGS寄存器
+	/* EFLAGS寄存器 */
 	union {
 		struct {
 			uint32_t CF:	1;
@@ -60,7 +64,7 @@ typedef struct {
 		};
 		uint32_t eflags;
 	};
-	// 段
+	/* 段 */
 	struct{
 		uint32_t base, limit;	// GDT的 首地址 和 长度
 	} GDTR;
@@ -71,19 +75,10 @@ typedef struct {
 			S_reg sreg[4];	// 为了方便swaddr_read和seg_translate
 		};
 		struct{
-			S_reg CS, DS, SS, ES;
-			// CS是代码段寄存器
-			// DS是数据段寄存器
-			// SS是堆栈段寄存器
-			// ES是扩展段寄存器
+			S_reg CS, DS, SS, ES;	// 代码段，数据段，堆栈，扩展
 		};
 	};
 } CPU_state;
-
-typedef struct{
-	uint16_t selector;				// 段描述符
-	uint32_t base, limit, type;		// 隐藏信息
-} S_reg;
 
 typedef struct{
 	union{
