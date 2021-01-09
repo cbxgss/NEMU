@@ -79,8 +79,8 @@ static void load_entry() {
 }
 
 static void init_cr0(){
-	cpu.cr0.protect_enable = 0; // real mode
-	cpu.cr0.paging = 0;
+	cpu.cr0.protect_enable = 0; // 开启保护模式
+	cpu.cr0.paging = 0;			// 开机时不分页
 }
 static void init_cs(){
 	cpu.CS.base = 0, cpu.CS.limit = 0xffffffff;
