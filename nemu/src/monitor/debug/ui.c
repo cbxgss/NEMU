@@ -47,8 +47,11 @@ static int cmd_info(char *args){
 	if(*args == 'r'){
 		int i;
 		for(i = 0; i < 8; i++){
-			printf("%s: 0X%X\t%s: 0X%X\t", regsl[i], cpu.gpr[i]._32, regsw[i], cpu.gpr[i]._16);
-		}
+			printf("%s: 0X%X\t", regsl[i], cpu.gpr[i]._32);
+		} puts("");
+		for(i = 0; i < 8; i++){
+			printf("%s: 0X%X\t", regsw[i], cpu.gpr[i]._16);
+		} puts("");
 		for(i = 0; i < 4; i++){
 			printf("%s : 0X%X\t%s: 0X%X\t", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
 		}
