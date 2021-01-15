@@ -56,7 +56,7 @@ static int cmd_info(char *args){
 			printf("%s : 0x%x\t%s: 0x%x\t", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
 		} puts("");
 		printf("eip : 0x%x\n", cpu.eip);
-		printf("GDTR:\tbase: 0x%x\tlimit: 0x%x", cpu.GDTR.base, cpu.GDTR.limit);
+		printf("GDTR:\tbase: 0x%x\tlimit: 0x%x\n", cpu.GDTR.base, cpu.GDTR.limit);
 	}
 	else if(*args == 'w'){
 		info_w();
