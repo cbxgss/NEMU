@@ -94,7 +94,7 @@ typedef struct{
 		};
 		uint32_t p2;
 	};
-}Sreg_info;
+}Sreg_info;	// 用于读取DGT的内容
 Sreg_info sreg_info;
 
 extern CPU_state cpu;

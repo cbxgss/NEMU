@@ -47,15 +47,16 @@ static int cmd_info(char *args){
 	if(*args == 'r'){
 		int i;
 		for(i = 0; i < 8; i++){
-			printf("%s: 0X%X\t", regsl[i], cpu.gpr[i]._32);
+			printf("%s: 0x%x\t", regsl[i], cpu.gpr[i]._32);
 		} puts("");
 		for(i = 0; i < 8; i++){
-			printf("%s: 0X%X\t", regsw[i], cpu.gpr[i]._16);
+			printf("%s: 0x%x\t", regsw[i], cpu.gpr[i]._16);
 		} puts("");
 		for(i = 0; i < 4; i++){
-			printf("%s : 0X%X\t%s: 0X%X\t", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
-		}
-		printf("eip : 0X%X\n", cpu.eip);
+			printf("%s : 0x%x\t%s: 0x%x\t", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
+		} puts("");
+		printf("eip : 0x%x\n", cpu.eip);
+		printf("GDTR:\tbase: 0x%x\tlimit: 0x%x", cpu.GDTR.base, cpu.GDTR.limit);
 	}
 	else if(*args == 'w'){
 		info_w();
