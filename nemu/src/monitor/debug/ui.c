@@ -52,7 +52,7 @@ static int cmd_info(char *args){
 		for(i = 0; i < 4; i++){
 			printf("%s : 0X%X\t%s: 0X%X\n", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
 		}
-		printf("eip : 0X%X\n", cpu.eip);
+		printf("eip : 0X%X\t", cpu.eip);
 	}
 	else if(*args == 'w'){
 		info_w();
