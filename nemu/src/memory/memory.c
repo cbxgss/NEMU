@@ -47,11 +47,28 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 /* 线性地址 */
+hwaddr_t page_translate(lnaddr_t addr) {
+	return addr;
+}
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
-	return hwaddr_read(addr, len);
+	assert(len == 1 || len == 2 || len ==4);
+	if(0) {	// 跨两个页
+		assert(0);
+	}
+	else {
+		hwaddr_t hwaddr = page_translate(addr);
+		return hwaddr_read(hwaddr, len);
+	}
 }
 void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
-	hwaddr_write(addr, len, data);
+	assert(len == 1 || len == 2 || len ==4);
+	if(0) {	// 跨两个页
+		assert(0);
+	}
+	else {
+		hwaddr_t hwaddr = page_translate(addr);
+		return hwaddr_write(hwaddr, len, data);
+	}
 }
 
 /* 虚拟地址 */
