@@ -176,7 +176,7 @@ $$
 - `testcase/Makefile.part`
 - `memory.c`
 - `tlb指令`顺便写了`cld`
-- 然后到了main第一句卡住，present == 1
+- 然后到了main第一句卡住，present == 1。0x804902c
 
 
 ## 总结
