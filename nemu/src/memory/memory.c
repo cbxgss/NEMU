@@ -49,7 +49,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 /* 线性地址 */
-hwaddr_t cmd_page(lnaddr_t addr) {	// 简易调试器
+hwaddr_t cmd_page_translate(lnaddr_t addr) {	// 简易调试器
 	if(!cpu.cr0.protect_enable || !cpu.cr0.paging) return addr;
 	/* addr = 10 dictionary + 10 page + 12 offset */
 	uint32_t dictionary = addr >> 22, page = (addr >> 12) & 0x3ff, offset = addr & 0xfff;
