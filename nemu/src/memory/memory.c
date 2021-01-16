@@ -47,7 +47,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 /* 线性地址 */
-hwaddr_t page_translate(lnaddr_t addr) {
+hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 	if(!cpu.cr0.protect_enable || !cpu.cr0.paging) return addr;
 	/* addr = 10 dictionary + 10 page + 12 offset */
 	uint32_t dictionary = addr >> 22, page = (addr >> 12) & 0x3ff, offset = addr & 0xfff;
@@ -92,7 +92,7 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 }
 
 /* 虚拟地址 */
-lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){ // 虚拟地址->线性地址
+lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){ // 虚拟地址 -> 线性地址
 	if (cpu.cr0.protect_enable == 0) return addr;
 	return cpu.sreg[sreg].base + addr;
 }
