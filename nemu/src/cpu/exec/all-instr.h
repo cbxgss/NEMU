@@ -37,6 +37,8 @@
 #include "string/lods.h"
 #include "string/scas.h"
 #include "string/stos.h"
+#include "string/cld.h"
+#include "string/std.h"
 
 #include "misc/misc.h"
 

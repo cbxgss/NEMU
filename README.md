@@ -174,6 +174,8 @@ $$
 - `conmmon.h`
 - `kernel/Makefile.part`
 - `testcase/Makefile.part`
+- `memory.c`
+- `tlb指令`顺便写了`cld`
 
 
 ## 总结
