@@ -170,7 +170,9 @@ $$
 - 添加CR3
 - CR0的PG位，初始化时为0
 - 修改`lnaddr_read 和 wirte`
-- 
+- `conmmon.h`
+- `kernel/Makefile.part`
+- `testcase/Makefile.part`
 
 ## 总结
 
