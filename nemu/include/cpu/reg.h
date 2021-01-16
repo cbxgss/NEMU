@@ -24,7 +24,7 @@ typedef struct{
 typedef struct {					// 页表信息
 	union {
 		struct {
-			uint32_t p:1, rw:1, us:1, :2, a:1, d:1, :2, ava:3, addr:20;			// 二级页表地址
+			uint32_t p:1, rw:1, us:1, :2, a:1, d:1, :2, ava:3, addr:20;			// 二级页表地址 / 物理地址
 		};
 		uint32_t val;
 	};
