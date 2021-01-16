@@ -64,7 +64,7 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 	assert(len == 1 || len == 2 || len ==4);
 	uint32_t offset = addr & 0xfff;
-	if(offset + len > 0xfff) {	// 跨页
+	if(offset + len - 1 > 0xfff) {	// 跨页
 		// assert(0);
 		size_t l = 0xfff - offset + 1;		// 低位最多几个字节同页
 		uint32_t down_val = lnaddr_read(addr, l);			// 低位
@@ -79,7 +79,7 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 	assert(len == 1 || len == 2 || len ==4);
 	uint32_t offset = addr & 0xfff;
-	if(offset + len > 0xfff) {	// 跨页
+	if(offset + len - 1 > 0xfff) {	// 跨页
 		// assert(0);
 		size_t l = 0xfff - offset + 1;		// 低位最多几个字节同页
 		lnaddr_write(addr, l, data & ((1 << (l * 8)) - 1) );			// 低位
