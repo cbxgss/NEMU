@@ -20,6 +20,15 @@ typedef struct{
 	uint16_t selector;				// 段选择符
 	uint32_t base, limit, type;		// 段描述符高速缓存 段描述符的信息
 } S_reg;
+
+typedef struct {					// 页表信息
+	union {
+		struct {
+			uint32_t p:1, rw:1, us:1, :2, a:1, d:1, :2, ava:3, addr:20;			// 二级页表地址
+		};
+		uint32_t val;
+	};
+}Page_info;
 typedef struct {
 	/* reg */
 	union {
