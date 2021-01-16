@@ -176,7 +176,9 @@ $$
 - `testcase/Makefile.part`
 - `memory.c`
 - `tlb指令`顺便写了`cld`
-- 然后到了main第一句卡住，present == 1。0x804902c
+- 然后到了main第一句卡住，present == 1。0x804902c (原因是load写错了，elf文件加载错误)
+
+- cmd
 
 
 ## 总结

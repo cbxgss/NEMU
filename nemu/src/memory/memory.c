@@ -49,6 +49,26 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 /* 线性地址 */
+hwaddr_t cmd_page(lnaddr_t addr) {	// 简易调试器
+	if(!cpu.cr0.protect_enable || !cpu.cr0.paging) return addr;
+	/* addr = 10 dictionary + 10 page + 12 offset */
+	uint32_t dictionary = addr >> 22, page = (addr >> 12) & 0x3ff, offset = addr & 0xfff;
+	/* 读取页表信息 */
+	uint32_t tmp = (cpu.cr3.page_directory_base << 12) + dictionary * 4;		// 页目录基地址 + 页目录号 * 页表项大小
+	Page_info dictionary_, page_;
+	dictionary_.val = hwaddr_read(tmp, 4);
+	tmp = (dictionary_.addr << 12) + page * 4;									// 二级页表基地址 + 页号 + 页表项大小
+	page_.val = hwaddr_read(tmp, 4);
+	if(dictionary_.p != 1) {
+		printf("dirctionary present != 1\n");
+		return 0;
+	}
+	if(page_.p != 1) {
+		printf("second page table present != 1\n");
+		return 0;
+	}
+	return (page_.addr << 12) + offset;
+}
 hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 	if(!cpu.cr0.protect_enable || !cpu.cr0.paging) return addr;
 	/* addr = 10 dictionary + 10 page + 12 offset */
@@ -62,8 +82,8 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 #ifdef DEBUG_page
 	printf("eip:0x%x\taddr 0x%x\n", cpu.eip, addr);
 #endif
-	Assert(dictionary_.p == 1, "dirctionary present == 1");
-	Assert(page_.p == 1, "second page table present == 1");
+	Assert(dictionary_.p == 1, "dirctionary present != 1");
+	Assert(page_.p == 1, "second page table present != 1");
 	return (page_.addr << 12) + offset;
 }
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
