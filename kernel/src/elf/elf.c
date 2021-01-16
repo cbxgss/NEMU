@@ -38,14 +38,14 @@ uint32_t loader() {
 
 	/* Load each program segment */
 	// panic("please implement me");
-	int i = 0;
+	int i = 0, phlen = elf->e_phnum;
 	ph = (void *)(buf + elf->e_phoff) ;		//buf + Program header table file offset
-	for(i = 0; i < elf->e_phnum ; i++, ph++) {
+	for(i = 0; i < phlen ; i++) {
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
-			ph -> p_vaddr = mm_malloc(ph -> p_vaddr,ph -> p_memsz);					// 为进程的一个段分配虚拟空间
+			ph -> p_vaddr = mm_malloc(ph -> p_vaddr, ph -> p_memsz);					// 为进程的一个段分配虚拟空间
 
-			/* TODO: read the content of the segment from the ELF file 
+			/* TODO: read the content of the segment from the ELF file
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
 			ramdisk_read ((void *)ph->p_vaddr, ph->p_offset, ph->p_filesz);
