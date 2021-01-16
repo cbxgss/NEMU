@@ -77,9 +77,6 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 	if(offset + len >= 0xfff) {	// 跨页
 		assert(0);
 	}
-	if(0) {	// 跨两个页
-		assert(0);
-	}
 	else {
 		hwaddr_t hwaddr = page_translate(addr);
 		return hwaddr_write(hwaddr, len, data);
