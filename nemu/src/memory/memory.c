@@ -84,6 +84,9 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 #endif
 	Assert(dictionary_.p == 1, "dirctionary present != 1");
 	Assert(page_.p == 1, "second page table present != 1");
+#ifdef DEBUG_page
+	printf("0x%x\n", (page_.addr << 12) + offset);
+#endif
 	return (page_.addr << 12) + offset;
 }
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
