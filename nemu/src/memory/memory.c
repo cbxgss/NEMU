@@ -4,7 +4,7 @@
 #include "memory/cache.h"
 #include "cpu/reg.h"
 
-// #define DEBUG_page
+#define DEBUG_page
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
@@ -62,8 +62,8 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 #ifdef DEBUG_page
 	printf("eip:0x%x\taddr 0x%x\n", cpu.eip, addr);
 #endif
-	// Assert(dictionary_.p == 1, "dirctionary present == 1");
-	// Assert(page_.p == 1, "second page table present == 1");
+	Assert(dictionary_.p == 1, "dirctionary present == 1");
+	Assert(page_.p == 1, "second page table present == 1");
 	return (page_.addr << 12) + offset;
 }
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
