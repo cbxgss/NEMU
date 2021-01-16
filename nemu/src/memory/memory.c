@@ -3,8 +3,9 @@
 #include "burst.h"
 #include "memory/cache.h"
 #include "cpu/reg.h"
+#include "memory/tlb.h"
 
-#define DEBUG_page
+// #define DEBUG_page
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
@@ -49,6 +50,8 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 }
 
 /* 线性地址 */
+int read_tlb(lnaddr_t addr);
+void write_tlb(lnaddr_t addr, hwaddr_t haaddr);
 hwaddr_t cmd_page_translate(lnaddr_t addr) {	// 简易调试器
 	if(!cpu.cr0.protect_enable || !cpu.cr0.paging) return addr;
 	/* addr = 10 dictionary + 10 page + 12 offset */
@@ -73,6 +76,9 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 	if(!cpu.cr0.protect_enable || !cpu.cr0.paging) return addr;
 	/* addr = 10 dictionary + 10 page + 12 offset */
 	uint32_t dictionary = addr >> 22, page = (addr >> 12) & 0x3ff, offset = addr & 0xfff;
+	/* 先看TLB */
+	int index = read_tlb(addr);
+	if (index != -1) return (tlb[index].data << 12) + offset;
 	/* 读取页表信息 */
 	uint32_t tmp = (cpu.cr3.page_directory_base << 12) + dictionary * 4;		// 页目录基地址 + 页目录号 * 页表项大小
 	Page_info dictionary_, page_;
@@ -87,7 +93,9 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 #ifdef DEBUG_page
 	printf("0x%x\n", (page_.addr << 12) + offset);
 #endif
-	return (page_.addr << 12) + offset;
+	hwaddr_t addr_ = (page_.addr << 12) + offset;
+	write_tlb(addr, addr_);
+	return addr_;
 }
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 	assert(len == 1 || len == 2 || len ==4);

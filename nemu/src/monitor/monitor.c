@@ -6,6 +6,7 @@ extern uint8_t entry [];
 extern uint32_t entry_len;
 extern char *exec_file;
 
+void init_tlb();
 void load_elf_tables(int, char *[]);
 void init_regex();
 void init_wp_pool();
@@ -90,6 +91,7 @@ void restart() {
 	/* Perform some initialization to restart a program */
 	init_eflags();
 	init_cache();
+	init_tlb();
 	init_cr0();
 	init_cs();
 #ifdef USE_RAMDISK
