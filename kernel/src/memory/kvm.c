@@ -33,18 +33,24 @@ void init_page(void) {
 	 * If you do not understand it, refer to the C code below.
 	 */
 
-	
+	asm volatile ("std;\
+	 1: stosl;\
+		subl %0, %%eax;\
+		jge 1b;\
+		cld" : :
+		"i"(PAGE_SIZE), "a"((PHY_MEM - PAGE_SIZE) | 0x7), "D"(ptable - 1));
+
 
 	// /*
 		// ===== referenced code for the inline assembly above =====
 
 		uint32_t pframe_addr = PHY_MEM - PAGE_SIZE;
-		ptable -= NR_PTE;
+		ptable --;
 
 		// fill PTEs reversely
-		for (; pframe_addr >= 0; pframe_addr -= PAGE_SIZE) {
+		for (; (int)pframe_addr >= 0; pframe_addr -= PAGE_SIZE) {
 			ptable->val = make_pte(pframe_addr);
-			ptable -= NR_PTE;
+			ptable --;
 		}
 	// */
 
