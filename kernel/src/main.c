@@ -1,7 +1,7 @@
 #include "common.h"
 #include "memory.h"
 
-#define HAS_DEVICE
+// #define HAS_DEVICE
 
 void init_page();
 void init_serial();
