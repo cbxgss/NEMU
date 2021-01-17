@@ -5,7 +5,7 @@
 #include "cpu/reg.h"
 #include "memory/tlb.h"
 
-// #define DEBUG_page
+#define DEBUG_page
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
