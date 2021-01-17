@@ -54,6 +54,7 @@ void init_cond() {
 #endif
 #define HAS_DEVICE
 #ifdef HAS_DEVICE
+	assert(123);
 	/* Initialize the intel 8259 PIC (Programmable interrupt controller). */
 	init_i8259();
 
