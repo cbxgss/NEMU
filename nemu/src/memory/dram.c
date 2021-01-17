@@ -14,11 +14,11 @@
 #define RANK_WIDTH (27 - COL_WIDTH - ROW_WIDTH - BANK_WIDTH)
 
 typedef union {
-	struct {
-		uint32_t col	: COL_WIDTH;
-		uint32_t row	: ROW_WIDTH;
-		uint32_t bank	: BANK_WIDTH;
-		uint32_t rank	: RANK_WIDTH;
+	struct {									// 小端序，低位低地址
+		uint32_t col	: COL_WIDTH;			// 10
+		uint32_t row	: ROW_WIDTH;			// 10
+		uint32_t bank	: BANK_WIDTH;			// 3		可能是页
+		uint32_t rank	: RANK_WIDTH;			// 4		好像是段
 	};
 	uint32_t addr;
 } dram_addr;
@@ -51,6 +51,7 @@ void init_ddr3() {
 	}
 }
 
+/* static函数在外面无法用，所以写了两个函数来专门调用这两个函数 */
 static void ddr3_read(hwaddr_t addr, void *data) {
 	Assert(addr < HW_MEM_SIZE, "physical address %x is outside of the physical memory!", addr);
 
@@ -71,7 +72,6 @@ static void ddr3_read(hwaddr_t addr, void *data) {
 	/* burst read */
 	memcpy(data, rowbufs[rank][bank].buf + col, BURST_LEN);
 }
-
 static void ddr3_write(hwaddr_t addr, void *data, uint8_t *mask) {
 	Assert(addr < HW_MEM_SIZE, "physical address %x is outside of the physical memory!", addr);
 
@@ -94,6 +94,12 @@ static void ddr3_write(hwaddr_t addr, void *data, uint8_t *mask) {
 
 	/* write back to dram */
 	memcpy(dram[rank][bank][row], rowbufs[rank][bank].buf, NR_COL);
+}
+void cache_ddr3_read(hwaddr_t addr, void *data){
+	ddr3_read(addr, data);
+}
+void cache_ddr3_write(hwaddr_t addr, void *data, uint8_t *mask) {
+	ddr3_write(addr, data, mask);
 }
 
 uint32_t dram_read(hwaddr_t addr, size_t len) {

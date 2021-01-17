@@ -2,13 +2,13 @@
 
 #define instr call
 
-make_helper(concat(call_i_, SUFFIX)) {
+make_helper(concat(call_i_, SUFFIX)) {          // SS:2
     //decode_i_v 译码, len = 操作数的长度 = 本指令长度 - 1
     int len = concat(decode_i_, SUFFIX) (eip + 1);
     //开栈
     reg_l (R_ESP) -= DATA_BYTE;
     //*rsp = eip + len
-    swaddr_write (reg_l (R_ESP) , 4 , cpu.eip + len);   //ret的时候，新eip = 此时的eip+len，然后ret命令长度是1,运行完ret后eip再加上这个1,刚好是call的下一条指令
+    swaddr_write (reg_l (R_ESP) , 4 , cpu.eip + len, 2);   //ret的时候，新eip = 此时的eip+len，然后ret命令长度是1,运行完ret后eip再加上这个1,刚好是call的下一条指令
     //偏移量
     DATA_TYPE_S imm = op_src->val;
     //打印汇编
@@ -22,7 +22,7 @@ make_helper(concat(call_i_, SUFFIX)) {
 make_helper(concat(call_rm_, SUFFIX)) {
 	int len = concat(decode_rm_, SUFFIX) (eip + 1);
 	cpu.esp -= DATA_BYTE;
-	swaddr_write (cpu.esp , 4 , cpu.eip + len);
+	swaddr_write (cpu.esp , 4 , cpu.eip + len, 2);
 	DATA_TYPE_S imm = op_src->val;
 	print_asm("call %x",imm);
 	cpu.eip = imm - len - 1;

@@ -280,18 +280,6 @@ int eval(int p, int q) {
 					if(strcmp(strtab+symtab[i].st_name, tokens[p].str) == 0) return symtab[i].st_value;
 				}
 			}
-// char *strtab = NULL;				//字符串表，第69行
-// Elf32_Sym *symtab = NULL;		//符号表，第60行
-// int nr_symtab_entry;				//符号个数，第64行
-// typedef struct				//elf.c里好像不能改
-// {
-//   Elf32_Word	st_name;		/* Symbol name (string tbl index) 符号在字符串表中的索引（字节偏移量）*/
-//   Elf32_Addr	st_value;		/* Symbol value 符号所在地址，在可重定位文件中是符号所在位置相对于所在节起始位置的字节偏移量，在可执行文件中则是符号的虚拟地址 */
-//   Elf32_Word	st_size;		/* Symbol size 符号所表示对象的字节数 */
-//   unsigned char	st_info;		/* Symbol type and binding 符号的类型和绑定属性 */
-//   unsigned char	st_other;		/* Symbol visibility 符号的可见性，通常出现在可重定位目标文件中 */
-//   Elf32_Section	st_shndx;		/* Section index 符号所在节在节头表中的索引 */
-// } Elf32_Sym;
 		}
 		printf("p Wrong2\n"); return 0;
 	}
@@ -306,7 +294,7 @@ int eval(int p, int q) {
 			if(tokens[dp].type == '+') {val1 = 0; val2 = eval(p+1, q);}
 			else if(tokens[dp].type == '-') {val1 = 0; val2 = eval(p+1, q);}
 			else if(tokens[dp].type == '!') return !eval(p+1, q);
-			else if(tokens[dp].type == Deref)  return swaddr_read(eval(p+1, q), 4);
+			else if(tokens[dp].type == Deref)  return swaddr_read(eval(p+1, q), 4, R_DS);
 		}else{
 			val1 = eval(p, dp - 1); val2 = eval(dp + 1, q);
 		}

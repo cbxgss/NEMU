@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/cache.h>
 
 void cpu_exec(uint32_t);
 
@@ -46,12 +47,19 @@ static int cmd_info(char *args){
 	if(*args == 'r'){
 		int i;
 		for(i = 0; i < 8; i++){
-			printf("%s: 0X%X\t%s: 0X%X\n", regsl[i], cpu.gpr[i]._32, regsw[i], cpu.gpr[i]._16);
-		}
+			printf("%s: 0x%x\t", regsl[i], cpu.gpr[i]._32);
+		} puts("");
+		for(i = 0; i < 8; i++){
+			printf("%s : 0x%x\t", regsw[i], cpu.gpr[i]._16);
+		} puts("");
 		for(i = 0; i < 4; i++){
-			printf("%s : 0X%X\t%s: 0X%X\n", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
-		}
-		printf("eip : 0X%X\n", cpu.eip);
+			printf("%s : 0x%x\t%s : 0x%x\t", regsb[i], cpu.gpr[i]._8[0], regsb[i+4], cpu.gpr[i]._8[1]);
+		} puts("");
+		printf("eip: 0x%x\n", cpu.eip);
+		printf("|GDTR:\tbase: 0x%x\tlimit: 0x%x\t\t|\t\t", cpu.GDTR.base, cpu.GDTR.limit);
+		printf("page dictionary:\tbase: 0x%x|\n", cpu.cr3.page_directory_base);
+		printf("selector:\tCS: %d\tDS: %d\tSS: %d\tES: %d\n", cpu.CS.selector, cpu.DS.selector, cpu.SS.selector, cpu.ES.selector);
+		printf("base:\t\tCS: %d\tDS: %d\tSS: %d\tES: %d\n", cpu.CS.base, cpu.DS.base, cpu.SS.base, cpu.ES.base);
 	}
 	else if(*args == 'w'){
 		info_w();
@@ -70,8 +78,8 @@ static int cmd_x(char *args){
 	if(!success) printf("x Wrong\n");
 	int i;
 	for( i=0; i < len_; i++){
-		if(i % 8 == 0) printf("0X%06X \t", x0_ + i);
-		printf("%02X ", swaddr_read(x0_ + i, 1));
+		if(i % 8 == 0) printf("0x%06x \t", x0_ + i);
+		printf("%02x ", swaddr_read(x0_ + i, 1, R_DS));
 		if((i+1) % 8 == 0) printf("\n");
 	}
 	if((i+1) % 8) printf("\n");
@@ -87,11 +95,15 @@ static int cmd_p(char *args){
 	return 0;
 }
 
+static int cmd_p_cache() {
+	p_cache_t();
+	return 1;
+}
+
 static int cmd_w(char *args){
 	new_wp(args);
 	return 0;
 }
-
 static int cmd_d(char *args){
 	free_wp(find_n(atoi(args)));
 	return 0;
@@ -114,24 +126,6 @@ static int cmd_bt(char *args) {
 	//第一个栈帧的信息
 	//	栈帧（32位）中，最低4字节存旧ebp（prev_ebp），其次4字节存返回地址（ret_addr），上面4个4字节分别为4个参数
 	now.ret_addr = cpu.eip;
-	// //一个巨坑！！！如果在这个函数的前两行，$ebp还没来得及改！
-	// int j; bool success;
-	// for (j = 0; j < nr_symtab_entry; j++) {
-	// 	if ((symtab[j].st_info & 0xf) == STT_FUNC){//是函数
-	// 		if(symtab[j].st_value <= now.ret_addr && now.ret_addr < symtab[j].st_value + symtab[j].st_size) {//在里面
-	// 			if(cpu.eip <= expr(strtab + symtab[j].st_name, &success) + 1) {
-	// 				printf("now esp : %x\n", reg_l(R_ESP));
-	// 				printf("#%d\t0x%08x in %s", i++, now.ret_addr, strtab + symtab[j].st_name);
-	// 				//读取当前栈帧信息
-	// 				now.ret_addr = swaddr_read(reg_l(R_ESP) + 4 , 4);
-	// 				int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(reg_l(R_ESP) + 8 + 4*k, 4);
-	// 				printf("(%d, %d, %d, %d)\n", now.args[0], now.args[1], now.args[2], now.args[3]);
-	// 			}
-	// 			break;
-	// 		}
-	// 	}
-	// }
-	// 但是没办法解决
 	bool first = 1;
 	while(ebp) {
 		// printf("now ebp : %x\n", ebp);
@@ -146,13 +140,23 @@ static int cmd_bt(char *args) {
 			}
 		}
 		//读取当前栈帧信息
-		now.prev_ebp = swaddr_read(ebp, 4);
-		now.ret_addr = swaddr_read(ebp + 4 , 4);
-		int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*k, 4);
+		now.prev_ebp = swaddr_read(ebp, 4, R_SS);
+		now.ret_addr = swaddr_read(ebp + 4 , 4, R_SS);
+		int k = 0;	for(k = 0; k < 4; k++) now.args[k] = swaddr_read(ebp + 8 + 4*k, 4, R_SS);
 		printf("(%d, %d, %d, %d)\n", now.args[0], now.args[1], now.args[2], now.args[3]);
 		//更新ebp
 		ebp = now.prev_ebp;		//更旧一层栈帧
 	}
+	return 0;
+}
+
+hwaddr_t cmd_page_translate(lnaddr_t addr);
+static int cmd_page(char* args){
+	if(args == NULL) { printf("parameter invalid!\n"); return 0; }
+	uint32_t addr;
+	sscanf(args, "%x", &addr);
+	hwaddr_t ans = cmd_page_translate(addr);
+	if(ans) printf("Addr is 0x%08x\n",ans);
 	return 0;
 }
 
@@ -169,10 +173,12 @@ static struct {
 	{ "si", "单步执行", cmd_si },
 	{ "info", "打印程序状态", cmd_info },
 	{ "p", "表达式求值", cmd_p },
+	{ "p_cache", "cache命中状况", cmd_p_cache },
 	{ "x", "扫描内存", cmd_x },
 	{ "w", "设置监视点", cmd_w },
 	{ "d", "删除监视点", cmd_d },
-	{ "bt", "打印栈帧链", cmd_bt }
+	{ "bt", "打印栈帧链", cmd_bt },
+	{ "page", "打印对应物理地址", cmd_page}
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))

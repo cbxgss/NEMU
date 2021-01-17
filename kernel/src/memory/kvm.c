@@ -19,7 +19,7 @@ void init_page(void) {
 	/* make all PDEs invalid */
 	memset(pdir, 0, NR_PDE * sizeof(PDE));
 
-	/* fill PDEs */
+	/* fill PDEs */ 								// 页目录表
 	for (pdir_idx = 0; pdir_idx < PHY_MEM / PT_SIZE; pdir_idx ++) {
 		pdir[pdir_idx].val = make_pde(ptable);
 		pdir[pdir_idx + KOFFSET / PT_SIZE].val = make_pde(ptable);
@@ -27,7 +27,7 @@ void init_page(void) {
 		ptable += NR_PTE;
 	}
 
-	/* fill PTEs */
+	/* fill PTEs */									// 页表
 
 	/* We use inline assembly here to fill PTEs for efficiency.
 	 * If you do not understand it, refer to the C code below.
@@ -41,18 +41,18 @@ void init_page(void) {
 		"i"(PAGE_SIZE), "a"((PHY_MEM - PAGE_SIZE) | 0x7), "D"(ptable - 1));
 
 
-	/*
-		===== referenced code for the inline assembly above =====
+	// /*
+		// ===== referenced code for the inline assembly above =====
 
-		uint32_t pframe_addr = PHY_MEM - PAGE_SIZE;
-		ptable --;
+		// uint32_t pframe_addr = PHY_MEM - PAGE_SIZE;
+		// ptable --;
 
-		// fill PTEs reversely
-		for (; pframe_addr >= 0; pframe_addr -= PAGE_SIZE) {
-			ptable->val = make_pte(pframe_addr);
-			ptable --;
-		}
-	*/
+		// // fill PTEs reversely
+		// for (; (int)pframe_addr >= 0; pframe_addr -= PAGE_SIZE) {
+		// 	ptable->val = make_pte(pframe_addr);
+		// 	ptable --;
+		// }
+	// */
 
 
 	/* make CR3 to be the entry of page directory */

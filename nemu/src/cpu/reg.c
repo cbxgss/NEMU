@@ -42,3 +42,17 @@ void reg_test() {
 	assert(eip_sample == cpu.eip);
 }
 
+void sreg_set(uint8_t id){	// 根据段描述符 更新 段描述符高速缓存
+	lnaddr_t chart_addr = cpu.GDTR.base + ((cpu.sreg[id].selector >> 3) << 3);	//段描述符地址
+	sreg_info.p1 = lnaddr_read(chart_addr, 4);
+	sreg_info.p2 = lnaddr_read(chart_addr + 4, 4);
+	cpu.sreg[id].base = sreg_info.b1 + (sreg_info.b2 << 16) + (sreg_info.b3 << 24);
+	cpu.sreg[id].limit = sreg_info.lim1 + (sreg_info.lim2 << 16) + (0xfff << 24);
+	if (sreg_info.g == 1) {	//粒度位（G）：0表示段界限单位是B；1表示4KB
+		cpu.sreg[id].limit <<= 12;
+	}
+	// printf("now:\t%d %x %x\n", id, cpu.sreg[id].base, cpu.sreg[id].limit);
+	// for(id = 0; id < 4; id++) {
+	// 	printf("%d %x %x\n", id, cpu.sreg[id].base, cpu.sreg[id].limit);
+	// }
+}

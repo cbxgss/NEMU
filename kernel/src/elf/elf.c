@@ -35,16 +35,17 @@ uint32_t loader() {
 	const uint32_t elf_magic = 0x464c457f;					//readelf开头有magic，开头4个字节,判断是不是elf
 	uint32_t *p_magic = (void *)buf;
 	nemu_assert(*p_magic == elf_magic);
-// printf("qwq");
+
 	/* Load each program segment */
 	// panic("please implement me");
-	int i = 0;
+	int i = 0, phlen = elf->e_phnum;
 	ph = (void *)(buf + elf->e_phoff) ;		//buf + Program header table file offset
-	for(i = 0; i < elf->e_phnum ; i++, ph++) {
+	for(i = 0; i < phlen ; i++) {
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
+			ph -> p_vaddr = mm_malloc(ph -> p_vaddr, ph -> p_memsz);					// 为进程的一个段分配虚拟空间
 
-			/* TODO: read the content of the segment from the ELF file 
+			/* TODO: read the content of the segment from the ELF file
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
 			ramdisk_read ((void *)ph->p_vaddr, ph->p_offset, ph->p_filesz);
@@ -53,6 +54,8 @@ uint32_t loader() {
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
 			memset ((void *)(ph->p_vaddr+ph->p_filesz), 0, ph->p_memsz - ph->p_filesz);
+
+			ph++;
 
 #ifdef IA32_PAGE
 			/* Record the program break for future use. */

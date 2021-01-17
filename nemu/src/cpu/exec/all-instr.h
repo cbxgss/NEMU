@@ -7,6 +7,7 @@
 #include "data-mov/movext.h"
 #include "data-mov/pop.h"
 #include "data-mov/push.h"
+#include "data-mov/lgdt.h"      // load m into GDTR
 
 #include "arith/dec.h"
 #include "arith/inc.h"
@@ -36,6 +37,8 @@
 #include "string/lods.h"
 #include "string/scas.h"
 #include "string/stos.h"
+#include "string/cld.h"
+#include "string/std.h"
 
 #include "misc/misc.h"
 
