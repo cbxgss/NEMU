@@ -42,7 +42,7 @@ void init_page(void) {
 		ptable --;
 
 		// fill PTEs reversely
-		for (; (int)pframe_addr >= 0; pframe_addr -= PAGE_SIZE) {
+		for (; pframe_addr >= 0; pframe_addr -= PAGE_SIZE) {
 			ptable->val = make_pte(pframe_addr);
 			ptable --;
 		}
