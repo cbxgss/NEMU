@@ -54,7 +54,6 @@ void init_cond() {
 #endif
 #define HAS_DEVICE
 #ifdef HAS_DEVICE
-	assert(0);
 	/* Initialize the intel 8259 PIC (Programmable interrupt controller). */
 	init_i8259();
 
@@ -79,6 +78,7 @@ void init_cond() {
 	 */
 	Log("Hello, NEMU world!");
 
+#define IA32_PAGE
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Write some test data to the video memory. */
 	video_mapping_write_test();
