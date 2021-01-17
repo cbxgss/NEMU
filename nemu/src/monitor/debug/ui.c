@@ -57,9 +57,9 @@ static int cmd_info(char *args){
 		} puts("");
 		printf("eip: 0x%x\n", cpu.eip);
 		printf("|GDTR:\tbase: 0x%x\tlimit: 0x%x\t\t|\t\t", cpu.GDTR.base, cpu.GDTR.limit);
+		printf("page dictionary:\tbase: 0x%x|\n", cpu.cr3.page_directory_base);
 		printf("selector:\tCS: %d\tDS: %d\tSS: %d\tES: %d\n", cpu.CS.selector, cpu.DS.selector, cpu.SS.selector, cpu.ES.selector);
 		printf("base:\t %d\tDS: %d\tSS: %d\tES: %d\n", cpu.CS.base, cpu.DS.base, cpu.SS.base, cpu.ES.base);
-		printf("page dictionary:\tbase: 0x%x|\n", cpu.cr3.page_directory_base);
 	}
 	else if(*args == 'w'){
 		info_w();
