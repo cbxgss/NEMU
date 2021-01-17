@@ -5,7 +5,8 @@
 #include "cpu/reg.h"
 #include "memory/tlb.h"
 
-// #define DEBUG_page
+// #define DEBUG_page_p
+#define DEBUG_page
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
@@ -85,7 +86,7 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 	dictionary_.val = hwaddr_read(tmp, 4);
 	tmp = (dictionary_.addr << 12) + page * 4;									// 二级页表基地址 + 页号 + 页表项大小
 	page_.val = hwaddr_read(tmp, 4);
-#ifdef DEBUG_page
+#ifdef DEBUG_page_p
 	printf("eip:0x%x\taddr 0x%x\n", cpu.eip, addr);
 #endif
 	Assert(dictionary_.p == 1, "dirctionary present != 1");
