@@ -1,6 +1,8 @@
 #include "common.h"
 #include "memory.h"
 
+#define HAS_DEVICE
+
 void init_page();
 void init_serial();
 void init_ide();
@@ -53,7 +55,6 @@ void init_cond() {
 	init_idt();
 #endif
 
-#define HAS_DEVICE
 #ifdef HAS_DEVICE
 	/* Initialize the intel 8259 PIC (Programmable interrupt controller). */
 	init_i8259();
