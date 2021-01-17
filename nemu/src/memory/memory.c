@@ -5,7 +5,7 @@
 #include "cpu/reg.h"
 #include "memory/tlb.h"
 
-#define DEBUG_page
+// #define DEBUG_page
 
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
@@ -91,7 +91,7 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 	Assert(dictionary_.p == 1, "dirctionary present != 1");
 	Assert(page_.p == 1, "second page table present != 1");
 #ifdef DEBUG_page
-	// printf("0x%x\n", (page_.addr << 12) + offset);
+	printf("0x%x\n", (page_.addr << 12) + offset);
 #endif
 	hwaddr_t addr_ = (page_.addr << 12) + offset;
 	write_tlb(addr, addr_);
@@ -128,7 +128,7 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 }
 
 /* 虚拟地址 */
-lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg){ // 虚拟地址 -> 线性地址
+lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg) { // 虚拟地址 -> 线性地址
 	if (cpu.cr0.protect_enable == 0) return addr;
 	return cpu.sreg[sreg].base + addr;
 }
