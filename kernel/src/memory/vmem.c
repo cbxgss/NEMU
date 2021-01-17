@@ -4,7 +4,7 @@
 
 #define VMEM_ADDR 0xa0000
 #define SCR_SIZE (320 * 200)
-
+#define HAS_DEVICE
 /* Use the function to get the start address of user page directory. */
 PDE* get_updir();
 
