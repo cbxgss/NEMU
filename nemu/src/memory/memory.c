@@ -91,7 +91,7 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 	Assert(dictionary_.p == 1, "dirctionary present != 1");
 	Assert(page_.p == 1, "second page table present != 1");
 #ifdef DEBUG_page
-	printf("0x%x\n", (page_.addr << 12) + offset);
+	// printf("0x%x\n", (page_.addr << 12) + offset);
 #endif
 	hwaddr_t addr_ = (page_.addr << 12) + offset;
 	write_tlb(addr, addr_);
