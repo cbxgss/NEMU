@@ -119,7 +119,7 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 		// assert(0);
 		size_t l = 0xfff - offset + 1;		// 低位最多几个字节同页
 		lnaddr_write(addr, l, data & ((1 << (l * 8)) - 1) );			// 低位
-		lnaddr_write(addr + l, len - l, data >> (l * 8));			//高位
+		lnaddr_write(addr + l, len - l, data >> (l * 8));				//高位
 	}
 	else {
 		hwaddr_t hwaddr = page_translate(addr);
