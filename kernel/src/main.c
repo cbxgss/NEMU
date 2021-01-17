@@ -31,7 +31,7 @@ void init() {
 	init_page();
 
 	/* After paging is enabled, transform %esp to virtual address. */
-	// asm volatile("addl %0, %%esp" : : "i"(KOFFSET));
+	asm volatile("addl %0, %%esp" : : "i"(KOFFSET));
 #endif
 
 	/* Jump to init_cond() to continue initialization. */
@@ -53,6 +53,7 @@ void init_cond() {
 	init_idt();
 #endif
 
+#define HAS_DEVICE
 #ifdef HAS_DEVICE
 	/* Initialize the intel 8259 PIC (Programmable interrupt controller). */
 	init_i8259();
