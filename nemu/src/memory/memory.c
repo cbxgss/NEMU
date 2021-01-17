@@ -77,8 +77,8 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 	/* addr = 10 dictionary + 10 page + 12 offset */
 	uint32_t dictionary = addr >> 22, page = (addr >> 12) & 0x3ff, offset = addr & 0xfff;
 	/* 先看TLB */
-	int index = read_tlb(addr);
-	if (index != -1) return (tlb[index].data << 12) + offset;
+	// int index = read_tlb(addr);
+	// if (index != -1) return (tlb[index].data << 12) + offset;
 	/* 读取页表信息 */
 	uint32_t tmp = (cpu.cr3.page_directory_base << 12) + dictionary * 4;		// 页目录基地址 + 页目录号 * 页表项大小
 	Page_info dictionary_, page_;
@@ -94,7 +94,7 @@ hwaddr_t page_translate(lnaddr_t addr) {	// 线性地址 -> 物理地址
 	// printf("0x%x\n", (page_.addr << 12) + offset);
 #endif
 	hwaddr_t addr_ = (page_.addr << 12) + offset;
-	write_tlb(addr, addr_);
+	// write_tlb(addr, addr_);
 	return addr_;
 }
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
