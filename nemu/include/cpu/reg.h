@@ -74,9 +74,12 @@ typedef struct {
 		uint32_t eflags;
 	};
 	/* 段 */
-	struct{
+	struct {
 		uint32_t base, limit;	// GDT的 首地址 和 长度
 	} GDTR;
+	struct {
+		uint32_t base, limit;	// IDT的 首地址 和 长度
+	} IDTR;
 	CR0 cr0;
 	CR3 cr3;
 	union{ // 段选择符
