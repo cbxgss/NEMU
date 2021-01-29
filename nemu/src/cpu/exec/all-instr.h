@@ -8,6 +8,7 @@
 #include "data-mov/pop.h"
 #include "data-mov/push.h"
 #include "data-mov/lgdt.h"      // load m into GDTR
+#include "data-mov/lidt.h"      // load into LIDR
 
 #include "arith/dec.h"
 #include "arith/inc.h"
