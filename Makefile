@@ -54,8 +54,8 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-USERPROG := obj/testcase/matrix-mul
 USERPROG := obj/testcase/add
+USERPROG := obj/testcase/hello-inline-asm
 
 # ENTRY := $(USERPROG)
 ENTRY := $(kernel_BIN)
