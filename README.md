@@ -261,3 +261,51 @@ CR0寄存器
 	- A：已访问标志。
 	- D：以修改标志
 	- AVL：保留专门给程序用
+
+# PA4
+
+## 系统调用
+
+```c
+    asm volatile(
+        "movl $4, %eax;"    // 系统调用ID，4 = SYS_write
+        "movl $1, %ebx;"    // 文件描述，1 = stdout
+        "movl $str, %ecx;"  // 缓冲区地址
+        "movl $6, %edx;"   // 长度
+        "int $0x80"			// 异常
+    );
+```
+
+触发异常后，CPU陷入内核
+
+-   IA-32中断机制
+
+    -   门描述符`Gate Descriptor`：异常事件的入口地址
+
+        -   中断门(Interrupt Gate)
+
+            ![image-20210129122610673](README.assets/image-20210129122610673.png)
+
+        -   陷阱门(Trap Gate)
+
+            ![image-20210129122620082](README.assets/image-20210129122620082.png)
+
+        -   任务门(Task Gate)
+
+    -   `IDT`中断描述符表：每个元素是一个门描述符
+
+    -   `IDTR`寄存器：存放`IDT`的首地址和长度
+
+    -   cpu内部产生一个索引
+
+### 先保存用户进程的信息
+
+-   硬件保存：EIP，EFLAGS，CS
+-   操作系统保存：通用寄存器GPR
+    -   IA-32所用指令：`pusha`, `popa`
+
+### 处理异常
+
+### 恢复到原来的状态
+
+-   恢复后，返回时所用指令：`iret`
