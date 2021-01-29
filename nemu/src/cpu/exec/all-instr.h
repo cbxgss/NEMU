@@ -9,6 +9,8 @@
 #include "data-mov/push.h"
 #include "data-mov/lgdt.h"      // load m into GDTR
 #include "data-mov/lidt.h"      // load into LIDR
+#include "data-mov/pusha.h"     // int的push和pop
+#include "data-mov/popa.h"
 
 #include "arith/dec.h"
 #include "arith/inc.h"
@@ -61,5 +63,8 @@
 #include "data-control/jcc/js.h"
 #include "data-control/jcc/jns.h"
 #include "data-control/jcc/jb.h"
+#include "data-control/int.h"
+#include "data-control/cli.h"
+#include "data-control/iret.h"
 
 #include "CMOV/cmovns.h"

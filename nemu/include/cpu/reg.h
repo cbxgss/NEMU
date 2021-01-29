@@ -109,6 +109,29 @@ typedef struct{
 }Sreg_info;	// 用于读取DGT的内容
 Sreg_info sreg_info;
 
+typedef struct {
+	union {
+		struct {
+			uint32_t offset1 :16;
+			uint32_t selector :16;
+		};
+		uint32_t part1;
+	};
+	union{
+		struct{ 
+			uint32_t pad0 :8;
+			uint32_t type :4;
+			uint32_t system :1;
+			uint32_t dpl :2;
+			uint32_t present :1;
+			uint32_t offset2 :16;
+		};
+		uint32_t part2;
+	};
+}Gate_Descriptor;
+
+Gate_Descriptor *idt_desc;
+
 extern CPU_state cpu;
 
 void sreg_set(uint8_t);
